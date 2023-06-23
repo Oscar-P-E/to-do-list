@@ -9,7 +9,8 @@ module.exports = {
     },
     resolve: {
         // Add `.ts` and `.tsx` as a resolvable extension.
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: [".ts", ".tsx", ".js", ".json"],
+        modules: ["node_modules", path.resolve(__dirname, "src")],
     },
     module: {
         rules: [
@@ -22,8 +23,7 @@ module.exports = {
                 type: "asset/resource",
             },
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
-            { test: /\.tsx?$/, use: "ts-loader" }
+            { test: /\.tsx?$/, use: "ts-loader" },
         ],
     },
 };
-
