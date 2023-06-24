@@ -4,8 +4,6 @@
       "es2021": true
     },
     "extends": [
-      "eslint:recommended",
-      "airbnb-base",
       "plugin:@typescript-eslint/recommended",
       "prettier"
     ],
@@ -16,7 +14,8 @@
       "project": "./tsconfig.json"
     },
     "plugins": [
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "import"
     ],
     "rules": {
       "import/extensions": [
@@ -32,7 +31,7 @@
     },
     "settings": {
       "import/resolver": {
-        "typescript": {} // this loads <rootdir>/tsconfig.json to eslint
+        "typescript": {}
       }
     }
   }
