@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
 
 export default class Project {
+    static allProjects: Project[] = [];
+
     uuid: string;
 
     title: string;
@@ -14,5 +16,11 @@ export default class Project {
         this.title = title;
         this.dueDateTime = dueDateTime;
         this.isDone = isDone;
+
+        Project.allProjects.push(this);
+    }
+
+    static getProjects() {
+        return Project.allProjects;
     }
 }
