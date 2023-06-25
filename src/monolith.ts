@@ -30,12 +30,13 @@ type Area = {
     title: string;
 };
 
-// type TodoOrProject = Todo | Project; // actionable items
+type TodoOrProjectOrArea = Todo | Project | Area;
 
 const todos: Todo[] = [];
 const projects: Project[] = [];
 const areas: Area[] = [];
-// const todosAndProjects: TodoOrProject[] = [...todos, ...projects];
+const todosAndProjects: TodoOrProjectOrArea[] = [...todos, ...projects];
+const allItems: TodoOrProjectOrArea[] = [...todos, ...projects, ...areas];
 
 // Create:
 function createTodo(
@@ -105,6 +106,26 @@ function getProject(uuid: string): Project | undefined {
 
 function getArea(uuid: string): Area | undefined {
     return areas.find((area) => area.uuid === uuid);
+}
+
+function getTodos(): Todo[] {
+    return todos;
+}
+
+function getProjects(): Project[] {
+    return projects;
+}
+
+function getAreas(): Area[] {
+    return areas;
+}
+
+function getTodosAndProjects(): TodoOrProjectOrArea[] {
+    return todosAndProjects;
+}
+
+function getAllItems(): TodoOrProjectOrArea[] {
+    return allItems;
 }
 
 // Update:
@@ -244,6 +265,11 @@ export {
     getTodo,
     getProject,
     getArea,
+    getTodos,
+    getProjects,
+    getAreas,
+    getTodosAndProjects,
+    getAllItems,
     modifyTodo,
     modifyProject,
     modifyArea,

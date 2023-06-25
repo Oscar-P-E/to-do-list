@@ -5,6 +5,11 @@ import {
     getTodo,
     getProject,
     getArea,
+    getTodos,
+    getProjects,
+    getAreas,
+    getTodosAndProjects,
+    getAllItems,
     modifyTodo,
     modifyProject,
     modifyArea,
@@ -100,5 +105,36 @@ describe("Area tests", () => {
         expect(deletedArea?.title).toBe("Modified area");
         const area = getArea(areaUuid);
         expect(area).toBeUndefined();
+    });
+    describe("Get all items tests", () => {
+        test("getTodos returns all todos", () => {
+            const todos = getTodos();
+            expect(todos).toBeInstanceOf(Array);
+            // Add more assertions based on your expected todos
+        });
+
+        test("getProjects returns all projects", () => {
+            const projects = getProjects();
+            expect(projects).toBeInstanceOf(Array);
+            // Add more assertions based on your expected projects
+        });
+
+        test("getAreas returns all areas", () => {
+            const areas = getAreas();
+            expect(areas).toBeInstanceOf(Array);
+            // Add more assertions based on your expected areas
+        });
+
+        test("getTodosAndProjects returns all todos and projects", () => {
+            const todosAndProjects = getTodosAndProjects();
+            expect(todosAndProjects).toBeInstanceOf(Array);
+            // Add more assertions based on your expected todos and projects
+        });
+
+        test("getAllItems returns all items", () => {
+            const allItems = getAllItems();
+            expect(allItems).toBeInstanceOf(Array);
+            // Add more assertions based on your expected all items
+        });
     });
 });
