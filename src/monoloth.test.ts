@@ -106,35 +106,36 @@ describe("Area tests", () => {
         const area = getArea(areaUuid);
         expect(area).toBeUndefined();
     });
-    describe("Get all items tests", () => {
-        test("getTodos returns all todos", () => {
-            const todos = getTodos();
-            expect(todos).toBeInstanceOf(Array);
-            // Add more assertions based on your expected todos
-        });
+});
 
-        test("getProjects returns all projects", () => {
-            const projects = getProjects();
-            expect(projects).toBeInstanceOf(Array);
-            // Add more assertions based on your expected projects
-        });
+describe("Get all items tests", () => {
+    test("getTodos returns all todos", () => {
+        const todos = getTodos();
+        expect(todos).toBeInstanceOf(Array);
+        // Add more assertions based on your expected todos
+    });
 
-        test("getAreas returns all areas", () => {
-            const areas = getAreas();
-            expect(areas).toBeInstanceOf(Array);
-            // Add more assertions based on your expected areas
-        });
+    test("getProjects returns all projects", () => {
+        const projects = getProjects();
+        expect(projects).toBeInstanceOf(Array);
+        // Add more assertions based on your expected projects
+    });
 
-        test("getTodosAndProjects returns all todos and projects", () => {
-            const todosAndProjects = getTodosAndProjects();
-            expect(todosAndProjects).toBeInstanceOf(Array);
-            // Add more assertions based on your expected todos and projects
-        });
+    test("getAreas returns all areas", () => {
+        const areas = getAreas();
+        expect(areas).toBeInstanceOf(Array);
+        // Add more assertions based on your expected areas
+    });
 
-        test("getAllItems returns all items", () => {
-            const allItems = getAllItems();
-            expect(allItems).toBeInstanceOf(Array);
-            // Add more assertions based on your expected all items
-        });
+    test("getTodosAndProjects returns all todos and projects", () => {
+        const todosAndProjects = getTodosAndProjects();
+        expect(todosAndProjects).toBeInstanceOf(Array);
+        // Add more assertions based on your expected todos and projects
+    });
+
+    test("getAllItems returns all items", () => {
+        const allItems = getAllItems();
+        expect(allItems).toBeInstanceOf(Array);
+        // Add more assertions based on your expected all items
     });
 });
