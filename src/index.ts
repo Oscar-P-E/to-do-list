@@ -1,6 +1,4 @@
 import "./styles.css";
-// import Project from "./Project";
-// import Todo from "./Todo";
 
 function createElementWithClass(type: string, className: string) {
     const element = document.createElement(type);
@@ -40,14 +38,14 @@ viewsArea.appendChild(next);
 viewsArea.appendChild(scheduled);
 viewsArea.appendChild(someday);
 
-areasProjectsArea.appendChild(getAreas());
+// areasProjectsArea.appendChild(getAreas());
 
-const areas = document.getElementsByClassName("area");
+// const areas = document.getElementsByClassName("area");
 
-// Later in your code, when elements are added or removed:
-for (let i = 0; i < areas.length; i += 1) {
-    areas[i].appendChild(getProjects());
-}
+// Later in the code, when elements are added or removed:
+// for (let i = 0; i < areas.length; i += 1) {
+// areas[i].appendChild(getProjects());
+// }
 
 archiveDeletedArea.appendChild(archive);
 archiveDeletedArea.appendChild(deleted);
