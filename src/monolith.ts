@@ -277,3 +277,34 @@ export {
     deleteProject,
     deleteArea,
 };
+
+// Test:
+const testHome = createArea("Home");
+createArea("Work");
+const testProj = createProject("Test Project", "This is a test project.");
+createProject(
+    "Test Project 2",
+    "This is another test project.",
+    0,
+    0,
+    false,
+    testHome.uuid
+);
+createTodo(
+    "Test Todo",
+    "This is a test todo.",
+    false,
+    0,
+    0,
+    false,
+    testProj.uuid
+);
+createTodo(
+    "Test Todo 2",
+    "This is a test todo.",
+    false,
+    0,
+    0,
+    false,
+    testProj.uuid
+);
