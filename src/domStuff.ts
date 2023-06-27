@@ -203,17 +203,37 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
         getTodosAndProjects().forEach((item) => {
-            if (item.startDateTime <= today) {
-                //todo: make this work
-                const projectElement = createElementWithClass("div", "project");
-                const projectText = createElementWithClass(
-                    "span",
-                    "project-text"
-                );
-                projectText.textContent = project.title;
-                mainArea.appendChild(projectElement);
-                projectElement.appendChild(projectText);
+            if (
+                "startDateTime" in item &&
+                item.startDateTime &&
+                item.startDateTime <= today.getTime()
+            ) {
+                if (item.type === "todo") {
+                    const todoElement = createElementWithClass("div", "todo");
+                    const todoText = createElementWithClass(
+                        "span",
+                        "todo-text"
+                    );
+                    todoText.textContent = item.title;
+                    mainArea.appendChild(todoElement);
+                    todoElement.appendChild(todoText);
+                } else if (item.type === "project") {
+                    const projectElement = createElementWithClass(
+                        "div",
+                        "project"
+                    );
+                    const projectText = createElementWithClass(
+                        "span",
+                        "project-text"
+                    );
+                    projectText.textContent = item.title;
+                    mainArea.appendChild(projectElement);
+                    projectElement.appendChild(projectText);
+                }
             }
         });
     }
