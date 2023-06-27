@@ -36,8 +36,6 @@ type TodoOrProjectOrArea = Todo | Project | Area;
 const todos: Todo[] = [];
 const projects: Project[] = [];
 const areas: Area[] = [];
-const todosAndProjects: TodoOrProjectOrArea[] = [...todos, ...projects];
-const allItems: TodoOrProjectOrArea[] = [...todos, ...projects, ...areas];
 
 // Create:
 function createTodo(
@@ -126,11 +124,11 @@ function getAreas(): Area[] {
 }
 
 function getTodosAndProjects(): TodoOrProjectOrArea[] {
-    return todosAndProjects;
+    return [...todos, ...projects];
 }
 
 function getAllItems(): TodoOrProjectOrArea[] {
-    return allItems;
+    return [...todos, ...projects, ...areas];
 }
 
 // Update:
@@ -326,4 +324,17 @@ createProject(
     0,
     false,
     testWork.uuid
+);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+createTodo(
+    "Test Todo 3",
+    "This is a test todo.",
+    false,
+    0,
+    today.getTime(),
+    false,
+    testWork.uuid,
+    false
 );
