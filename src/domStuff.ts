@@ -298,7 +298,29 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        // getTodos().forEach((todo) => {});
+        getTodosAndProjects().forEach((item) => {
+            if (!("inInbox" in item && !item.inInbox)) {
+                return;
+            }
+
+            if (!("startDate" in item && !item.startDate)) {
+                return;
+            }
+
+            if (item.type === "todo") {
+                const itemElement = createElementWithClass("div", "todo");
+                const itemText = createElementWithClass("span", "todo-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            } else {
+                const itemElement = createElementWithClass("div", "project");
+                const itemText = createElementWithClass("span", "project-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            }
+        });
     }
 
     function drawArchive() {
@@ -341,7 +363,7 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
-    drawToday();
+    drawUnscheduled();
 
     // test
     // console.log("Areas:");
