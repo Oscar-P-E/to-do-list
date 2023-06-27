@@ -8,7 +8,7 @@ type Todo = {
     description?: string;
     hasPriority?: boolean;
     dueDateTime?: number;
-    startDateTime?: number;
+    startDate?: number;
     isDone?: boolean;
     parentUuid?: string;
     inInbox?: boolean;
@@ -20,7 +20,7 @@ type Project = {
     title: string;
     description?: string;
     dueDateTime?: number;
-    startDateTime?: number;
+    startDate?: number;
     isDone?: boolean;
     parentUuid?: string;
 };
@@ -43,13 +43,18 @@ function createTodo(
     description = "",
     hasPriority = false,
     dueDateTime = 0,
-    startDateTime = 0,
+    startDate = 0,
     isDone = false,
     parentUuid = "",
     inInbox = true
 ): Todo {
-    inInbox = startDateTime !== 0 ? false : inInbox;
-    dueDateTime = startDateTime ? startDateTime : dueDateTime;
+    if (startDate && inInbox) {
+        inInbox = false;
+    }
+
+    if (dueDateTime && !startDate) {
+        startDate = dueDateTime;
+    }
 
     const todo: Todo = {
         uuid: uuidv4(),
@@ -58,7 +63,7 @@ function createTodo(
         description: description,
         hasPriority: hasPriority,
         dueDateTime: dueDateTime,
-        startDateTime: startDateTime,
+        startDate: startDate,
         isDone: isDone,
         parentUuid: parentUuid,
         inInbox: inInbox,
@@ -71,11 +76,11 @@ function createProject(
     title: string,
     description = "",
     dueDateTime = 0,
-    startDateTime = 0,
+    startDate = 0,
     isDone = false,
     parentUuid = ""
 ): Project {
-    dueDateTime = startDateTime ? startDateTime : dueDateTime;
+    dueDateTime = startDate ? startDate : dueDateTime;
 
     const project: Project = {
         uuid: uuidv4(),
@@ -83,7 +88,7 @@ function createProject(
         title: title,
         description: description,
         dueDateTime: dueDateTime,
-        startDateTime: startDateTime,
+        startDate: startDate,
         isDone: isDone,
         parentUuid: parentUuid,
     };
@@ -141,7 +146,7 @@ function modifyTodo(
     newDescription?: string,
     newHasPriority?: boolean,
     newDueDateTime?: number,
-    newStartDateTime?: number,
+    newstartDate?: number,
     newIsDone?: boolean,
     newParentUuid?: string,
     newInInbox?: boolean
@@ -160,8 +165,8 @@ function modifyTodo(
         if (newDueDateTime !== undefined) {
             todo.dueDateTime = newDueDateTime;
         }
-        if (newStartDateTime !== undefined) {
-            todo.startDateTime = newStartDateTime;
+        if (newstartDate !== undefined) {
+            todo.startDate = newstartDate;
         }
         if (newIsDone !== undefined) {
             todo.isDone = newIsDone;
@@ -172,9 +177,9 @@ function modifyTodo(
         if (newInInbox !== undefined) {
             todo.inInbox = newInInbox;
         }
-        todo.inInbox = todo.startDateTime !== 0 ? false : todo.inInbox;
-        todo.dueDateTime = todo.startDateTime
-            ? todo.startDateTime
+        todo.inInbox = todo.startDate !== 0 ? false : todo.inInbox;
+        todo.dueDateTime = todo.startDate
+            ? todo.startDate
             : todo.dueDateTime;
         return todo;
     }
@@ -186,7 +191,7 @@ function modifyProject(
     newTitle?: string,
     newDescription?: string,
     newDueDateTime?: number,
-    newStartDateTime?: number,
+    newstartDate?: number,
     newIsDone?: boolean,
     newParentUuid?: string
 ): Project | undefined {
@@ -201,8 +206,8 @@ function modifyProject(
         if (newDueDateTime !== undefined) {
             project.dueDateTime = newDueDateTime;
         }
-        if (newStartDateTime !== undefined) {
-            project.startDateTime = newStartDateTime;
+        if (newstartDate !== undefined) {
+            project.startDate = newstartDate;
         }
         if (newIsDone !== undefined) {
             project.isDone = newIsDone;
@@ -210,8 +215,8 @@ function modifyProject(
         if (newParentUuid !== undefined) {
             project.parentUuid = newParentUuid;
         }
-        project.dueDateTime = project.startDateTime
-            ? project.startDateTime
+        project.dueDateTime = project.startDate
+            ? project.startDate
             : project.dueDateTime;
         return project;
     }
