@@ -49,6 +49,7 @@ function createTodo(
     inInbox = true
 ): Todo {
     inInbox = startDateTime !== 0 ? false : inInbox;
+    dueDateTime = startDateTime ? startDateTime : dueDateTime;
 
     const todo: Todo = {
         uuid: uuidv4(),
@@ -74,6 +75,8 @@ function createProject(
     isDone = false,
     parentUuid = ""
 ): Project {
+    dueDateTime = startDateTime ? startDateTime : dueDateTime;
+
     const project: Project = {
         uuid: uuidv4(),
         type: "project",
@@ -169,6 +172,10 @@ function modifyTodo(
         if (newInInbox !== undefined) {
             todo.inInbox = newInInbox;
         }
+        todo.inInbox = todo.startDateTime !== 0 ? false : todo.inInbox;
+        todo.dueDateTime = todo.startDateTime
+            ? todo.startDateTime
+            : todo.dueDateTime;
         return todo;
     }
     return undefined;
@@ -203,6 +210,9 @@ function modifyProject(
         if (newParentUuid !== undefined) {
             project.parentUuid = newParentUuid;
         }
+        project.dueDateTime = project.startDateTime
+            ? project.startDateTime
+            : project.dueDateTime;
         return project;
     }
     return undefined;
