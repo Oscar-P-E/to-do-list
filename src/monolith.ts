@@ -313,56 +313,183 @@ export {
     deleteArea,
 };
 
-// Test:
-const testHome = createArea("Home");
-const testWork = createArea("Work");
-const testProj = createProject("Test Project", "This is a test project.");
-createProject(
-    "Test Project 2",
-    "This is another test project.",
-    0,
-    0,
+//
+// Test Dummies:
+//
+const datePast = new Date();
+datePast.setDate(datePast.getDate() - 10);
+
+const dateFuture = new Date();
+dateFuture.setDate(dateFuture.getDate() + 10);
+
+const todayMorning = new Date();
+todayMorning.setHours(0, 0, 0, 0);
+
+const todayAfternoon = new Date();
+todayAfternoon.setHours(12, 0, 0, 0);
+
+// Areas
+const homeArea = createArea("Home");
+const workArea = createArea("Work");
+
+// Projects
+const homeProject = createProject(
+    "Home Project",
+    "This is a home project",
+    todayAfternoon.getTime(),
+    todayMorning.getTime(),
     false,
-    testHome.uuid
+    homeArea.uuid
+);
+const workProject = createProject(
+    "Work Project",
+    "This is a work project",
+    dateFuture.getTime(),
+    todayAfternoon.getTime(),
+    true,
+    workArea.uuid
+);
+const generalProject = createProject(
+    "General Project",
+    "This is a general project",
+    0,
+    datePast.getTime(),
+    false
+);
+const futureProject = createProject(
+    "Future Project",
+    "This is a future project",
+    dateFuture.getTime(),
+    dateFuture.getTime(),
+    false,
+    homeArea.uuid
+);
+const pastProject = createProject(
+    "Past Project",
+    "This is a past project",
+    datePast.getTime(),
+    datePast.getTime(),
+    true
+);
+
+// Todos
+createTodo(
+    "Home Todo",
+    "This is a home todo",
+    false,
+    todayAfternoon.getTime(),
+    todayMorning.getTime(),
+    false,
+    homeProject.uuid,
+    false
 );
 createTodo(
-    "Test Todo",
-    "This is a test todo.",
+    "Work Todo",
+    "This is a work todo",
+    true,
+    dateFuture.getTime(),
+    todayAfternoon.getTime(),
+    true,
+    workProject.uuid,
+    false
+);
+createTodo(
+    "General Todo",
+    "This is a general todo",
     false,
     0,
-    0,
+    datePast.getTime(),
     false,
-    testProj.uuid,
+    generalProject.uuid,
     true
 );
 createTodo(
-    "Test Todo 2",
-    "This is a test todo.",
-    false,
+    "Inbox Todo",
+    "This is a todo in the inbox",
+    true,
     0,
     0,
     false,
-    testProj.uuid,
-    false
+    "",
+    true
 );
-createProject(
-    "Test Project 3",
-    "This is another test project.",
-    0,
-    0,
-    false,
-    testWork.uuid
-);
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
 createTodo(
-    "Test Todo 3",
-    "This is a test todo.",
+    "Future Todo",
+    "This is a future todo",
     false,
-    0,
-    today.getTime(),
+    dateFuture.getTime(),
+    dateFuture.getTime(),
     false,
-    testWork.uuid,
+    futureProject.uuid,
     false
 );
+createTodo(
+    "Past Todo",
+    "This is a past todo",
+    true,
+    datePast.getTime(),
+    datePast.getTime(),
+    true,
+    pastProject.uuid,
+    false
+);
+createTodo(
+    "Area Todo",
+    "This is a todo in an area",
+    false,
+    todayAfternoon.getTime(),
+    todayMorning.getTime(),
+    false,
+    homeArea.uuid,
+    false
+);
+createTodo(
+    "Unassigned Todo",
+    "This is an unassigned todo",
+    false,
+    dateFuture.getTime(),
+    todayAfternoon.getTime(),
+    true,
+    "",
+    false
+);
+createTodo(
+    "Overdue Todo",
+    "This is an overdue todo",
+    false,
+    datePast.getTime(),
+    datePast.getTime(),
+    false,
+    generalProject.uuid,
+    true
+);
+createTodo(
+    "Due Today Todo",
+    "This is a due today todo",
+    true,
+    todayAfternoon.getTime(),
+    todayMorning.getTime(),
+    false,
+    workProject.uuid,
+    false
+);
+
+// This creates:
+// 2 areas: "Home" and "Work"
+// 5 projects:
+// "Home Project" which is part of "Home" area, due today in the afternoon
+// "Work Project" which is part of "Work" area, due in the future, is done
+// "General Project" with no parent, due date not specified, start date is in the past
+// "Future Project" which is part of "Home" area, due and start date are in the future
+// "Past Project" with no parent, due and start date are in the past, is done
+// 10 todos:
+// "Home Todo" which is part of "Home Project", due today in the afternoon
+// "Work Todo" which is part of "Work Project", due in the future, has priority, is done
+// "General Todo" which is part of "General Project", due date not specified, start date is in the past, in the inbox
+// "Inbox Todo" with no parent, in the inbox
+// "Future Todo" which is part of "Future Project", due and start date are in the future
+// "Past Todo" which is part of "Past Project", due and start date are in the past, has priority, is done
+// "Area Todo" which is part of "Home" area, due today in the afternoon
+// "Unassigned Todo" with no parent, due in the future, start date is today in the afternoon, is done
+// "Overdue Todo" which is part of "General Project", due and start date are in the past, in the inbox
+// "Due Today Todo" which is part of "Work Project", due today in the afternoon, has priority

@@ -341,6 +341,7 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
+    drawToday();
 
     // test
     // console.log("Areas:");
