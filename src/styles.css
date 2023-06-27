@@ -19,86 +19,16 @@
 }
 
 body {
-    /* background-color: var(--back-color); */
     font-family: "Virgil", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-/* main {
-    margin: 0 auto;
-    padding: 30px 140px 0 140px;
-    max-width: 600px;
-    min-height: 100vh;
-    color: #343434;
-    background-color: white;
+.container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
 }
 
-h1 {
-    font-size: 1.2em;
-    font-weight: 700;
-    display: inline;
-    margin-right: 5px;
+div,
+span {
+    border: 1px solid red;
 }
-
-.accent {
-    color: var(--accent-color);
-}
-
-h2 {
-    margin-top: 50px;
-    font-size: 1.5em;
-}
-
-h3 {
-    font-weight: 400;
-    margin-bottom: 30px;
-}
-
-footer {
-    text-align: right;
-    margin-top: 80px;
-    padding-bottom: 20px;
-}
-
-p {
-    line-height: 1.5em;
-    margin-top: 20px;
-    display: block;
-}
-
-a {
-    color: darkgray;
-    text-decoration: none;
-    color: var(--link-color);
-}
-
-ol > li {
-    list-style: decimal inside;
-    margin: 10px 0;
-    line-height: 1.4em;
-}
-
-ul > li {
-    list-style: disc inside;
-    margin: 10px 0;
-    line-height: 1.4em;
-}
-
-code {
-    display: block;
-    white-space: pre-wrap;
-    line-height: 1em;
-}
-
-@media (max-width: 600px) {
-    main {
-        max-width: 600px;
-        padding: 10px;
-    }
-    h2 {
-        font-size: 1.2em;
-    }
-    :root {
-        --back-color: white;
-    }
-} */

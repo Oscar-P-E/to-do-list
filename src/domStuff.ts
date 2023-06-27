@@ -23,10 +23,13 @@ function buildDOM() {
         return element;
     }
 
+    // Create everything
     const container = createElementWithClass("div", "container");
     const sideArea = createElementWithClass("div", "side-area");
     const mainArea = createElementWithClass("div", "main-area");
 
+    // side area
+    // first grouping in side area
     const viewsArea = createElementWithClass("div", "views-area");
 
     const today = createElementWithClass("div", "today");
@@ -45,14 +48,16 @@ function buildDOM() {
     const somedayText = createElementWithClass("span", "someday-text");
     const somedayCount = createElementWithClass("span", "someday-count");
 
-    const areasProjectsArea = createElementWithClass(
-        "div",
-        "areas-projects-area"
-    );
-
+    // second grouping in side area
     const archiveDeletedArea = createElementWithClass(
         "div",
         "archive-deleted-area"
+    );
+
+    // third grouping in side area
+    const areasProjectsArea = createElementWithClass(
+        "div",
+        "areas-projects-area"
     );
 
     const archive = createElementWithClass("div", "archive");
@@ -60,6 +65,30 @@ function buildDOM() {
     const deleted = createElementWithClass("div", "deleted");
     const deletedText = createElementWithClass("span", "deleted-text");
 
+    // main area
+    const mainAreaHeading = createElementWithClass("div", "main-area-heading");
+    const mainAreaHeadingText = createElementWithClass(
+        "h1",
+        "main-area-heading-text"
+    );
+
+    // Populate everything
+    todayText.textContent = "Today";
+    todayCount.textContent = getTodos().length.toString();
+    nextText.textContent = "Next";
+    nextCount.textContent = getTodos().length.toString();
+    scheduledText.textContent = "Scheduled";
+    scheduledCount.textContent = getTodos().length.toString();
+    somedayText.textContent = "Someday";
+    somedayCount.textContent = getTodos().length.toString();
+    archiveText.textContent = "Archive";
+    deletedText.textContent = "Deleted";
+
+    mainAreaHeadingText.textContent = "Lorem Ipsum";
+
+    // mainArea.
+
+    // Append everything
     document.body.appendChild(container);
     container.appendChild(sideArea);
     container.appendChild(mainArea);
@@ -85,6 +114,9 @@ function buildDOM() {
     archive.appendChild(archiveText);
     archiveDeletedArea.appendChild(deleted);
     deleted.appendChild(deletedText);
+
+    mainArea.appendChild(mainAreaHeading);
+    mainAreaHeading.appendChild(mainAreaHeadingText);
 
     // test
     console.log("Areas:");
