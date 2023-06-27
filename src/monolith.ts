@@ -11,6 +11,7 @@ type Todo = {
     startDateTime?: number;
     isDone?: boolean;
     parentUuid?: string;
+    inInbox?: boolean;
 };
 
 type Project = {
@@ -46,8 +47,11 @@ function createTodo(
     dueDateTime = 0,
     startDateTime = 0,
     isDone = false,
-    parentUuid = ""
+    parentUuid = "",
+    inInbox = true
 ): Todo {
+    inInbox = startDateTime !== 0 ? false : inInbox;
+
     const todo: Todo = {
         uuid: uuidv4(),
         type: "todo",
@@ -58,6 +62,7 @@ function createTodo(
         startDateTime: startDateTime,
         isDone: isDone,
         parentUuid: parentUuid,
+        inInbox: inInbox,
     };
     todos.push(todo);
     return todo;
@@ -137,7 +142,8 @@ function modifyTodo(
     newDueDateTime?: number,
     newStartDateTime?: number,
     newIsDone?: boolean,
-    newParentUuid?: string
+    newParentUuid?: string,
+    newInInbox?: boolean
 ): Todo | undefined {
     const todo = getTodo(uuid);
     if (todo) {
@@ -161,6 +167,9 @@ function modifyTodo(
         }
         if (newParentUuid !== undefined) {
             todo.parentUuid = newParentUuid;
+        }
+        if (newInInbox !== undefined) {
+            todo.inInbox = newInInbox;
         }
         return todo;
     }
@@ -280,7 +289,7 @@ export {
 
 // Test:
 const testHome = createArea("Home");
-createArea("Work");
+const testWork = createArea("Work");
 const testProj = createProject("Test Project", "This is a test project.");
 createProject(
     "Test Project 2",
@@ -297,7 +306,8 @@ createTodo(
     0,
     0,
     false,
-    testProj.uuid
+    testProj.uuid,
+    true
 );
 createTodo(
     "Test Todo 2",
@@ -306,5 +316,14 @@ createTodo(
     0,
     0,
     false,
-    testProj.uuid
+    testProj.uuid,
+    false
+);
+createProject(
+    "Test Project 3",
+    "This is another test project.",
+    0,
+    0,
+    false,
+    testWork.uuid
 );
