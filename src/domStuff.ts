@@ -73,6 +73,19 @@ function buildDOM() {
     const deleted = createElementWithClass("div", "deleted");
     const deletedText = createElementWithClass("span", "deleted-text");
 
+    // add some more classes
+    [inbox, today, next, scheduled, someday, archive, deleted].forEach(
+        (element) => {
+            element.classList.add("view");
+        }
+    );
+
+    [inboxCount, todayCount, nextCount, scheduledCount, somedayCount].forEach(
+        (element) => {
+            element.classList.add("counter");
+        }
+    );
+
     // main area
     const mainAreaHeading = createElementWithClass("div", "main-area-heading");
     const mainAreaHeadingText = createElementWithClass(
