@@ -53,7 +53,9 @@ function createTodo(
     }
 
     if (dueDateTime && !startDate) {
-        startDate = dueDateTime;
+        const startOfDay = new Date(dueDateTime);
+        startOfDay.setHours(0, 0, 0, 0);
+        startDate = startOfDay.getTime();
     }
 
     const todo: Todo = {
@@ -80,7 +82,11 @@ function createProject(
     isDone = false,
     parentUuid = ""
 ): Project {
-    dueDateTime = startDate ? startDate : dueDateTime;
+    if (dueDateTime && !startDate) {
+        const startOfDay = new Date(dueDateTime);
+        startOfDay.setHours(0, 0, 0, 0);
+        startDate = startOfDay.getTime();
+    }
 
     const project: Project = {
         uuid: uuidv4(),
@@ -177,10 +183,15 @@ function modifyTodo(
         if (newInInbox !== undefined) {
             todo.inInbox = newInInbox;
         }
-        todo.inInbox = todo.startDate !== 0 ? false : todo.inInbox;
-        todo.dueDateTime = todo.startDate
-            ? todo.startDate
-            : todo.dueDateTime;
+        if (todo.startDate && todo.inInbox) {
+            todo.inInbox = false;
+        }
+
+        if (todo.dueDateTime && !todo.startDate) {
+            const startOfDay = new Date(todo.dueDateTime);
+            startOfDay.setHours(0, 0, 0, 0);
+            todo.startDate = startOfDay.getTime();
+        }
         return todo;
     }
     return undefined;
@@ -215,9 +226,11 @@ function modifyProject(
         if (newParentUuid !== undefined) {
             project.parentUuid = newParentUuid;
         }
-        project.dueDateTime = project.startDate
-            ? project.startDate
-            : project.dueDateTime;
+        if (project.dueDateTime && !project.startDate) {
+            const startOfDay = new Date(project.dueDateTime);
+            startOfDay.setHours(0, 0, 0, 0);
+            project.startDate = startOfDay.getTime();
+        }
         return project;
     }
     return undefined;
