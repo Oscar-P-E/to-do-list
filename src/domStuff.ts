@@ -254,7 +254,32 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        // getTodos().forEach((todo) => {});
+        getTodosAndProjects().forEach((item) => {
+            if ("startDateTime" in item && item.startDateTime) {
+                if (item.type === "todo") {
+                    const todoElement = createElementWithClass("div", "todo");
+                    const todoText = createElementWithClass(
+                        "span",
+                        "todo-text"
+                    );
+                    todoText.textContent = item.title;
+                    mainArea.appendChild(todoElement);
+                    todoElement.appendChild(todoText);
+                } else if (item.type === "project") {
+                    const projectElement = createElementWithClass(
+                        "div",
+                        "project"
+                    );
+                    const projectText = createElementWithClass(
+                        "span",
+                        "project-text"
+                    );
+                    projectText.textContent = item.title;
+                    mainArea.appendChild(projectElement);
+                    projectElement.appendChild(projectText);
+                }
+            }
+        });
     }
 
     function drawUnscheduled() {
