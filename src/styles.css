@@ -6,16 +6,16 @@
 }
 
 :root {
-    --accent-color: #f67c3b;
-    --back-color: #f9cbae;
-    --link-color: #55abac;
+    /* --accent-color: #f67c3b; */
+    /* --back-color: #f9cbae; */
+    /* --link-color: #55abac; */
 }
 
 /* minimalist reset */
 * {
     padding: 0;
     margin: 0;
-    font-size: 1em;
+    font-size: 16px;
 }
 
 body {
@@ -31,4 +31,24 @@ body {
 div,
 span {
     border: 1px solid red;
+}
+
+.main-area {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    padding: 1rem;
+    justify-content: center;
+}
+
+.main-area-heading {
+    display: grid;
+    justify-content: center;
+}
+
+.main-area-heading-text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.side-area {
 }
