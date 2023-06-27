@@ -29,7 +29,15 @@ function buildDOM() {
     const mainArea = createElementWithClass("div", "main-area");
 
     // side area
-    // first grouping in side area
+
+    // inbox grouping in side area
+    const inboxArea = createElementWithClass("div", "inbox-area");
+
+    const inbox = createElementWithClass("div", "inbox");
+    const inboxText = createElementWithClass("span", "inbox-text");
+    const inboxCount = createElementWithClass("span", "inbox-count");
+
+    // views grouping in side area
     const viewsArea = createElementWithClass("div", "views-area");
 
     const today = createElementWithClass("div", "today");
@@ -48,13 +56,13 @@ function buildDOM() {
     const somedayText = createElementWithClass("span", "someday-text");
     const somedayCount = createElementWithClass("span", "someday-count");
 
-    // second grouping in side area
+    // archive and deleted grouping in side area
     const archiveDeletedArea = createElementWithClass(
         "div",
         "archive-deleted-area"
     );
 
-    // third grouping in side area
+    // areas and projects grouping in side area
     const areasProjectsArea = createElementWithClass(
         "div",
         "areas-projects-area"
@@ -73,6 +81,8 @@ function buildDOM() {
     );
 
     // Populate everything
+    inboxText.textContent = "Inbox";
+    inboxCount.textContent = getTodos().length.toString();
     todayText.textContent = "Today";
     todayCount.textContent = getTodos().length.toString();
     nextText.textContent = "Next";
@@ -93,10 +103,14 @@ function buildDOM() {
     container.appendChild(sideArea);
     container.appendChild(mainArea);
 
+    sideArea.appendChild(inboxArea);
     sideArea.appendChild(viewsArea);
     sideArea.appendChild(archiveDeletedArea);
     sideArea.appendChild(areasProjectsArea);
 
+    inboxArea.appendChild(inbox);
+    inbox.appendChild(inboxText);
+    inbox.appendChild(inboxCount);
     viewsArea.appendChild(today);
     today.appendChild(todayText);
     today.appendChild(todayCount);
