@@ -208,9 +208,9 @@ function buildDOM() {
 
         getTodosAndProjects().forEach((item) => {
             if (
-                "startDateTime" in item &&
-                item.startDateTime &&
-                item.startDateTime <= today.getTime()
+                "startDate" in item &&
+                item.startDate &&
+                item.startDate <= today.getTime()
             ) {
                 if (item.type === "todo") {
                     const todoElement = createElementWithClass("div", "todo");
@@ -255,7 +255,7 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         getTodosAndProjects().forEach((item) => {
-            if ("startDateTime" in item && item.startDateTime) {
+            if ("startDate" in item && item.startDate) {
                 if (item.type === "todo") {
                     const todoElement = createElementWithClass("div", "todo");
                     const todoText = createElementWithClass(
