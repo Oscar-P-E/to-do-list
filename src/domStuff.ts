@@ -1,6 +1,6 @@
 import {
     // Todo,
-    // Project,
+    Project,
     Area,
     // TodoOrProject,
     // TodoOrProjectOrArea,
@@ -387,9 +387,45 @@ function buildDOM() {
         });
     }
 
+    function drawProjectAsMain(project: Project) {
+        const mainArea: Element = makeOrClearMainArea();
+
+        const mainAreaHeading = createElementWithClass(
+            "div",
+            "main-area-heading"
+        );
+        const mainAreaHeadingText = createElementWithClass(
+            "h1",
+            "main-area-heading-text"
+        );
+        mainAreaHeadingText.textContent = project.title;
+
+        mainArea.appendChild(mainAreaHeading);
+        mainAreaHeading.appendChild(mainAreaHeadingText);
+
+        getTodosAndProjects().forEach((item) => {
+            if (item.parentUuid !== project.uuid) {
+                return;
+            }
+            if (item.type === "todo") {
+                const itemElement = createElementWithClass("div", "todo");
+                const itemText = createElementWithClass("span", "todo-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            } else if (item.type === "project") {
+                const itemElement = createElementWithClass("div", "project");
+                const itemText = createElementWithClass("span", "project-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            }
+        });
+    }
+
     drawSideArea();
     drawInbox();
-    drawAreaAsMain(getAreas()[0]);
+    drawProjectAsMain(getProjects()[3]);
 
     return {
         drawInbox,
@@ -398,7 +434,7 @@ function buildDOM() {
         drawUnscheduled,
         drawLogbook,
         drawAreaAsMain,
-        // drawProjectAsMain,
+        drawProjectAsMain,
     };
 }
 
