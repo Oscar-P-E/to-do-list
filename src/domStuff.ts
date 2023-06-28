@@ -82,9 +82,10 @@ function buildDOM() {
 
         sideArea.appendChild(areasProjectsArea);
 
-        // add some more classes
+        // add some more classes and ids
         [inbox, today, scheduled, unscheduled, logbook].forEach((element) => {
             element.classList.add("view");
+            element.id = element.classList[0];
         });
 
         [inboxCount, todayCount, scheduledCount, unscheduledCount].forEach(
@@ -106,9 +107,7 @@ function buildDOM() {
             })
             .length.toString();
         scheduledText.textContent = "Scheduled";
-        // scheduledCount.textContent = getTodos().length.toString();
         unscheduledText.textContent = "Unscheduled";
-        // unscheduledCount.textContent = getTodos().length.toString();
         logbookText.textContent = "Logbook";
 
         getAreas().forEach((area) => {
@@ -353,6 +352,35 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
+    drawToday(); // for testing
+
+    // document.addEventListener("DOMContentLoaded", () => {
+    //     //
+    // });
+
+    const sideAreaViews = document.querySelectorAll(".side-area .view");
+
+    type ViewFunction = () => void;
+    type ViewId = "inbox" | "today" | "scheduled" | "unscheduled" | "logbook";
+
+    const viewFuncMap: Record<ViewId, ViewFunction> = {
+        inbox: drawInbox,
+        today: drawToday,
+        scheduled: drawScheduled,
+        unscheduled: drawUnscheduled,
+        logbook: drawLogbook,
+    };
+
+    sideAreaViews.forEach((e) => {
+        e.addEventListener("click", (e) => {
+            const target = e.currentTarget as HTMLElement;
+            const id = target.id as ViewId;
+            const viewFunc = viewFuncMap[id];
+            if (viewFunc) {
+                viewFunc();
+            }
+        });
+    });
 
     return {
         drawInbox,
