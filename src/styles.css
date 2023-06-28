@@ -32,21 +32,30 @@ body {
 }
 
 .main-area {
-    display: grid;
-    grid-template-rows: 1fr;
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
-    justify-content: center;
     gap: 1rem;
 }
 
 .main-area-heading {
-    display: grid;
-    justify-content: center;
+    border: 1px solid green;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .main-area-heading-text {
     font-size: 2rem;
     font-weight: bold;
+}
+
+.main-area .todo,
+.main-area .project {
+    display: flex;
+    flex-direction: row;
+    line-height: 1.45;
+    padding: 0 10%;
 }
 
 .side-area {
