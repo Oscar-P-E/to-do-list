@@ -293,15 +293,7 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        // const notInboxOrScheduled = getTodosAndProjects().filter(
-        // (item) => !item.startDate && !item.inInbox
-        // );
-
-        //     (item) => "inInbox" in item && !item.inInbox &&
-        //         "startDate" in item &&
-        //         !item.startDate
-
-        // Using a filter because if statement gives type 'never' error
+        // Using filter because an if statement gives item type 'never' error
         const filteredItems = getTodosAndProjects().filter((item) => {
             return !item.startDate && "inInbox" in item && !item.inInbox;
         });
