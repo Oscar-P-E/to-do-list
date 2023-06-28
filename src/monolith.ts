@@ -497,6 +497,16 @@ createTodo(
     workProject.uuid,
     false
 );
+createTodo(
+    "Work Todo with no start date",
+    "This is a work todo",
+    true,
+    dateFuture.getTime(),
+    0,
+    true,
+    workProject.uuid,
+    false
+);
 
 // This creates:
 // 2 areas: "Home" and "Work"
@@ -506,9 +516,9 @@ createTodo(
 // "General Project" with no parent, due date not specified, start date is in the past
 // "Future Project" which is part of "Home" area, due and start date are in the future
 // "Past Project" with no parent, due and start date are in the past, is done
-// 10 todos:
+// 11 todos:
 // "Home Todo" which is part of "Home Project", due today in the afternoon
-// "Work Todo" which is part of "Work Project", due in the future, has priority, is done
+// "Work Todo" which is part of "Work Project", due in the future, has priority, start date is today, is done
 // "General Todo" which is part of "General Project", due date not specified, start date is in the past, in the inbox
 // "Inbox Todo" with no parent, in the inbox
 // "Future Todo" which is part of "Future Project", due and start date are in the future
@@ -517,3 +527,4 @@ createTodo(
 // "Unassigned Todo" with no parent, due in the future, start date is today in the afternoon, is done
 // "Overdue Todo" which is part of "General Project", due and start date are in the past, in the inbox
 // "Due Today Todo" which is part of "Work Project", due today in the afternoon, has priority
+// "Work Todo with no start date" which is part of "Work Project", due in the future, has priority, no start date, is done

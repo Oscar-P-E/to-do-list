@@ -1,4 +1,9 @@
 import {
+    // Todo,
+    // Project,
+    // Area,
+    TodoOrProject,
+    // TodoOrProjectOrArea,
     // createTodo,
     // createProject,
     // createArea,
@@ -298,22 +303,27 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodosAndProjects().forEach((item) => {
-            if (!("inInbox" in item && !item.inInbox)) {
-                return;
-            }
+        // const notInboxOrScheduled = getTodosAndProjects().filter(
+        // (item) => !item.startDate && !item.inInbox
+        // );
 
-            if (!("startDate" in item && !item.startDate)) {
-                return;
-            }
+        //     (item) => "inInbox" in item && !item.inInbox &&
+        //         "startDate" in item &&
+        //         !item.startDate
 
+        // Using a filter because if statement gives type 'never' error
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return !item.startDate && "inInbox" in item && !item.inInbox;
+        });
+
+        filteredItems.forEach((item) => {
             if (item.type === "todo") {
                 const itemElement = createElementWithClass("div", "todo");
                 const itemText = createElementWithClass("span", "todo-text");
                 itemText.textContent = item.title;
                 mainArea.appendChild(itemElement);
                 itemElement.appendChild(itemText);
-            } else {
+            } else if (item.type === "project") {
                 const itemElement = createElementWithClass("div", "project");
                 const itemText = createElementWithClass("span", "project-text");
                 itemText.textContent = item.title;
