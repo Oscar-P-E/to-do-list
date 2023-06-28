@@ -68,16 +68,16 @@ function buildDOM() {
             "unscheduled-count"
         );
 
-        const archiveDeletedArea = createElementWithClass(
+        const archivedDeletedArea = createElementWithClass(
             "div",
-            "archive-deleted-area"
+            "archived-deleted-area"
         );
-        const archive = createElementWithClass("div", "archive");
-        const archiveText = createElementWithClass("span", "archive-text");
+        const archived = createElementWithClass("div", "archived");
+        const archivedText = createElementWithClass("span", "archived-text");
         const deleted = createElementWithClass("div", "deleted");
         const deletedText = createElementWithClass("span", "deleted-text");
 
-        sideArea.appendChild(archiveDeletedArea);
+        sideArea.appendChild(archivedDeletedArea);
 
         const areasProjectsArea = createElementWithClass(
             "div",
@@ -87,7 +87,7 @@ function buildDOM() {
         sideArea.appendChild(areasProjectsArea);
 
         // add some more classes
-        [inbox, today, scheduled, unscheduled, archive, deleted].forEach(
+        [inbox, today, scheduled, unscheduled, archived, deleted].forEach(
             (element) => {
                 element.classList.add("view");
             }
@@ -109,7 +109,7 @@ function buildDOM() {
         scheduledCount.textContent = getTodos().length.toString(); // todo: make this items with a due date
         unscheduledText.textContent = "Unscheduled";
         unscheduledCount.textContent = getTodos().length.toString(); // todo: make this items without a due date && not in inbox
-        archiveText.textContent = "Archive";
+        archivedText.textContent = "Archived";
         deletedText.textContent = "Deleted";
 
         getAreas().forEach((area) => {
@@ -147,9 +147,9 @@ function buildDOM() {
         viewsArea.appendChild(unscheduled);
         unscheduled.appendChild(unscheduledText);
         unscheduled.appendChild(unscheduledCount);
-        archiveDeletedArea.appendChild(archive);
-        archive.appendChild(archiveText);
-        archiveDeletedArea.appendChild(deleted);
+        archivedDeletedArea.appendChild(archived);
+        archived.appendChild(archivedText);
+        archivedDeletedArea.appendChild(deleted);
         deleted.appendChild(deletedText);
     }
 
@@ -333,7 +333,7 @@ function buildDOM() {
         });
     }
 
-    function drawArchive() {
+    function drawArchived() {
         const mainArea: Element = makeOrClearMainArea();
 
         const mainAreaHeading = createElementWithClass(
@@ -344,7 +344,7 @@ function buildDOM() {
             "h1",
             "main-area-heading-text"
         );
-        mainAreaHeadingText.textContent = "Archive";
+        mainAreaHeadingText.textContent = "Archived";
 
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
@@ -390,7 +390,7 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
-    drawArchive();
+    drawArchived();
 
     // test
     // console.log("Areas:");
@@ -405,7 +405,7 @@ function buildDOM() {
         drawToday,
         drawScheduled,
         drawUnscheduled,
-        drawArchive,
+        drawArchived,
         drawDeleted,
         // drawAreaAsMain,
         // drawProjectAsMain,
