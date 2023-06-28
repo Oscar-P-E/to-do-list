@@ -39,19 +39,14 @@ body {
     gap: 1rem;
 }
 
-.main-area-heading {
-    border: 1px solid green;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 .main-area-heading-text {
     font-size: 2rem;
     font-weight: bold;
 }
 
 .main-area .todo,
-.main-area .project {
+.main-area .project,
+.main-area-heading {
     display: flex;
     flex-direction: row;
     line-height: 1.45;
