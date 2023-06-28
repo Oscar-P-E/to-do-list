@@ -31,6 +31,7 @@ type Area = {
     title: string;
 };
 
+type TodoOrProject = Todo | Project;
 type TodoOrProjectOrArea = Todo | Project | Area;
 
 const todos: Todo[] = [];
@@ -53,9 +54,13 @@ function createTodo(
     }
 
     if (dueDateTime && !startDate) {
-        const startOfDay = new Date(dueDateTime);
-        startOfDay.setHours(0, 0, 0, 0);
-        startDate = startOfDay.getTime();
+        const startOfThatDay = new Date(dueDateTime);
+        const startOfThisDay = new Date();
+        startOfThatDay.setHours(0, 0, 0, 0);
+        startOfThisDay.setHours(0, 0, 0, 0);
+        if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
+            startDate = startOfThisDay.getTime();
+        }
     }
 
     const todo: Todo = {
@@ -83,9 +88,13 @@ function createProject(
     parentUuid = ""
 ): Project {
     if (dueDateTime && !startDate) {
-        const startOfDay = new Date(dueDateTime);
-        startOfDay.setHours(0, 0, 0, 0);
-        startDate = startOfDay.getTime();
+        const startOfThatDay = new Date(dueDateTime);
+        const startOfThisDay = new Date();
+        startOfThatDay.setHours(0, 0, 0, 0);
+        startOfThisDay.setHours(0, 0, 0, 0);
+        if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
+            startDate = startOfThisDay.getTime();
+        }
     }
 
     const project: Project = {
@@ -137,7 +146,8 @@ function getAreas(): Area[] {
     return areas;
 }
 
-function getTodosAndProjects(): TodoOrProjectOrArea[] {
+// function getTodosAndProjects(): TodoOrProjectOrArea[] {
+function getTodosAndProjects(): TodoOrProject[] {
     return [...todos, ...projects];
 }
 
@@ -188,10 +198,15 @@ function modifyTodo(
         }
 
         if (todo.dueDateTime && !todo.startDate) {
-            const startOfDay = new Date(todo.dueDateTime);
-            startOfDay.setHours(0, 0, 0, 0);
-            todo.startDate = startOfDay.getTime();
+            const startOfThatDay = new Date(todo.dueDateTime);
+            const startOfThisDay = new Date();
+            startOfThatDay.setHours(0, 0, 0, 0);
+            startOfThisDay.setHours(0, 0, 0, 0);
+            if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
+                todo.startDate = startOfThisDay.getTime();
+            }
         }
+
         return todo;
     }
     return undefined;
@@ -227,9 +242,13 @@ function modifyProject(
             project.parentUuid = newParentUuid;
         }
         if (project.dueDateTime && !project.startDate) {
-            const startOfDay = new Date(project.dueDateTime);
-            startOfDay.setHours(0, 0, 0, 0);
-            project.startDate = startOfDay.getTime();
+            const startOfThatDay = new Date(project.dueDateTime);
+            const startOfThisDay = new Date();
+            startOfThatDay.setHours(0, 0, 0, 0);
+            startOfThisDay.setHours(0, 0, 0, 0);
+            if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
+                project.startDate = startOfThisDay.getTime();
+            }
         }
         return project;
     }
@@ -294,6 +313,11 @@ function deleteArea(uuid: string, deleteChildren = true): Area | undefined {
 }
 
 export {
+    Todo,
+    Project,
+    Area,
+    TodoOrProject,
+    TodoOrProjectOrArea,
     createTodo,
     createProject,
     createArea,
