@@ -349,7 +349,24 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        // getTodos().forEach((todo) => {});
+        getTodosAndProjects().forEach((item) => {
+            if (!item.isDone) {
+                return;
+            }
+            if (item.type === "todo") {
+                const itemElement = createElementWithClass("div", "todo");
+                const itemText = createElementWithClass("span", "todo-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            } else if (item.type === "project") {
+                const itemElement = createElementWithClass("div", "project");
+                const itemText = createElementWithClass("span", "project-text");
+                itemText.textContent = item.title;
+                mainArea.appendChild(itemElement);
+                itemElement.appendChild(itemText);
+            }
+        });
     }
 
     function drawDeleted() {
@@ -373,7 +390,7 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
-    drawUnscheduled();
+    drawArchive();
 
     // test
     // console.log("Areas:");
