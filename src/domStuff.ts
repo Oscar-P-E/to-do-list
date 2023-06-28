@@ -9,8 +9,8 @@ import {
     // createArea,
     getToday,
     // getTodo,
-    // getProject,
-    // getArea,
+    getProject,
+    getArea,
     getTodos,
     getProjects,
     getAreas,
@@ -113,6 +113,7 @@ function buildDOM() {
         getAreas().forEach((area) => {
             const areaElement = createElementWithClass("div", "area");
             const areaText = createElementWithClass("span", "area-text");
+            areaElement.dataset.uuid = area.uuid;
             areaText.textContent = area.title;
             areasProjectsArea.appendChild(areaElement);
             areaElement.appendChild(areaText);
@@ -126,11 +127,26 @@ function buildDOM() {
                         "span",
                         "project-text"
                     );
+                    projectElement.dataset.uuid = project.uuid;
                     projectText.textContent = project.title;
                     areasProjectsArea.appendChild(projectElement);
                     projectElement.appendChild(projectText);
                 }
             });
+        });
+
+        getProjects().forEach((project) => {
+            if (!project.parentUuid) {
+                const projectElement = createElementWithClass("div", "project");
+                const projectText = createElementWithClass(
+                    "span",
+                    "project-text"
+                );
+                projectElement.dataset.uuid = project.uuid;
+                projectText.textContent = project.title;
+                areasProjectsArea.appendChild(projectElement);
+                projectElement.appendChild(projectText);
+            }
         });
 
         inboxArea.appendChild(inbox);
@@ -381,6 +397,38 @@ function buildDOM() {
             }
         });
     });
+
+    const areasProjectsArea = document.querySelector(".areas-projects-area");
+
+    if (areasProjectsArea) {
+        areasProjectsArea.addEventListener("click", (e) => {
+            let target = e.target as HTMLElement | null;
+
+            // Traverse up the DOM until find element with uuid dataset
+            while (target && !target.dataset.uuid) {
+                target = target.parentElement;
+            }
+
+            if (!target) return;
+
+            const uuid = target.dataset.uuid;
+            const type = target.classList[0];
+
+            if (uuid && type) {
+                if (type === "area") {
+                    const area = getArea(uuid);
+                    if (area) {
+                        drawAreaAsMain(area);
+                    }
+                } else if (type === "project") {
+                    const project = getProject(uuid);
+                    if (project) {
+                        drawProjectAsMain(project);
+                    }
+                }
+            }
+        });
+    }
 
     return {
         drawInbox,
