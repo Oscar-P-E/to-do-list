@@ -7,6 +7,7 @@ import {
     // createTodo,
     // createProject,
     // createArea,
+    getToday,
     // getTodo,
     // getProject,
     // getArea,
@@ -99,11 +100,15 @@ function buildDOM() {
             .filter((todo) => todo.inInbox)
             .length.toString();
         todayText.textContent = "Today";
-        todayCount.textContent = getTodos().length.toString(); // todo: make this today items
+        todayCount.textContent = getTodosAndProjects()
+            .filter((item) => {
+                return item.startDate && item.startDate <= getToday();
+            })
+            .length.toString();
         scheduledText.textContent = "Scheduled";
-        scheduledCount.textContent = getTodos().length.toString(); // todo: make this items with a due date
+        // scheduledCount.textContent = getTodos().length.toString();
         unscheduledText.textContent = "Unscheduled";
-        unscheduledCount.textContent = getTodos().length.toString(); // todo: make this items without a due date && not in inbox
+        // unscheduledCount.textContent = getTodos().length.toString();
         logbookText.textContent = "Logbook";
 
         getAreas().forEach((area) => {
@@ -144,8 +149,6 @@ function buildDOM() {
         logbookArea.appendChild(logbook);
         logbook.appendChild(logbookText);
     }
-
-
 
     function makeOrClearMainArea() {
         const mainArea = document.querySelector(".main-area");
@@ -214,11 +217,8 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return item.startDate && item.startDate <= today.getTime();
+            return item.startDate && item.startDate <= getToday();
         });
 
         filteredItems.forEach((item) => {

@@ -122,6 +122,12 @@ function createArea(title: string): Area {
 }
 
 // Read:
+function getToday() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.getTime();
+}
+
 function getTodo(uuid: string): Todo | undefined {
     return todos.find((todo) => todo.uuid === uuid);
 }
@@ -321,6 +327,7 @@ export {
     createTodo,
     createProject,
     createArea,
+    getToday,
     getTodo,
     getProject,
     getArea,
