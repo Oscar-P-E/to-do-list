@@ -3,7 +3,7 @@ import {
     Project,
     Area,
     // TodoOrProject,
-    // TodoOrProjectOrArea,
+    TodoOrProjectOrArea,
     // createTodo,
     // createProject,
     // createArea,
@@ -145,6 +145,8 @@ function buildDOM() {
         logbook.appendChild(logbookText);
     }
 
+
+
     function makeOrClearMainArea() {
         const mainArea = document.querySelector(".main-area");
         if (mainArea) {
@@ -154,6 +156,22 @@ function buildDOM() {
             const mainArea = createElementWithClass("div", "main-area");
             container.appendChild(mainArea);
             return mainArea;
+        }
+    }
+
+    function putItemOnMain(item: TodoOrProjectOrArea, mainArea: Element) {
+        if (item.type === "todo") {
+            const itemElement = createElementWithClass("div", "todo");
+            const itemText = createElementWithClass("span", "todo-text");
+            itemText.textContent = item.title;
+            mainArea.appendChild(itemElement);
+            itemElement.appendChild(itemText);
+        } else if (item.type === "project") {
+            const itemElement = createElementWithClass("div", "project");
+            const itemText = createElementWithClass("span", "project-text");
+            itemText.textContent = item.title;
+            mainArea.appendChild(itemElement);
+            itemElement.appendChild(itemText);
         }
     }
 
@@ -173,14 +191,10 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodos().forEach((todo) => {
-            if (todo.inInbox) {
-                const todoElement = createElementWithClass("div", "todo");
-                const todoText = createElementWithClass("span", "todo-text");
-                todoText.textContent = todo.title;
-                mainArea.appendChild(todoElement);
-                todoElement.appendChild(todoText);
-            }
+        const filteredItems = getTodos().filter((todo) => todo.inInbox);
+
+        filteredItems.forEach((todo) => {
+            putItemOnMain(todo, mainArea);
         });
     }
 
@@ -203,35 +217,12 @@ function buildDOM() {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        getTodosAndProjects().forEach((item) => {
-            if (
-                "startDate" in item &&
-                item.startDate &&
-                item.startDate <= today.getTime()
-            ) {
-                if (item.type === "todo") {
-                    const todoElement = createElementWithClass("div", "todo");
-                    const todoText = createElementWithClass(
-                        "span",
-                        "todo-text"
-                    );
-                    todoText.textContent = item.title;
-                    mainArea.appendChild(todoElement);
-                    todoElement.appendChild(todoText);
-                } else if (item.type === "project") {
-                    const projectElement = createElementWithClass(
-                        "div",
-                        "project"
-                    );
-                    const projectText = createElementWithClass(
-                        "span",
-                        "project-text"
-                    );
-                    projectText.textContent = item.title;
-                    mainArea.appendChild(projectElement);
-                    projectElement.appendChild(projectText);
-                }
-            }
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return item.startDate && item.startDate <= today.getTime();
+        });
+
+        filteredItems.forEach((item) => {
+            putItemOnMain(item, mainArea);
         });
     }
 
@@ -251,31 +242,12 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodosAndProjects().forEach((item) => {
-            if ("startDate" in item && item.startDate) {
-                if (item.type === "todo") {
-                    const todoElement = createElementWithClass("div", "todo");
-                    const todoText = createElementWithClass(
-                        "span",
-                        "todo-text"
-                    );
-                    todoText.textContent = item.title;
-                    mainArea.appendChild(todoElement);
-                    todoElement.appendChild(todoText);
-                } else if (item.type === "project") {
-                    const projectElement = createElementWithClass(
-                        "div",
-                        "project"
-                    );
-                    const projectText = createElementWithClass(
-                        "span",
-                        "project-text"
-                    );
-                    projectText.textContent = item.title;
-                    mainArea.appendChild(projectElement);
-                    projectElement.appendChild(projectText);
-                }
-            }
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return item.startDate;
+        });
+
+        filteredItems.forEach((item) => {
+            putItemOnMain(item, mainArea);
         });
     }
 
@@ -295,25 +267,12 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        // Using filter because an if statement gives item type 'never' error
         const filteredItems = getTodosAndProjects().filter((item) => {
             return !item.startDate && "inInbox" in item && !item.inInbox;
         });
 
         filteredItems.forEach((item) => {
-            if (item.type === "todo") {
-                const itemElement = createElementWithClass("div", "todo");
-                const itemText = createElementWithClass("span", "todo-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            } else if (item.type === "project") {
-                const itemElement = createElementWithClass("div", "project");
-                const itemText = createElementWithClass("span", "project-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            }
+            putItemOnMain(item, mainArea);
         });
     }
 
@@ -333,23 +292,12 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodosAndProjects().forEach((item) => {
-            if (!item.isDone) {
-                return;
-            }
-            if (item.type === "todo") {
-                const itemElement = createElementWithClass("div", "todo");
-                const itemText = createElementWithClass("span", "todo-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            } else if (item.type === "project") {
-                const itemElement = createElementWithClass("div", "project");
-                const itemText = createElementWithClass("span", "project-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            }
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return item.isDone;
+        });
+
+        filteredItems.forEach((item) => {
+            putItemOnMain(item, mainArea);
         });
     }
 
@@ -369,23 +317,12 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodosAndProjects().forEach((item) => {
-            if (item.parentUuid !== area.uuid) {
-                return;
-            }
-            if (item.type === "todo") {
-                const itemElement = createElementWithClass("div", "todo");
-                const itemText = createElementWithClass("span", "todo-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            } else if (item.type === "project") {
-                const itemElement = createElementWithClass("div", "project");
-                const itemText = createElementWithClass("span", "project-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            }
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return item.parentUuid === area.uuid;
+        });
+
+        filteredItems.forEach((item) => {
+            putItemOnMain(item, mainArea);
         });
     }
 
@@ -405,23 +342,12 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        getTodosAndProjects().forEach((item) => {
-            if (item.parentUuid !== project.uuid) {
-                return;
-            }
-            if (item.type === "todo") {
-                const itemElement = createElementWithClass("div", "todo");
-                const itemText = createElementWithClass("span", "todo-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            } else if (item.type === "project") {
-                const itemElement = createElementWithClass("div", "project");
-                const itemText = createElementWithClass("span", "project-text");
-                itemText.textContent = item.title;
-                mainArea.appendChild(itemElement);
-                itemElement.appendChild(itemText);
-            }
+        const filteredItems = getTodosAndProjects().filter((item) => {
+            return item.parentUuid === project.uuid;
+        });
+
+        filteredItems.forEach((item) => {
+            putItemOnMain(item, mainArea);
         });
     }
 
