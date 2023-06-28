@@ -111,11 +111,16 @@ function buildDOM() {
         logbookText.textContent = "Logbook";
 
         getAreas().forEach((area) => {
+            const areaAndChildContainer = createElementWithClass(
+                "div",
+                "area-and-child-container"
+            );
             const areaElement = createElementWithClass("div", "area");
             const areaText = createElementWithClass("span", "area-text");
             areaElement.dataset.uuid = area.uuid;
             areaText.textContent = area.title;
-            areasProjectsArea.appendChild(areaElement);
+            areasProjectsArea.appendChild(areaAndChildContainer);
+            areaAndChildContainer.appendChild(areaElement);
             areaElement.appendChild(areaText);
             getProjects().forEach((project) => {
                 if (project.parentUuid === area.uuid) {
@@ -129,7 +134,7 @@ function buildDOM() {
                     );
                     projectElement.dataset.uuid = project.uuid;
                     projectText.textContent = project.title;
-                    areasProjectsArea.appendChild(projectElement);
+                    areaAndChildContainer.appendChild(projectElement);
                     projectElement.appendChild(projectText);
                 }
             });
