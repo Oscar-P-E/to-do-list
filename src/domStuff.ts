@@ -95,7 +95,9 @@ function buildDOM() {
         // Populate everything:
 
         inboxText.textContent = "Inbox";
-        inboxCount.textContent = getTodos().length.toString(); // todo: make this inbox items
+        inboxCount.textContent = getTodos()
+            .filter((todo) => todo.inInbox)
+            .length.toString();
         todayText.textContent = "Today";
         todayCount.textContent = getTodos().length.toString(); // todo: make this today items
         scheduledText.textContent = "Scheduled";
@@ -172,7 +174,7 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         getTodos().forEach((todo) => {
-            if (todo.inInbox === true) {
+            if (todo.inInbox) {
                 const todoElement = createElementWithClass("div", "todo");
                 const todoText = createElementWithClass("span", "todo-text");
                 todoText.textContent = todo.title;
@@ -425,7 +427,6 @@ function buildDOM() {
 
     drawSideArea();
     drawInbox();
-    drawProjectAsMain(getProjects()[3]);
 
     return {
         drawInbox,
