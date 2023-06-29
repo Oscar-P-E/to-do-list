@@ -182,7 +182,7 @@ function buildDOM() {
         }
     }
 
-    function putItemOnMain(item: TodoOrProjectOrArea, mainArea: Element) {
+    function drawMainItem(item: TodoOrProjectOrArea, mainArea: Element) {
         let itemElement: HTMLElement | undefined;
 
         if (item.type === "todo") {
@@ -193,11 +193,36 @@ function buildDOM() {
 
         if (itemElement) {
             mainArea.appendChild(itemElement);
-            putStuffOnItem(item, itemElement);
+            putCheckboxOnMainItemEle(item, itemElement);
+            putTitleOnMainItemEle(item, itemElement);
         }
     }
 
-    function putStuffOnItem(item: TodoOrProjectOrArea, itemElement: Element) {
+    function putCheckboxOnMainItemEle(
+        item: TodoOrProjectOrArea,
+        itemElement: Element
+    ) {
+        if (item.type === "todo") {
+            const itemCheckbox = createElementWithClass(
+                "input",
+                "todo-checkbox"
+            ) as HTMLInputElement;
+            itemCheckbox.type = "checkbox";
+            itemElement.appendChild(itemCheckbox);
+        } else if (item.type === "project") {
+            const itemCheckbox = createElementWithClass(
+                "input",
+                "project-checkbox"
+            ) as HTMLInputElement;
+            itemCheckbox.type = "checkbox";
+            itemElement.appendChild(itemCheckbox);
+        }
+    }
+
+    function putTitleOnMainItemEle(
+        item: TodoOrProjectOrArea,
+        itemElement: Element
+    ) {
         if (item.type === "todo") {
             const itemText = createElementWithClass("span", "todo-text");
             itemText.textContent = item.title;
@@ -228,7 +253,7 @@ function buildDOM() {
         const filteredItems = getTodos().filter((todo) => todo.inInbox);
 
         filteredItems.forEach((todo) => {
-            putItemOnMain(todo, mainArea);
+            drawMainItem(todo, mainArea);
         });
     }
 
@@ -253,7 +278,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -278,7 +303,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -303,7 +328,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -328,7 +353,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -353,7 +378,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -378,7 +403,7 @@ function buildDOM() {
         });
 
         filteredItems.forEach((item) => {
-            putItemOnMain(item, mainArea);
+            drawMainItem(item, mainArea);
         });
     }
 
@@ -389,6 +414,9 @@ function buildDOM() {
     // document.addEventListener("DOMContentLoaded", () => {
     //     //
     // });
+
+
+    // Event listeners for side area
 
     const sideAreaViews = document.querySelectorAll(".side-area .view");
 
@@ -445,6 +473,15 @@ function buildDOM() {
             }
         });
     }
+
+    // Event listeners for main area
+
+    const mainArea = document.querySelector(".main-area");
+
+    function handleMainClick(e: Event) {
+        // TODO
+    }
+
 
     return {
         drawInbox,

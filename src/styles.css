@@ -53,6 +53,11 @@ body {
     padding: 0 10%;
 }
 
+.main-area .todo,
+.main-area .project {
+    gap: 1rem;
+}
+
 .side-area {
     display: flex;
     flex-direction: column;
