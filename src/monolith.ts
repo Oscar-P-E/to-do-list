@@ -49,7 +49,7 @@ function createTodo(
     parentUuid = "",
     inInbox = true
 ): Todo {
-    if (startDate && inInbox) {
+    if ((startDate || parentUuid) && inInbox) {
         inInbox = false;
     }
 

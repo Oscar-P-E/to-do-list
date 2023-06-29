@@ -2,7 +2,7 @@
 
 ## Not Done:
 
--   Make it so that any item with a parent is not in the inbox
+-   Make it so that (on creation not modification) any item with a parent is not in the inbox
 -   Add checkbox to todos and projects for marking as done
 -   Make it so that any isDone only shows in the logbook
 -   Add display of due date if has it
@@ -14,6 +14,7 @@
     -   Start date
     -   Flag/priority button
     -   Delete button
+    -   Projects/Areas button
 -   Clicking on an expanded todo should edit what is clicked on
 -   Clicking outside of an expanded todo should collapse it
 -   Clicking on a project should open it in the main area view
