@@ -486,10 +486,11 @@ function buildDOM() {
 
     const mainArea = document.querySelector(".main-area");
 
-    function handleMainClick(e: Event) {
-        // TODO
+    if (mainArea) {
+        mainArea.addEventListener("click", (e) => {
+            // TODO
+        });
     }
-
     return {
         drawInbox,
         drawToday,
