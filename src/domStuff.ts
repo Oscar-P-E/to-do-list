@@ -2,7 +2,7 @@ import {
     // Todo,
     Project,
     Area,
-    // TodoOrProject,
+    TodoOrProject,
     TodoOrProjectOrArea,
     // createTodo,
     // createProject,
@@ -182,7 +182,7 @@ function buildDOM() {
         }
     }
 
-    function drawMainItem(item: TodoOrProjectOrArea, mainArea: Element) {
+    function drawMainItem(item: TodoOrProject, mainArea: Element) {
         let itemElement: HTMLElement | undefined;
 
         if (item.type === "todo") {
@@ -195,42 +195,33 @@ function buildDOM() {
             mainArea.appendChild(itemElement);
             putCheckboxOnMainItemEle(item, itemElement);
             putTitleOnMainItemEle(item, itemElement);
+            putDueOnMainItemEle(item, itemElement);
         }
     }
 
     function putCheckboxOnMainItemEle(
-        item: TodoOrProjectOrArea,
+        item: TodoOrProject,
         itemElement: Element
     ) {
-        if (item.type === "todo") {
-            const itemCheckbox = createElementWithClass(
-                "input",
-                "todo-checkbox"
-            ) as HTMLInputElement;
-            itemCheckbox.type = "checkbox";
-            itemElement.appendChild(itemCheckbox);
-        } else if (item.type === "project") {
-            const itemCheckbox = createElementWithClass(
-                "input",
-                "project-checkbox"
-            ) as HTMLInputElement;
-            itemCheckbox.type = "checkbox";
-            itemElement.appendChild(itemCheckbox);
-        }
+        const itemCheckbox = createElementWithClass(
+            "input",
+            "item-checkbox"
+        ) as HTMLInputElement;
+        itemCheckbox.type = "checkbox";
+        itemElement.appendChild(itemCheckbox);
     }
 
-    function putTitleOnMainItemEle(
-        item: TodoOrProjectOrArea,
-        itemElement: Element
-    ) {
-        if (item.type === "todo") {
-            const itemText = createElementWithClass("span", "todo-text");
-            itemText.textContent = item.title;
-            itemElement.appendChild(itemText);
-        } else if (item.type === "project") {
-            const itemText = createElementWithClass("span", "project-text");
-            itemText.textContent = item.title;
-            itemElement.appendChild(itemText);
+    function putTitleOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+        const itemText = createElementWithClass("span", "item-text");
+        itemText.textContent = item.title;
+        itemElement.appendChild(itemText);
+    }
+
+    function putDueOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+        if (item.dueDateTime) {
+            const itemDue = createElementWithClass("span", "item-due");
+            itemDue.textContent = item.dueDateTime.toString();
+            itemElement.appendChild(itemDue);
         }
     }
 
