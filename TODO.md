@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Make it so that any isDone only shows in the logbook
 -   Add display of due date if has it
 -   Add display of priority if marked
 -   Add event listeners to the main area for the following:
@@ -34,3 +33,4 @@
 
 -   Make it so that (on creation not modification) any item with a parent is not in the inbox
 -   Add checkbox to todos and projects for marking as done
+-   Make it so that any isDone only shows in the logbook

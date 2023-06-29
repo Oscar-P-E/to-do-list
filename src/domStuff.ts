@@ -250,7 +250,9 @@ function buildDOM() {
         mainArea.appendChild(mainAreaHeading);
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
-        const filteredItems = getTodos().filter((todo) => todo.inInbox);
+        const filteredItems = getTodos().filter((todo) => {
+            !todo.isDone && todo.inInbox;
+        });
 
         filteredItems.forEach((todo) => {
             drawMainItem(todo, mainArea);
@@ -274,7 +276,9 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return item.startDate && item.startDate <= getToday();
+            return (
+                !item.isDone && item.startDate && item.startDate <= getToday()
+            );
         });
 
         filteredItems.forEach((item) => {
@@ -299,7 +303,7 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return item.startDate;
+            return !item.isDone && item.startDate;
         });
 
         filteredItems.forEach((item) => {
@@ -324,7 +328,12 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return !item.startDate && "inInbox" in item && !item.inInbox;
+            return (
+                !item.isDone &&
+                !item.startDate &&
+                "inInbox" in item &&
+                !item.inInbox
+            );
         });
 
         filteredItems.forEach((item) => {
@@ -374,7 +383,7 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return item.parentUuid === area.uuid;
+            return !item.isDone && item.parentUuid === area.uuid;
         });
 
         filteredItems.forEach((item) => {
@@ -399,7 +408,7 @@ function buildDOM() {
         mainAreaHeading.appendChild(mainAreaHeadingText);
 
         const filteredItems = getTodosAndProjects().filter((item) => {
-            return item.parentUuid === project.uuid;
+            return !item.isDone && item.parentUuid === project.uuid;
         });
 
         filteredItems.forEach((item) => {
@@ -414,7 +423,6 @@ function buildDOM() {
     // document.addEventListener("DOMContentLoaded", () => {
     //     //
     // });
-
 
     // Event listeners for side area
 
@@ -481,7 +489,6 @@ function buildDOM() {
     function handleMainClick(e: Event) {
         // TODO
     }
-
 
     return {
         drawInbox,
