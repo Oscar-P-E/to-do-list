@@ -183,17 +183,28 @@ function buildDOM() {
     }
 
     function putItemOnMain(item: TodoOrProjectOrArea, mainArea: Element) {
+        let itemElement: HTMLElement | undefined;
+
         if (item.type === "todo") {
-            const itemElement = createElementWithClass("div", "todo");
+            itemElement = createElementWithClass("div", "todo");
+        } else if (item.type === "project") {
+            itemElement = createElementWithClass("div", "project");
+        }
+
+        if (itemElement) {
+            mainArea.appendChild(itemElement);
+            putStuffOnItem(item, itemElement);
+        }
+    }
+
+    function putStuffOnItem(item: TodoOrProjectOrArea, itemElement: Element) {
+        if (item.type === "todo") {
             const itemText = createElementWithClass("span", "todo-text");
             itemText.textContent = item.title;
-            mainArea.appendChild(itemElement);
             itemElement.appendChild(itemText);
         } else if (item.type === "project") {
-            const itemElement = createElementWithClass("div", "project");
             const itemText = createElementWithClass("span", "project-text");
             itemText.textContent = item.title;
-            mainArea.appendChild(itemElement);
             itemElement.appendChild(itemText);
         }
     }
@@ -434,8 +445,6 @@ function buildDOM() {
             }
         });
     }
-
-
 
     return {
         drawInbox,

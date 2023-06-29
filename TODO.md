@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Make it so that (on creation not modification) any item with a parent is not in the inbox
 -   Add checkbox to todos and projects for marking as done
 -   Make it so that any isDone only shows in the logbook
 -   Add display of due date if has it
@@ -33,3 +32,5 @@
     -   Look into adding dark mode toggle
 
 ## Done:
+
+-   Make it so that (on creation not modification) any item with a parent is not in the inbox
