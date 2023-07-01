@@ -5,11 +5,7 @@ import {
     TodoOrProject,
     getTodosAndProjects,
 } from "../data/monolith";
-import {
-    isToday,
-    startOfDay,
-    isPast,
-} from "date-fns";
+import { isToday, startOfDay, isPast } from "date-fns";
 
 import formatDistanceCustom from "./utils";
 
@@ -77,12 +73,14 @@ function drawSideArea() {
 
     inboxText.textContent = "Inbox";
     inboxCount.textContent = getTodos()
-        .filter((todo) => todo.inInbox)
+        .filter((todo) => !todo.isDone && todo.inInbox)
         .length.toString();
+
     todayText.textContent = "Today";
     todayCount.textContent = getTodosAndProjects()
         .filter((item) => {
             return (
+                !item.isDone &&
                 item.startDate &&
                 (isToday(startOfDay(item.startDate)) || isPast(item.startDate))
             );

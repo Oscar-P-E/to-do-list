@@ -3,7 +3,9 @@ import {
     makeOrClearMainArea,
     drawMainItem,
 } from "./elements";
+
 import { getTodos, getTodosAndProjects, Area, Project } from "../data/monolith";
+
 import { isToday, startOfDay, isPast } from "date-fns";
 
 function drawInbox() {
@@ -20,7 +22,7 @@ function drawInbox() {
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
     const filteredItems = getTodos().filter((todo) => {
-        !todo.isDone && todo.inInbox;
+        return !todo.isDone && todo.inInbox;
     });
 
     filteredItems.forEach((todo) => {

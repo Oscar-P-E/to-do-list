@@ -43,7 +43,6 @@ import {
 function buildDOM() {
     drawSideArea();
     drawInbox();
-    drawToday(); // for testing. TODO: delete this line
 
     // Event listeners for side area
     const sideAreaViews = document.querySelectorAll(".side-area .view");
