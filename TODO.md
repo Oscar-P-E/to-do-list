@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Add display of due date if exists in relative formatting
 -   Add display of priority if marked
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details
@@ -92,3 +91,4 @@
 -   Convert all dates of type number to type Date
 -   Change dueDateTime to dueDate
 -   Simplify: Make items with a parent or start date just not be in the inbox.
+-   Add display of due date if exists, in relative formatting
