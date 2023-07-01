@@ -190,6 +190,5 @@ export {
     drawAreaAsMain,
     drawProjectAsMain,
     viewFuncMap,
-    ViewFunction,
     ViewId,
 };

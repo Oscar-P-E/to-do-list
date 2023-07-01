@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Reorganise code into separate files
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details
 -   Expanded todo should have:
@@ -94,3 +93,4 @@
 -   Add display of due date if exists, in relative formatting
 -   Add a flag emoji to due date
 -   Add display of priority if marked
+-   Reorganise code into separate files and folders

@@ -1,6 +1,6 @@
 import { getArea, getProject } from "../data/monolith";
 import { drawAreaAsMain, drawProjectAsMain } from "./views";
-import { ViewId, ViewFunction, viewFuncMap } from "./views";
+import { ViewId, viewFuncMap } from "./views";
 
 function handleSideAreaViewsClick(sideAreaViews: NodeListOf<Element>) {
     sideAreaViews.forEach((e) => {
