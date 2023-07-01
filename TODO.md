@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Add a flag emoji to due date
 -   Add display of priority if marked
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details
@@ -93,3 +92,4 @@
 -   Change dueDateTime to dueDate
 -   Simplify: Make items with a parent or start date just not be in the inbox.
 -   Add display of due date if exists, in relative formatting
+-   Add a flag emoji to due date

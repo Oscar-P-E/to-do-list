@@ -1,7 +1,7 @@
-div,
+/* div,
 span {
-    /* border: 0.1px solid red; */
-}
+    border: 0.1px solid red;
+} */
 
 /* @font-face {
     font-family: "Virgil";
@@ -11,6 +11,7 @@ span {
 } */
 
 :root {
+    --text-color: #333333;
     --grey-color: #777777;
 }
 
@@ -20,7 +21,7 @@ span {
     margin: 0;
     font-size: 16px;
     box-sizing: border-box;
-    color: #333;
+    color: var(--text-color);
     /* background-color: #eee; */
 }
 

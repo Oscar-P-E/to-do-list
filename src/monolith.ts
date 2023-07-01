@@ -539,7 +539,7 @@ createTodo(
 // "General Project" with no parent, due date not specified, start date is in the past
 // "Future Project" which is part of "Home" area, due and start date are in the future
 // "Past Project" with no parent, due and start date are in the past, is done
-// 11 todos:
+// 12 todos:
 // "Home Todo" which is part of "Home Project", due today in the afternoon
 // "Work Todo" which is part of "Work Project", due in the future, has priority, start date is today, is done
 // "General Todo" which is part of "General Project", due date not specified, start date is in the past, in the inbox
