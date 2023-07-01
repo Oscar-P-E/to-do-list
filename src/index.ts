@@ -1,4 +1,4 @@
 import "./styles.css";
-import buildDOM from "./domStuff";
+import buildDOM from "./app/domStuff";
 
 buildDOM();

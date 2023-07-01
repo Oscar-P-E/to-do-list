@@ -2,10 +2,10 @@
 
 ## Not Done:
 
--   Add display of priority if marked
+-   Reorganise code into separate files
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details
--   Expanded todo should additionaly have:
+-   Expanded todo should have:
     -   Description/Notes
     -   Start date
     -   Flag/priority button
@@ -93,3 +93,4 @@
 -   Simplify: Make items with a parent or start date just not be in the inbox.
 -   Add display of due date if exists, in relative formatting
 -   Add a flag emoji to due date
+-   Add display of priority if marked
