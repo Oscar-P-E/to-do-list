@@ -209,6 +209,7 @@ function buildDOM() {
             putCheckboxOnMainItemEle(item, itemElement);
             putTitleOnMainItemEle(item, itemElement);
             putDueOnMainItemEle(item, itemElement);
+            putPriorityOnMainItemEle(item, itemElement);
         }
     }
 
@@ -260,6 +261,19 @@ function buildDOM() {
             itemDue.textContent = `⚑ ${distance}`;
 
             itemElement.appendChild(itemDue);
+        }
+    }
+
+    function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+        if (item.type === "todo" && item.hasPriority) {
+            const itemPriority = createElementWithClass(
+                "span",
+                "item-priority"
+            );
+
+            itemPriority.textContent = "!!";
+            itemPriority.classList.add("priority");
+            itemElement.appendChild(itemPriority);
         }
     }
 

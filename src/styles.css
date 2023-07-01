@@ -108,3 +108,8 @@ body {
 .overdue {
     color: red;
 }
+
+.priority {
+    color: orange;
+    font-weight: bold;
+}
