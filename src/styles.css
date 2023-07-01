@@ -61,6 +61,7 @@ body {
 .main-area .todo,
 .main-area .project {
     gap: 1rem;
+    /* border: 1px solid var(--grey-color); */
 }
 
 .side-area {
@@ -109,7 +110,7 @@ body {
     color: red;
 }
 
-.priority {
+.item-priority {
     color: orange;
     font-weight: bold;
 }

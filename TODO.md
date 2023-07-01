@@ -2,16 +2,17 @@
 
 ## Not Done:
 
--   Add event listeners to the main area for the following:
--   Clicking on a todo should expand it to show its details
--   Expanded todo should have:
-    -   Description/Notes
-    -   Start date
-    -   Flag/priority button
-    -   Delete button
-    -   Projects/Areas button
--   Clicking on an expanded todo should edit what is clicked on
--   Clicking outside of an expanded todo should collapse it
+-   Add parent display to main area items
+-   Make these elements and add event listenersfor the following:
+    -   Clicking on a todo should expand it to show its details
+    -   Expanded todo should have:
+        -   Description/Notes
+        -   Start date
+        -   Flag/priority button
+        -   Delete button
+        -   Projects/Areas button
+    -   Clicking on an expanded todo should edit what is clicked on
+    -   Clicking outside of an expanded todo should collapse it
 -   Clicking on a project should open it in the main area view
 -   Add button for creating new todos and projects in main area
 -   New todos should be added to the inbox,

@@ -9,9 +9,6 @@ import {
     isToday,
     startOfDay,
     isPast,
-    // differenceInDays,
-    // isThisYear,
-    // format,
 } from "date-fns";
 
 import formatDistanceCustom from "./utils";
@@ -180,6 +177,7 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
         putTitleOnMainItemEle(item, itemElement);
         putDueOnMainItemEle(item, itemElement);
         putPriorityOnMainItemEle(item, itemElement);
+        putParentOnMainItemEle(item, itemElement);
     }
 }
 
@@ -218,6 +216,19 @@ function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         itemPriority.textContent = "!!";
         itemPriority.classList.add("priority");
         itemElement.appendChild(itemPriority);
+    }
+}
+
+function putParentOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+    if (item.parentUuid) {
+        const itemParent = createElementWithClass("span", "item-parent");
+        const parent = getProjects().find(
+            (project) => project.uuid === item.parentUuid
+        );
+        if (parent) {
+            itemParent.textContent = `⤷ ${parent.title}`;
+            itemElement.appendChild(itemParent);
+        }
     }
 }
 
