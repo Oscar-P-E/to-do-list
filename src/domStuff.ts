@@ -3,11 +3,11 @@ import {
     Project,
     Area,
     TodoOrProject,
-    TodoOrProjectOrArea,
+    // TodoOrProjectOrArea,
     // createTodo,
     // createProject,
     // createArea,
-    getToday,
+    // getToday,
     // getTodo,
     getProject,
     getArea,
@@ -22,6 +22,8 @@ import {
     // deleteProject,
     // deleteArea,
 } from "./monolith";
+
+import { isToday, isPast, startOfDay } from "date-fns";
 
 function buildDOM() {
     function createElementWithClass(type: string, className: string) {
@@ -103,7 +105,11 @@ function buildDOM() {
         todayText.textContent = "Today";
         todayCount.textContent = getTodosAndProjects()
             .filter((item) => {
-                return item.startDate && item.startDate <= getToday();
+                return (
+                    item.startDate &&
+                    (isToday(startOfDay(item.startDate)) ||
+                        isPast(item.startDate))
+                );
             })
             .length.toString();
         scheduledText.textContent = "Scheduled";
@@ -218,9 +224,11 @@ function buildDOM() {
     }
 
     function putDueOnMainItemEle(item: TodoOrProject, itemElement: Element) {
-        if (item.dueDateTime) {
+        if (item.dueDate) {
             const itemDue = createElementWithClass("span", "item-due");
-            itemDue.textContent = item.dueDateTime.toString();
+            const date = new Date(item.dueDate);
+            itemDue.textContent = date.toLocaleString();
+
             itemElement.appendChild(itemDue);
         }
     }
@@ -268,7 +276,9 @@ function buildDOM() {
 
         const filteredItems = getTodosAndProjects().filter((item) => {
             return (
-                !item.isDone && item.startDate && item.startDate <= getToday()
+                !item.isDone &&
+                item.startDate &&
+                (isToday(startOfDay(item.startDate)) || isPast(item.startDate))
             );
         });
 

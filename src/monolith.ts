@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { startOfDay, isPast, isToday, addDays, setHours } from "date-fns";
 
 // Data:
 type Todo = {
@@ -7,8 +8,8 @@ type Todo = {
     title: string;
     description?: string;
     hasPriority?: boolean;
-    dueDateTime?: number;
-    startDate?: number;
+    dueDate?: Date;
+    startDate?: Date;
     isDone?: boolean;
     parentUuid?: string;
     inInbox?: boolean;
@@ -19,8 +20,8 @@ type Project = {
     type: "project";
     title: string;
     description?: string;
-    dueDateTime?: number;
-    startDate?: number;
+    dueDate?: Date;
+    startDate?: Date;
     isDone?: boolean;
     parentUuid?: string;
 };
@@ -39,28 +40,40 @@ const projects: Project[] = [];
 const areas: Area[] = [];
 
 // Create:
+
+function StartIfDue(
+    dueDate: Date | undefined,
+    startDate: Date | undefined
+): [Date | undefined, Date | undefined] {
+    if (dueDate) {
+        dueDate = startOfDay(dueDate);
+
+        if (!startDate && isToday(dueDate)) {
+            startDate = dueDate;
+        }
+    }
+
+    if (startDate) {
+        startDate = startOfDay(startDate);
+    }
+
+    return [dueDate, startDate];
+}
+
 function createTodo(
     title: string,
     description = "",
     hasPriority = false,
-    dueDateTime = 0,
-    startDate = 0,
+    dueDate?: Date,
+    startDate?: Date,
     isDone = false,
     parentUuid = "",
     inInbox = true
 ): Todo {
+    [dueDate, startDate] = StartIfDue(dueDate, startDate);
+
     if ((startDate || parentUuid) && inInbox) {
         inInbox = false;
-    }
-
-    if (dueDateTime && !startDate) {
-        const startOfThatDay = new Date(dueDateTime);
-        const startOfThisDay = new Date();
-        startOfThatDay.setHours(0, 0, 0, 0);
-        startOfThisDay.setHours(0, 0, 0, 0);
-        if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
-            startDate = startOfThisDay.getTime();
-        }
     }
 
     const todo: Todo = {
@@ -69,7 +82,7 @@ function createTodo(
         title: title,
         description: description,
         hasPriority: hasPriority,
-        dueDateTime: dueDateTime,
+        dueDate: dueDate,
         startDate: startDate,
         isDone: isDone,
         parentUuid: parentUuid,
@@ -82,27 +95,19 @@ function createTodo(
 function createProject(
     title: string,
     description = "",
-    dueDateTime = 0,
-    startDate = 0,
+    dueDate?: Date,
+    startDate?: Date,
     isDone = false,
     parentUuid = ""
 ): Project {
-    if (dueDateTime && !startDate) {
-        const startOfThatDay = new Date(dueDateTime);
-        const startOfThisDay = new Date();
-        startOfThatDay.setHours(0, 0, 0, 0);
-        startOfThisDay.setHours(0, 0, 0, 0);
-        if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
-            startDate = startOfThisDay.getTime();
-        }
-    }
+    [dueDate, startDate] = StartIfDue(dueDate, startDate);
 
     const project: Project = {
         uuid: uuidv4(),
         type: "project",
         title: title,
         description: description,
-        dueDateTime: dueDateTime,
+        dueDate: dueDate,
         startDate: startDate,
         isDone: isDone,
         parentUuid: parentUuid,
@@ -122,11 +127,12 @@ function createArea(title: string): Area {
 }
 
 // Read:
-function getToday() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.getTime();
-}
+
+// function getToday() {
+//     const today = new Date();
+//     today.setHours(0, 0, 0, 0);
+//     return today.getTime();
+// }
 
 function getTodo(uuid: string): Todo | undefined {
     return todos.find((todo) => todo.uuid === uuid);
@@ -167,8 +173,8 @@ function modifyTodo(
     newTitle?: string,
     newDescription?: string,
     newHasPriority?: boolean,
-    newDueDateTime?: number,
-    newstartDate?: number,
+    newDueDate?: Date | null,
+    newStartDate?: Date | null,
     newIsDone?: boolean,
     newParentUuid?: string,
     newInInbox?: boolean
@@ -184,11 +190,11 @@ function modifyTodo(
         if (newHasPriority !== undefined) {
             todo.hasPriority = newHasPriority;
         }
-        if (newDueDateTime !== undefined) {
-            todo.dueDateTime = newDueDateTime;
+        if (newDueDate !== undefined) {
+            todo.dueDate = newDueDate !== null ? newDueDate : undefined;
         }
-        if (newstartDate !== undefined) {
-            todo.startDate = newstartDate;
+        if (newStartDate !== undefined) {
+            todo.startDate = newStartDate !== null ? newStartDate : undefined;
         }
         if (newIsDone !== undefined) {
             todo.isDone = newIsDone;
@@ -199,18 +205,14 @@ function modifyTodo(
         if (newInInbox !== undefined) {
             todo.inInbox = newInInbox;
         }
-        if (todo.startDate && todo.inInbox) {
-            todo.inInbox = false;
-        }
 
-        if (todo.dueDateTime && !todo.startDate) {
-            const startOfThatDay = new Date(todo.dueDateTime);
-            const startOfThisDay = new Date();
-            startOfThatDay.setHours(0, 0, 0, 0);
-            startOfThisDay.setHours(0, 0, 0, 0);
-            if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
-                todo.startDate = startOfThisDay.getTime();
-            }
+        [todo.dueDate, todo.startDate] = StartIfDue(
+            todo.dueDate,
+            todo.startDate
+        );
+
+        if ((todo.startDate || todo.parentUuid) && todo.inInbox) {
+            todo.inInbox = false;
         }
 
         return todo;
@@ -222,8 +224,8 @@ function modifyProject(
     uuid: string,
     newTitle?: string,
     newDescription?: string,
-    newDueDateTime?: number,
-    newstartDate?: number,
+    newDueDate?: Date | null,
+    newstartDate?: Date | null,
     newIsDone?: boolean,
     newParentUuid?: string
 ): Project | undefined {
@@ -235,11 +237,12 @@ function modifyProject(
         if (newDescription !== undefined) {
             project.description = newDescription;
         }
-        if (newDueDateTime !== undefined) {
-            project.dueDateTime = newDueDateTime;
+        if (newDueDate !== undefined) {
+            project.dueDate = newDueDate !== null ? newDueDate : undefined;
         }
         if (newstartDate !== undefined) {
-            project.startDate = newstartDate;
+            project.startDate =
+                newstartDate !== null ? newstartDate : undefined;
         }
         if (newIsDone !== undefined) {
             project.isDone = newIsDone;
@@ -247,15 +250,12 @@ function modifyProject(
         if (newParentUuid !== undefined) {
             project.parentUuid = newParentUuid;
         }
-        if (project.dueDateTime && !project.startDate) {
-            const startOfThatDay = new Date(project.dueDateTime);
-            const startOfThisDay = new Date();
-            startOfThatDay.setHours(0, 0, 0, 0);
-            startOfThisDay.setHours(0, 0, 0, 0);
-            if (startOfThatDay.getTime() === startOfThisDay.getTime()) {
-                project.startDate = startOfThisDay.getTime();
-            }
-        }
+
+        [project.dueDate, project.startDate] = StartIfDue(
+            project.dueDate,
+            project.startDate
+        );
+
         return project;
     }
     return undefined;
@@ -327,7 +327,7 @@ export {
     createTodo,
     createProject,
     createArea,
-    getToday,
+    // getToday,
     getTodo,
     getProject,
     getArea,
@@ -347,17 +347,17 @@ export {
 //
 // Test Dummies:
 //
-const datePast = new Date();
-datePast.setDate(datePast.getDate() - 10);
+// 10 days in the past
+const datePast = addDays(new Date(), -10);
 
-const dateFuture = new Date();
-dateFuture.setDate(dateFuture.getDate() + 10);
+// 10 days in the future
+const dateFuture = addDays(new Date(), 10);
 
-const todayMorning = new Date();
-todayMorning.setHours(0, 0, 0, 0);
+// Start of today (equivalent to 0:00 hours)
+const todayMorning = startOfDay(new Date());
 
-const todayAfternoon = new Date();
-todayAfternoon.setHours(12, 0, 0, 0);
+// 12:00 hours of today
+const todayAfternoon = setHours(startOfDay(new Date()), 12);
 
 // Areas
 const homeArea = createArea("Home");
@@ -367,39 +367,39 @@ const workArea = createArea("Work");
 const homeProject = createProject(
     "Home Project",
     "This is a home project",
-    todayAfternoon.getTime(),
-    todayMorning.getTime(),
+    todayAfternoon,
+    todayMorning,
     false,
     homeArea.uuid
 );
 const workProject = createProject(
     "Work Project",
     "This is a work project",
-    dateFuture.getTime(),
-    todayAfternoon.getTime(),
+    dateFuture,
+    todayAfternoon,
     true,
     workArea.uuid
 );
 const generalProject = createProject(
     "General Project",
     "This is a general project",
-    0,
-    datePast.getTime(),
+    undefined,
+    datePast,
     false
 );
 const futureProject = createProject(
     "Future Project",
     "This is a future project",
-    dateFuture.getTime(),
-    dateFuture.getTime(),
+    dateFuture,
+    dateFuture,
     false,
     homeArea.uuid
 );
 const pastProject = createProject(
     "Past Project",
     "This is a past project",
-    datePast.getTime(),
-    datePast.getTime(),
+    datePast,
+    datePast,
     true
 );
 
@@ -408,8 +408,8 @@ createTodo(
     "Home Todo",
     "This is a home todo",
     false,
-    todayAfternoon.getTime(),
-    todayMorning.getTime(),
+    todayAfternoon,
+    todayMorning,
     false,
     homeProject.uuid,
     false
@@ -418,8 +418,8 @@ createTodo(
     "Work Todo",
     "This is a work todo",
     true,
-    dateFuture.getTime(),
-    todayAfternoon.getTime(),
+    dateFuture,
+    todayAfternoon,
     true,
     workProject.uuid,
     false
@@ -428,8 +428,8 @@ createTodo(
     "General Todo",
     "This is a general todo",
     false,
-    0,
-    datePast.getTime(),
+    undefined,
+    datePast,
     false,
     generalProject.uuid,
     true
@@ -438,8 +438,8 @@ createTodo(
     "Inbox Todo",
     "This is a todo in the inbox",
     true,
-    0,
-    0,
+    undefined,
+    undefined,
     false,
     "",
     true
@@ -448,8 +448,8 @@ createTodo(
     "Future Todo",
     "This is a future todo",
     false,
-    dateFuture.getTime(),
-    dateFuture.getTime(),
+    dateFuture,
+    dateFuture,
     false,
     futureProject.uuid,
     false
@@ -458,8 +458,8 @@ createTodo(
     "Past Todo",
     "This is a past todo",
     true,
-    datePast.getTime(),
-    datePast.getTime(),
+    datePast,
+    datePast,
     true,
     pastProject.uuid,
     false
@@ -468,8 +468,8 @@ createTodo(
     "Area Todo",
     "This is a todo in an area",
     false,
-    todayAfternoon.getTime(),
-    todayMorning.getTime(),
+    todayAfternoon,
+    todayMorning,
     false,
     homeArea.uuid,
     false
@@ -478,8 +478,8 @@ createTodo(
     "Unassigned Todo",
     "This is an unassigned todo",
     false,
-    dateFuture.getTime(),
-    todayAfternoon.getTime(),
+    dateFuture,
+    todayAfternoon,
     true,
     "",
     false
@@ -488,8 +488,8 @@ createTodo(
     "Overdue Todo",
     "This is an overdue todo",
     false,
-    datePast.getTime(),
-    datePast.getTime(),
+    datePast,
+    datePast,
     false,
     generalProject.uuid,
     true
@@ -498,8 +498,8 @@ createTodo(
     "Due Today Todo",
     "This is a due today todo",
     true,
-    todayAfternoon.getTime(),
-    todayMorning.getTime(),
+    todayAfternoon,
+    todayMorning,
     false,
     workProject.uuid,
     false
@@ -508,8 +508,8 @@ createTodo(
     "Work Todo with no start date",
     "This is a work todo",
     true,
-    dateFuture.getTime(),
-    0,
+    dateFuture,
+    undefined,
     true,
     workProject.uuid,
     false
