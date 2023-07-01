@@ -214,7 +214,6 @@ function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         const itemPriority = createElementWithClass("span", "item-priority");
 
         itemPriority.textContent = "!!";
-        itemPriority.classList.add("priority");
         itemElement.appendChild(itemPriority);
     }
 }
