@@ -432,7 +432,7 @@ createTodo(
 );
 createTodo(
     "General Todo",
-    "This is a general todo",
+    "",
     false,
     undefined,
     datePast,
@@ -462,7 +462,7 @@ createTodo(
 );
 createTodo(
     "Past Todo",
-    "This is a past todo",
+    "",
     true,
     datePast,
     datePast,
@@ -482,7 +482,7 @@ createTodo(
 );
 createTodo(
     "Unassigned Todo",
-    "This is an unassigned todo",
+    "",
     false,
     dateFuture,
     todayAfternoon,
@@ -512,7 +512,7 @@ createTodo(
 );
 createTodo(
     "Work Todo with no start date",
-    "This is a work todo",
+    "",
     true,
     dateFuture,
     undefined,

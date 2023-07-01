@@ -2,8 +2,8 @@
 
 ## Not Done:
 
--   Add parent display to main area items
--   Make these elements and add event listenersfor the following:
+-   Add icon that shows item has notes
+-   Make these elements and add event listeners for the following:
     -   Clicking on a todo should expand it to show its details
     -   Expanded todo should have:
         -   Description/Notes
@@ -95,3 +95,4 @@
 -   Add a flag emoji to due date
 -   Add display of priority if marked
 -   Reorganise code into separate files and folders
+-   Add parent display to main area items

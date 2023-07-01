@@ -176,6 +176,7 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
         putTitleOnMainItemEle(item, itemElement);
         putParentOnMainItemEle(item, itemElement);
         putDueOnMainItemEle(item, itemElement);
+        putNoteIndicatorOnMainItemEle(item, itemElement);
     }
 }
 
@@ -226,6 +227,17 @@ function putParentOnMainItemEle(item: TodoOrProject, itemElement: Element) {
             itemParent.textContent = `⤷ ${parent.title}`;
             itemElement.appendChild(itemParent);
         }
+    }
+}
+
+function putNoteIndicatorOnMainItemEle(
+    item: TodoOrProject,
+    itemElement: Element
+) {
+    if (item.description && item.description !== "") {
+        const itemNote = createElementWithClass("span", "item-note");
+        itemNote.textContent = "⎘";
+        itemElement.appendChild(itemNote);
     }
 }
 
