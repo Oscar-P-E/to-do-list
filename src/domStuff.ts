@@ -1,3 +1,4 @@
+import { is } from "date-fns/locale";
 import {
     // Todo,
     Project,
@@ -23,7 +24,14 @@ import {
     // deleteArea,
 } from "./monolith";
 
-import { isToday, isPast, startOfDay } from "date-fns";
+import {
+    isToday,
+    isPast,
+    startOfDay,
+    differenceInDays,
+    format,
+    isThisYear,
+} from "date-fns";
 
 function buildDOM() {
     function createElementWithClass(type: string, className: string) {
@@ -223,11 +231,34 @@ function buildDOM() {
         itemElement.appendChild(itemText);
     }
 
+    function formatDistanceCustom(date: Date, itemDue: Element): string {
+        const now = new Date();
+        const today = startOfDay(now);
+        const diffInDays = Math.abs(differenceInDays(today, date));
+
+        if (isToday(date) || isPast(date)) {
+            itemDue.classList.add("overdue");
+        }
+
+        if (isToday(date)) {
+            return "Today";
+        } else if (diffInDays <= 14) {
+            return `${diffInDays}${isPast(date) ? "d ago" : "d"}`;
+        } else if (isThisYear(date)) {
+            return format(date, "d/M");
+        } else {
+            return format(date, "yyyy");
+        }
+    }
+
     function putDueOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         if (item.dueDate) {
             const itemDue = createElementWithClass("span", "item-due");
             const date = new Date(item.dueDate);
-            itemDue.textContent = date.toLocaleString();
+
+            const distance = formatDistanceCustom(date, itemDue);
+
+            itemDue.textContent = distance;
 
             itemElement.appendChild(itemDue);
         }
@@ -485,13 +516,14 @@ function buildDOM() {
 
     // Event listeners for main area
 
-    const mainArea = document.querySelector(".main-area");
+    // const mainArea = document.querySelector(".main-area");
 
-    if (mainArea) {
-        mainArea.addEventListener("click", (e) => {
-            // TODO
-        });
-    }
+    // if (mainArea) {
+    //     mainArea.addEventListener("click", (e) => {
+    //         // TODO
+    //     });
+    // }
+
     return {
         drawInbox,
         drawToday,

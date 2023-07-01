@@ -2,7 +2,7 @@
 
 ## Not Done:
 
--   Add display of due date if has it
+-   Add display of due date if exists in relative formatting
 -   Add display of priority if marked
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details

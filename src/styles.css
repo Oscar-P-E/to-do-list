@@ -92,3 +92,7 @@ body {
 .area-and-child-container {
     margin-bottom: 1rem;
 }
+
+.overdue {
+    color: red;
+}
