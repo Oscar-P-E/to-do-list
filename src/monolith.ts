@@ -520,6 +520,16 @@ createTodo(
     workProject.uuid,
     false
 );
+createTodo(
+    "A to-do due in 3 weeks",
+    "This is a to-do due in 3 weeks",
+    true,
+    addDays(new Date(), 21),
+    undefined,
+    false,
+    "",
+    false
+);
 
 // This creates:
 // 2 areas: "Home" and "Work"
@@ -541,3 +551,4 @@ createTodo(
 // "Overdue Todo" which is part of "General Project", due and start date are in the past, in the inbox
 // "Due Today Todo" which is part of "Work Project", due today in the afternoon, has priority
 // "Work Todo with no start date" which is part of "Work Project", due in the future, has priority, no start date, is done
+// "A to-do due in 3 weeks" no project, due in 3 weeks, has priority

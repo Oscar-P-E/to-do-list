@@ -2,6 +2,7 @@
 
 ## Not Done:
 
+-   Add a flag emoji to due date
 -   Add display of priority if marked
 -   Add event listeners to the main area for the following:
 -   Clicking on a todo should expand it to show its details

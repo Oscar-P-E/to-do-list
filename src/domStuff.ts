@@ -258,7 +258,7 @@ function buildDOM() {
 
             const distance = formatDistanceCustom(date, itemDue);
 
-            itemDue.textContent = distance;
+            itemDue.textContent = `⚑ ${distance}`;
 
             itemElement.appendChild(itemDue);
         }
