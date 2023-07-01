@@ -113,4 +113,5 @@ body {
 .item-priority {
     color: orange;
     font-weight: bold;
+    margin-right: -0.5rem;
 }

@@ -174,10 +174,10 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
     if (itemElement) {
         mainArea.appendChild(itemElement);
         putCheckboxOnMainItemEle(item, itemElement);
-        putTitleOnMainItemEle(item, itemElement);
-        putDueOnMainItemEle(item, itemElement);
         putPriorityOnMainItemEle(item, itemElement);
+        putTitleOnMainItemEle(item, itemElement);
         putParentOnMainItemEle(item, itemElement);
+        putDueOnMainItemEle(item, itemElement);
     }
 }
 
