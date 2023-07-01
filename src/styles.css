@@ -64,6 +64,11 @@ body {
     /* border: 1px solid var(--grey-color); */
 }
 
+.side-area .area {
+    /* padding: 1rem 0; */
+    border-bottom: 1px solid var(--grey-color);
+}
+
 .side-area {
     display: flex;
     flex-direction: column;
@@ -112,6 +117,10 @@ body {
 
 .item-priority {
     color: orange;
-    font-weight: bold;
-    margin-right: -0.5rem;
+    /* font-weight: bold; */
+    margin-right: -.6rem;
+}
+
+.item-parent {
+    color: var(--grey-color);
 }

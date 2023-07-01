@@ -211,7 +211,7 @@ function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     if (item.type === "todo" && item.hasPriority) {
         const itemPriority = createElementWithClass("span", "item-priority");
 
-        itemPriority.textContent = "!!";
+        itemPriority.textContent = "★";
         itemElement.appendChild(itemPriority);
     }
 }
