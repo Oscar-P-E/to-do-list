@@ -170,7 +170,10 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
     }
 
     if (itemElement) {
+        itemElement.dataset.uuid = item.uuid;
+
         mainArea.appendChild(itemElement);
+
         putCheckboxOnMainItemEle(item, itemElement);
         putPriorityOnMainItemEle(item, itemElement);
         putTitleOnMainItemEle(item, itemElement);
