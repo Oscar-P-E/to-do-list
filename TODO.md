@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Add icon that shows item has notes
 -   Make these elements and add event listeners for the following:
     -   Clicking on a todo should expand it to show its details
     -   Expanded todo should have:
@@ -96,3 +95,5 @@
 -   Add display of priority if marked
 -   Reorganise code into separate files and folders
 -   Add parent display to main area items
+-   Add icon that shows item has notes
+-   Make app use default cursor to look less like a website
