@@ -141,7 +141,7 @@ body {
         "empty notes notes notes"
         "empty startD startD startD"
         "empty prio due parent";
-        grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: auto 1fr auto auto;
     gap: 1rem;
 }
 
@@ -159,6 +159,7 @@ body {
 
 .item-exp-priority {
     grid-area: prio;
+    color: var(--grey-color);
 }
 
 .item-exp-parent {
@@ -172,4 +173,8 @@ body {
 
 .empty-notes {
     color: var(--grey-color);
+}
+
+.exp-priority-highlight {
+    color: orange;
 }

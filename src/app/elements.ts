@@ -259,7 +259,27 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
 function putPriorityBtnOnExpanded(item: Todo, itemElement: Element) {
     const itemPriority = createElementWithClass("span", "item-exp-priority");
 
-    itemPriority.textContent = "★";
+    const updatePriorityText = () => {
+        if (item.hasPriority) {
+            itemPriority.textContent = "★ Priority";
+            itemPriority.classList.add("exp-priority-highlight");
+        } else {
+            itemPriority.textContent = "☆ Priority";
+            itemPriority.classList.remove("exp-priority-highlight");
+        }
+    };
+
+    const togglePriority = () => {
+        item.hasPriority = !item.hasPriority;
+        updatePriorityText();
+        console.log(item.hasPriority);
+    };
+
+    updatePriorityText();
+
+    itemPriority.removeEventListener("click", togglePriority); // probably not necessary but just in case
+    itemPriority.addEventListener("click", togglePriority);
+
     itemElement.appendChild(itemPriority);
 }
 

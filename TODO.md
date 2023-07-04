@@ -5,7 +5,7 @@
 -   Make these elements and add event listeners for the following:
     -   Clicking on a todo should expand it to show its details
     -   Expanded todo should have:
-        -   Description/Notes
+        -   Notes
         -   Start date
         -   Flag/priority button
         -   Delete button
