@@ -4,7 +4,9 @@ import {
     getTodos,
     TodoOrProject,
     getTodosAndProjects,
+    Todo,
 } from "../data/monolith";
+
 import { isToday, startOfDay, isPast } from "date-fns";
 
 import formatDistanceCustom from "./utils";
@@ -14,6 +16,9 @@ function createElementWithClass(type: string, className: string) {
     element.className = className;
     return element;
 }
+
+const container = createElementWithClass("div", "container");
+document.body.appendChild(container);
 
 function drawSideArea() {
     const sideArea = createElementWithClass("div", "side-area");
@@ -69,7 +74,7 @@ function drawSideArea() {
         }
     );
 
-    // Populate everything:
+    // Populate side area
 
     inboxText.textContent = "Inbox";
     inboxCount.textContent = getTodos()
@@ -144,9 +149,7 @@ function drawSideArea() {
     logbook.appendChild(logbookText);
 }
 
-const container = createElementWithClass("div", "container");
-
-document.body.appendChild(container);
+// Main Area
 
 function makeOrClearMainArea() {
     const mainArea = document.querySelector(".main-area");
@@ -161,13 +164,7 @@ function makeOrClearMainArea() {
 }
 
 function drawMainItem(item: TodoOrProject, mainArea: Element) {
-    let itemElement: HTMLElement | undefined;
-
-    if (item.type === "todo") {
-        itemElement = createElementWithClass("div", "todo");
-    } else if (item.type === "project") {
-        itemElement = createElementWithClass("div", "project");
-    }
+    const itemElement = createElementWithClass("div", item.type);
 
     if (itemElement) {
         itemElement.dataset.uuid = item.uuid;
@@ -237,16 +234,58 @@ function putNoteIndicatorOnMainItemEle(
     item: TodoOrProject,
     itemElement: Element
 ) {
-    if (item.description && item.description !== "") {
+    if (item.notes && item.notes !== "") {
         const itemNote = createElementWithClass("span", "item-note");
         itemNote.textContent = "⎘";
         itemElement.appendChild(itemNote);
     }
 }
 
+// Expanded todo view
+
+function putNotesOnExpanded(item: Todo, itemElement: Element) {
+    const itemNotes = createElementWithClass("div", "item-notes");
+
+    if (!item.notes) {
+        itemNotes.textContent = "Notes";
+        itemNotes.classList.add("empty-notes");
+    } else {
+        itemNotes.textContent = item.notes;
+    }
+
+    itemElement.appendChild(itemNotes);
+}
+
+function drawExpandedTodo(item: Todo, mainArea: Element) {
+    const itemElement = mainArea.querySelector(`[data-uuid="${item.uuid}"]`);
+
+    if (!itemElement) return;
+
+    if (!(itemElement instanceof HTMLElement)) {
+        console.error("Expected HTMLElement but got a different type.");
+        return;
+    }
+
+    itemElement.innerHTML = "";
+
+    putCheckboxOnMainItemEle(item, itemElement);
+    // putPriorityOnMainItemEle(item, itemElement);
+    putTitleOnMainItemEle(item, itemElement);
+    // putParentOnMainItemEle(item, itemElement);
+    // putDueOnMainItemEle(item, itemElement);
+    // putNoteIndicatorOnMainItemEle(item, itemElement);
+
+    putNotesOnExpanded(item, itemElement);
+    // putPriorityBtnOnExpanded(item, itemElement);
+    // putStartDateBtnOnExpanded(item, itemElement);
+    // putDueDateBtnOnExpanded(item, itemElement);
+    // putParentBtnOnExpanded(item, itemElement);
+}
+
 export {
     makeOrClearMainArea,
     drawMainItem,
+    drawExpandedTodo,
     createElementWithClass,
     drawSideArea,
 };

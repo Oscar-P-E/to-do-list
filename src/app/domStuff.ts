@@ -38,22 +38,34 @@ import { drawSideArea } from "./elements";
 import {
     handleSideAreaViewsClick,
     handleAreasProjectsAreaClick,
-} from "./events";
+} from "./sideEvents";
+
+import handleMainAreaClick from "./mainEvents";
 
 function buildDOM() {
     drawSideArea();
     drawInbox();
 
-    // Event listeners for side area
-    const sideAreaViews = document.querySelectorAll(".side-area .view");
+    // Event listeners
 
-    handleSideAreaViewsClick(sideAreaViews);
+    document.addEventListener("DOMContentLoaded", () => {
+        const sideAreaViews = document.querySelectorAll(".side-area .view");
+        if (sideAreaViews) {
+            handleSideAreaViewsClick(sideAreaViews);
+        }
 
-    const areasProjectsArea = document.querySelector(".areas-projects-area");
+        const areasProjectsArea = document.querySelector(
+            ".areas-projects-area"
+        );
+        if (areasProjectsArea) {
+            handleAreasProjectsAreaClick(areasProjectsArea);
+        }
 
-    areasProjectsArea && handleAreasProjectsAreaClick(areasProjectsArea);
-
-    // Event listeners for main area
+        const mainArea = document.querySelector(".main-area");
+        if (mainArea) {
+            handleMainAreaClick(mainArea);
+        }
+    });
 
     return {
         drawInbox,
