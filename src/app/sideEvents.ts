@@ -45,34 +45,4 @@ function handleAreasProjectsAreaClick(areasProjectsArea: Element) {
     });
 }
 
-// function handleMainAreaClick(mainArea: Element) {
-//     mainArea.addEventListener("click", (e) => {
-//         let target = e.target as HTMLElement | null;
-
-//         // Traverse up the DOM until find element with uuid dataset
-//         while (target && !target.dataset.uuid) {
-//             target = target.parentElement;
-//         }
-
-//         if (!target) return;
-
-//         const uuid = target.dataset.uuid;
-//         const type = target.classList[0];
-
-//         if (uuid && type) {
-//             if (type === "area") {
-//                 const area = getArea(uuid);
-//                 if (area) {
-//                     drawAreaAsMain(area);
-//                 }
-//             } else if (type === "project") {
-//                 const project = getProject(uuid);
-//                 if (project) {
-//                     drawProjectAsMain(project);
-//                 }
-//             }
-//         }
-//     });
-// }
-
 export { handleSideAreaViewsClick, handleAreasProjectsAreaClick };
