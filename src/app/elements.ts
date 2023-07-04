@@ -172,8 +172,8 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
         mainArea.appendChild(itemElement);
 
         putCheckboxOnMainItemEle(item, itemElement);
-        putPriorityOnMainItemEle(item, itemElement);
         putTitleOnMainItemEle(item, itemElement);
+        putPriorityOnMainItemEle(item, itemElement);
         putParentOnMainItemEle(item, itemElement);
         putDueOnMainItemEle(item, itemElement);
         putNoteIndicatorOnMainItemEle(item, itemElement);
@@ -256,7 +256,7 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
     itemElement.appendChild(itemNotes);
 }
 
-function putPriorityBtnOnExpanded(item: Todo, itemElement: Element) {
+function putPriorityOnExpanded(item: Todo, itemElement: Element) {
     const itemPriority = createElementWithClass("span", "item-exp-priority");
 
     const updatePriorityText = () => {
@@ -272,15 +272,39 @@ function putPriorityBtnOnExpanded(item: Todo, itemElement: Element) {
     const togglePriority = () => {
         item.hasPriority = !item.hasPriority;
         updatePriorityText();
-        console.log(item.hasPriority);
     };
 
     updatePriorityText();
 
-    itemPriority.removeEventListener("click", togglePriority); // probably not necessary but just in case
+    itemPriority.removeEventListener("click", togglePriority); // probably unnecessary
     itemPriority.addEventListener("click", togglePriority);
 
     itemElement.appendChild(itemPriority);
+}
+
+function putStartDateOnExpanded(item: Todo, itemElement: Element) {
+    const itemStartDate = createElementWithClass(
+        "input",
+        "item-exp-start-date"
+    ) as HTMLInputElement;
+
+    itemStartDate.type = "date";
+
+    // const today = startOfDay(new Date());
+
+    if (item.startDate && isPast(startOfDay(item.startDate))) {
+        itemStartDate.valueAsDate = startOfDay(new Date());
+    }
+
+    itemStartDate.addEventListener("change", () => {
+        item.startDate = itemStartDate.valueAsDate || undefined;
+
+        if (item.startDate && isPast(startOfDay(item.startDate))) {
+            itemStartDate.valueAsDate = startOfDay(new Date());
+        }
+    });
+
+    itemElement.appendChild(itemStartDate);
 }
 
 function drawExpandedTodo(item: Todo, mainArea: Element) {
@@ -299,16 +323,28 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
 
     itemElement.className = "expanded";
 
-    putCheckboxOnMainItemEle(item, itemElement);
+    const row1 = createElementWithClass("div", "row1");
+    const row2 = createElementWithClass("div", "row2");
+    const row3 = createElementWithClass("div", "row3");
+    const row4 = createElementWithClass("div", "row4");
+
+    if (!row1 || !row2 || !row3 || !row4) return;
+
+    itemElement.appendChild(row1);
+    itemElement.appendChild(row2);
+    itemElement.appendChild(row3);
+    itemElement.appendChild(row4);
+
+    putCheckboxOnMainItemEle(item, row1);
     // putPriorityOnMainItemEle(item, itemElement);
-    putTitleOnMainItemEle(item, itemElement);
+    putTitleOnMainItemEle(item, row1);
     // putParentOnMainItemEle(item, itemElement);
     // putDueOnMainItemEle(item, itemElement);
     // putNoteIndicatorOnMainItemEle(item, itemElement);
 
-    putNotesOnExpanded(item, itemElement);
-    putPriorityBtnOnExpanded(item, itemElement);
-    // putStartDateBtnOnExpanded(item, itemElement);
+    putNotesOnExpanded(item, row2);
+    putStartDateOnExpanded(item, row3);
+    putPriorityOnExpanded(item, row4);
     // putDueDateBtnOnExpanded(item, itemElement);
     // putParentBtnOnExpanded(item, itemElement);
 }

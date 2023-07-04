@@ -7,7 +7,7 @@
     -   Expanded todo should have:
         -   Notes
         -   Start date
-        -   Flag/priority button
+        -   Priority button
         -   Delete button
         -   Projects/Areas button
     -   Clicking on an expanded todo should edit what is clicked on

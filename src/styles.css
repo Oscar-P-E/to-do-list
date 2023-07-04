@@ -1,6 +1,6 @@
 div,
 span {
-    border: 0.1px solid red;
+    /* border: 0.1px solid red; */
 }
 
 /* @font-face {
@@ -103,7 +103,7 @@ body {
 .item-text {
     font-size: 1.1rem;
     line-height: 1.45;
-    grid-area: title;
+    /* grid-area: title; */
 }
 
 .logbook {
@@ -120,7 +120,7 @@ body {
 
 .item-priority {
     /* font-weight: bold; */
-    margin-right: -0.6rem;
+    /* margin-right: -0.6rem; */
 }
 
 .item-priority,
@@ -134,41 +134,53 @@ body {
 
 .expanded {
     margin: 0;
-
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    /* display: grid;
     grid-template-areas:
         "check title title title"
         "empty notes notes notes"
         "empty startD startD startD"
         "empty prio due parent";
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: auto 1fr auto auto; */
+    gap: 1rem;
+}
+
+.row1,
+.row2,
+.row3,
+.row4 {
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
 }
 
 .item-notes {
-    grid-area: notes;
+    /* grid-area: notes; */
 }
 
 .item-exp-due {
-    grid-area: due;
+    /* grid-area: due; */
 }
 
-.item-exp-start {
-    grid-area: startD;
+.item-exp-start-date {
+    /* grid-area: startD; */
+    border: 0.1px dotted var(--grey-color);
+    color: var(--grey-color);
 }
 
 .item-exp-priority {
-    grid-area: prio;
+    /* grid-area: prio; */
     color: var(--grey-color);
 }
 
 .item-exp-parent {
-    grid-area: parent;
+    /* grid-area: parent; */
     color: var(--grey-color);
 }
 
 .item-checkbox {
-    grid-area: check;
+    /* grid-area: check; */
 }
 
 .empty-notes {
@@ -177,4 +189,8 @@ body {
 
 .exp-priority-highlight {
     color: orange;
+}
+
+.exp-start-date-faded {
+    color: var(--grey-color);
 }
