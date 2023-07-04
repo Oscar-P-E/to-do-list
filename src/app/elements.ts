@@ -256,6 +256,13 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
     itemElement.appendChild(itemNotes);
 }
 
+function putPriorityBtnOnExpanded(item: Todo, itemElement: Element) {
+    const itemPriority = createElementWithClass("span", "item-exp-priority");
+
+    itemPriority.textContent = "★";
+    itemElement.appendChild(itemPriority);
+}
+
 function drawExpandedTodo(item: Todo, mainArea: Element) {
     const itemElement = mainArea.querySelector(`[data-uuid="${item.uuid}"]`);
 
@@ -266,7 +273,11 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
         return;
     }
 
-    itemElement.innerHTML = "";
+    while (itemElement.firstChild) {
+        itemElement.firstChild.remove();
+    }
+
+    itemElement.className = "expanded";
 
     putCheckboxOnMainItemEle(item, itemElement);
     // putPriorityOnMainItemEle(item, itemElement);
@@ -276,7 +287,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     // putNoteIndicatorOnMainItemEle(item, itemElement);
 
     putNotesOnExpanded(item, itemElement);
-    // putPriorityBtnOnExpanded(item, itemElement);
+    putPriorityBtnOnExpanded(item, itemElement);
     // putStartDateBtnOnExpanded(item, itemElement);
     // putDueDateBtnOnExpanded(item, itemElement);
     // putParentBtnOnExpanded(item, itemElement);

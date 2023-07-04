@@ -1,7 +1,7 @@
-/* div,
+div,
 span {
     border: 0.1px solid red;
-} */
+}
 
 /* @font-face {
     font-family: "Virgil";
@@ -103,6 +103,7 @@ body {
 .item-text {
     font-size: 1.1rem;
     line-height: 1.45;
+    grid-area: title;
 }
 
 .logbook {
@@ -118,20 +119,55 @@ body {
 }
 
 .item-priority {
-    color: orange;
     /* font-weight: bold; */
     margin-right: -0.6rem;
 }
 
-.expanded {
-    display: grid;
-    
-    gap: 1rem;
-    margin-top: 1rem;
+.item-priority,
+.item-exp-priority {
+    color: orange;
 }
 
 .item-parent {
     color: var(--grey-color);
+}
+
+.expanded {
+    margin: 0;
+
+    display: grid;
+    grid-template-areas:
+        "check title title title"
+        "empty notes notes notes"
+        "empty startD startD startD"
+        "empty prio due parent";
+        grid-template-columns: auto 1fr auto auto;
+    gap: 1rem;
+}
+
+.item-notes {
+    grid-area: notes;
+}
+
+.item-exp-due {
+    grid-area: due;
+}
+
+.item-exp-start {
+    grid-area: startD;
+}
+
+.item-exp-priority {
+    grid-area: prio;
+}
+
+.item-exp-parent {
+    grid-area: parent;
+    color: var(--grey-color);
+}
+
+.item-checkbox {
+    grid-area: check;
 }
 
 .empty-notes {
