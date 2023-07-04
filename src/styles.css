@@ -43,6 +43,8 @@ body {
     flex-direction: column;
     padding: 2rem 10%;
     gap: 1rem;
+    max-width: 800px;
+    min-width: 600px;
 }
 
 .main-area-heading-text {
@@ -134,16 +136,18 @@ body {
 
 .expanded {
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    /* display: grid;
+    /* display: flex; */
+    /* flex-direction: column; */
+    display: grid;
     grid-template-areas:
-        "check title title title"
-        "empty notes notes notes"
-        "empty startD startD startD"
-        "empty prio due parent";
-    grid-template-columns: auto 1fr auto auto; */
-    gap: 1rem;
+        "check row1"
+        "empty row2"
+        "empty row3"
+        "empty row4";
+    grid-template-columns: auto 1fr;
+    column-gap: 1rem;
+    row-gap: 0.5rem;
+
 }
 
 .row1,
@@ -153,6 +157,23 @@ body {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+
+}
+
+.row1 {
+    grid-area: row1;
+}
+
+.row2 {
+    grid-area: row2;
+}
+
+.row3 {
+    grid-area: row3;
+}
+
+.row4 {
+    grid-area: row4;
 }
 
 .item-notes {
@@ -180,7 +201,7 @@ body {
 }
 
 .item-checkbox {
-    /* grid-area: check; */
+    grid-area: check;
 }
 
 .empty-notes {
@@ -198,5 +219,6 @@ body {
 .delete-button {
     background: none;
     border: none;
+    margin-left: auto;
     /* cursor: pointer; */
 }

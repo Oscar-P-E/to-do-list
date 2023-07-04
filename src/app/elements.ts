@@ -353,7 +353,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     itemElement.appendChild(row3);
     itemElement.appendChild(row4);
 
-    putCheckboxOnMainItemEle(item, row1);
+    putCheckboxOnMainItemEle(item, itemElement);
     // putPriorityOnMainItemEle(item, itemElement);
     putTitleOnMainItemEle(item, row1);
     // putParentOnMainItemEle(item, itemElement);
