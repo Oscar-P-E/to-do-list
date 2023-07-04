@@ -163,6 +163,22 @@ function makeOrClearMainArea() {
     }
 }
 
+function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+    const deleteButton = createElementWithClass(
+        "button",
+        "delete-button"
+    ) as HTMLButtonElement;
+    deleteButton.textContent = "🗑️"; // Set the button text to be a trash can emoji
+    itemElement.appendChild(deleteButton);
+    deleteButton.addEventListener("click", () => {
+        const confirmation = window.confirm("Are you sure you want to delete this item?");
+        if (confirmation) {
+            itemElement.remove();
+        }
+    });
+}
+
+
 function drawMainItem(item: TodoOrProject, mainArea: Element) {
     const itemElement = createElementWithClass("div", item.type);
 
@@ -177,6 +193,7 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
         putParentOnMainItemEle(item, itemElement);
         putDueOnMainItemEle(item, itemElement);
         putNoteIndicatorOnMainItemEle(item, itemElement);
+        putDeleteOnMainItemEle(item, itemElement);
     }
 }
 

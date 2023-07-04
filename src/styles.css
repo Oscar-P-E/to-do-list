@@ -194,3 +194,9 @@ body {
 .exp-start-date-faded {
     color: var(--grey-color);
 }
+
+.delete-button {
+    background: none;
+    border: none;
+    /* cursor: pointer; */
+}
