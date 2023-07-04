@@ -168,16 +168,17 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         "button",
         "delete-button"
     ) as HTMLButtonElement;
-    deleteButton.textContent = "🗑️"; // Set the button text to be a trash can emoji
+    deleteButton.textContent = "🗑️";
     itemElement.appendChild(deleteButton);
     deleteButton.addEventListener("click", () => {
-        const confirmation = window.confirm("Are you sure you want to delete this item?");
+        const confirmation = window.confirm(
+            "Are you sure you want to delete this item?"
+        );
         if (confirmation) {
             itemElement.remove();
         }
     });
 }
-
 
 function drawMainItem(item: TodoOrProject, mainArea: Element) {
     const itemElement = createElementWithClass("div", item.type);
@@ -358,6 +359,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     // putParentOnMainItemEle(item, itemElement);
     // putDueOnMainItemEle(item, itemElement);
     // putNoteIndicatorOnMainItemEle(item, itemElement);
+    putDeleteOnMainItemEle(item, row1);
 
     putNotesOnExpanded(item, row2);
     putStartDateOnExpanded(item, row3);
