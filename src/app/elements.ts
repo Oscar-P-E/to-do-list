@@ -301,12 +301,22 @@ function putPriorityOnExpanded(item: Todo, itemElement: Element) {
 }
 
 function putStartDateOnExpanded(item: Todo, itemElement: Element) {
+    const label = createElementWithClass(
+        "label",
+        "date-label"
+    ) as HTMLLabelElement;
+    label.textContent = "Start";
+
+    label.htmlFor = "start-date";
+
     const itemStartDate = createElementWithClass(
         "input",
         "item-exp-start-date"
     ) as HTMLInputElement;
 
     itemStartDate.type = "date";
+    itemStartDate.id = "start-date";
+    itemStartDate.name = "start-date";
 
     // const today = startOfDay(new Date());
 
@@ -322,7 +332,39 @@ function putStartDateOnExpanded(item: Todo, itemElement: Element) {
         }
     });
 
+    itemElement.appendChild(label);
     itemElement.appendChild(itemStartDate);
+}
+
+function putDueDateOnExpanded(item: Todo, itemElement: Element) {
+    const label = createElementWithClass(
+        "label",
+        "date-label"
+    ) as HTMLLabelElement;
+
+    label.textContent = "Due";
+
+    label.htmlFor = "due-date";
+
+    const itemDueDate = createElementWithClass(
+        "input",
+        "item-exp-due-date"
+    ) as HTMLInputElement;
+
+    itemDueDate.type = "date";
+    itemDueDate.id = "due-date";
+    itemDueDate.name = "due-date";
+
+    if (item.dueDate) {
+        itemDueDate.valueAsDate = item.dueDate;
+    }
+
+    itemDueDate.addEventListener("change", () => {
+        item.dueDate = itemDueDate.valueAsDate || undefined;
+    });
+
+    itemElement.appendChild(label);
+    itemElement.appendChild(itemDueDate);
 }
 
 function drawExpandedTodo(item: Todo, mainArea: Element) {
@@ -363,8 +405,8 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
 
     putNotesOnExpanded(item, row2);
     putStartDateOnExpanded(item, row3);
+    putDueDateOnExpanded(item, row4);
     putPriorityOnExpanded(item, row4);
-    // putDueDateBtnOnExpanded(item, itemElement);
     // putParentBtnOnExpanded(item, itemElement);
 }
 

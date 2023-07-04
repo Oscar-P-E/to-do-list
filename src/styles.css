@@ -147,7 +147,6 @@ body {
     grid-template-columns: auto 1fr;
     column-gap: 1rem;
     row-gap: 0.5rem;
-
 }
 
 .row1,
@@ -157,7 +156,6 @@ body {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-
 }
 
 .row1 {
@@ -184,7 +182,8 @@ body {
     /* grid-area: due; */
 }
 
-.item-exp-start-date {
+.item-exp-start-date,
+.item-exp-due-date {
     /* grid-area: startD; */
     border: 0.1px dotted var(--grey-color);
     color: var(--grey-color);
@@ -211,14 +210,18 @@ body {
 .exp-priority-highlight {
     color: orange;
 }
-
+/*
 .exp-start-date-faded {
     color: var(--grey-color);
-}
+} */
 
 .delete-button {
     background: none;
     border: none;
     margin-left: auto;
     /* cursor: pointer; */
+}
+
+.date-label {
+    min-width: 2.5rem;
 }
