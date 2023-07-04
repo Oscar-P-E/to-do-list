@@ -12,7 +12,7 @@ type Todo = {
     uuid: string;
     type: "todo";
     title: string;
-    description?: string;
+    notes?: string;
     hasPriority?: boolean;
     dueDate?: Date;
     startDate?: Date;
@@ -25,7 +25,7 @@ type Project = {
     uuid: string;
     type: "project";
     title: string;
-    description?: string;
+    notes?: string;
     dueDate?: Date;
     startDate?: Date;
     isDone?: boolean;
@@ -68,7 +68,7 @@ function StartIfDue(
 
 function createTodo(
     title: string,
-    description = "",
+    notes = "",
     hasPriority = false,
     dueDate?: Date,
     startDate?: Date,
@@ -86,7 +86,7 @@ function createTodo(
         uuid: uuidv4(),
         type: "todo",
         title: title,
-        description: description,
+        notes: notes,
         hasPriority: hasPriority,
         dueDate: dueDate,
         startDate: startDate,
@@ -100,7 +100,7 @@ function createTodo(
 
 function createProject(
     title: string,
-    description = "",
+    notes = "",
     dueDate?: Date,
     startDate?: Date,
     isDone = false,
@@ -112,7 +112,7 @@ function createProject(
         uuid: uuidv4(),
         type: "project",
         title: title,
-        description: description,
+        notes: notes,
         dueDate: dueDate,
         startDate: startDate,
         isDone: isDone,
@@ -177,7 +177,7 @@ function getAllItems(): TodoOrProjectOrArea[] {
 function modifyTodo(
     uuid: string,
     newTitle?: string,
-    newDescription?: string,
+    newNotes?: string,
     newHasPriority?: boolean,
     newDueDate?: Date | null,
     newStartDate?: Date | null,
@@ -190,8 +190,8 @@ function modifyTodo(
         if (newTitle !== undefined) {
             todo.title = newTitle;
         }
-        if (newDescription !== undefined) {
-            todo.description = newDescription;
+        if (newNotes !== undefined) {
+            todo.notes = newNotes;
         }
         if (newHasPriority !== undefined) {
             todo.hasPriority = newHasPriority;
@@ -229,7 +229,7 @@ function modifyTodo(
 function modifyProject(
     uuid: string,
     newTitle?: string,
-    newDescription?: string,
+    newNotes?: string,
     newDueDate?: Date | null,
     newstartDate?: Date | null,
     newIsDone?: boolean,
@@ -240,8 +240,8 @@ function modifyProject(
         if (newTitle !== undefined) {
             project.title = newTitle;
         }
-        if (newDescription !== undefined) {
-            project.description = newDescription;
+        if (newNotes !== undefined) {
+            project.notes = newNotes;
         }
         if (newDueDate !== undefined) {
             project.dueDate = newDueDate !== null ? newDueDate : undefined;
