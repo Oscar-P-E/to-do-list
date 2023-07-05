@@ -262,13 +262,55 @@ function putNoteIndicatorOnMainItemEle(
 
 // Expanded todo view
 
+function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
+    const itemText = createElementWithClass("span", "item-text");
+    itemText.textContent = item.title;
+    itemElement.appendChild(itemText);
+
+    itemText.contentEditable = "true";
+
+    itemText.addEventListener("focus", handleFocus);
+    itemText.addEventListener("blur", handleBlur);
+    itemText.addEventListener("keydown", handleKeydown);
+    //here
+
+    function handleFocus() {
+        itemText.classList.add("editable");
+
+        const range = document.createRange();
+        range.selectNodeContents(itemText);
+
+        const sel = window.getSelection();
+        if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    function handleBlur() {
+        if (itemText.textContent) {
+            item.title = itemText.textContent;
+        } else {
+            itemText.textContent = item.title;
+        }
+        itemText.classList.remove("editable");
+    }
+
+    function handleKeydown(e: KeyboardEvent) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            itemText.blur();
+            e.preventDefault(); // Prevent unwated newline
+        }
+    }
+}
+
 function putNotesOnExpanded(item: Todo, itemElement: Element) {
     const itemNotes = createElementWithClass("div", "item-notes");
     itemNotes.contentEditable = "true";
 
     itemNotes.addEventListener("focus", handleFocus);
     itemNotes.addEventListener("blur", handleBlur); // click away.
-    itemNotes.addEventListener("keydown", handleKeyDown);
+    itemNotes.addEventListener("keydown", handleKeydown);
 
     function handleFocus() {
         itemNotes.classList.add("editable");
@@ -283,12 +325,13 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
         }
     }
 
+    //here
     function handleBlur() {
         item.title = itemNotes.textContent || "";
-        itemNotes.classList.remove("editable"); //
+        itemNotes.classList.remove("editable");
     }
 
-    function handleKeyDown(event: KeyboardEvent) {
+    function handleKeydown(event: KeyboardEvent) {
         if (event.key === "Enter" && !event.shiftKey) {
             itemNotes.blur();
             event.preventDefault(); // Prevent unwanted newlines.
@@ -467,7 +510,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
 
     putCheckboxOnMainItemEle(item, itemElement);
     // putPriorityOnMainItemEle(item, itemElement);
-    putTitleOnMainItemEle(item, row1);
+    putTitleOnExpanded(item, row1);
     // putParentOnMainItemEle(item, itemElement);
     // putDueOnMainItemEle(item, itemElement);
     // putNoteIndicatorOnMainItemEle(item, itemElement);
