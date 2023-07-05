@@ -40,6 +40,7 @@ type Area = {
 
 type TodoOrProject = Todo | Project;
 type TodoOrProjectOrArea = Todo | Project | Area;
+type AreaOrProject = Area | Project;
 
 const todos: Todo[] = [];
 const projects: Project[] = [];
@@ -164,9 +165,12 @@ function getAreas(): Area[] {
     return areas;
 }
 
-// function getTodosAndProjects(): TodoOrProjectOrArea[] {
 function getTodosAndProjects(): TodoOrProject[] {
     return [...todos, ...projects];
+}
+
+function getAreasAndProjects(): AreaOrProject[] {
+    return [...areas, ...projects];
 }
 
 function getAllItems(): TodoOrProjectOrArea[] {
@@ -341,6 +345,7 @@ export {
     getProjects,
     getAreas,
     getTodosAndProjects,
+    getAreasAndProjects,
     getAllItems,
     modifyTodo,
     modifyProject,

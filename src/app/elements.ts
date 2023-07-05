@@ -2,8 +2,9 @@ import {
     getAreas,
     getProjects,
     getTodos,
-    TodoOrProject,
     getTodosAndProjects,
+    getAreasAndProjects,
+    TodoOrProject,
     Todo,
 } from "../data/monolith";
 
@@ -367,6 +368,45 @@ function putDueDateOnExpanded(item: Todo, itemElement: Element) {
     itemElement.appendChild(itemDueDate);
 }
 
+function putParentOnExpanded(item: Todo, itemElement: Element) {
+    const itemParent = createElementWithClass(
+        "select",
+        "item-exp-parent"
+    ) as HTMLSelectElement;
+
+    const noneOption = createElementWithClass(
+        "option",
+        "parent-option"
+    ) as HTMLOptionElement;
+
+    noneOption.value = "";
+    noneOption.textContent = "🞪 No Parent";
+
+    itemParent.appendChild(noneOption);
+
+    getAreasAndProjects().forEach((projOrArea) => {
+        const option = createElementWithClass(
+            "option",
+            "parent-option"
+        ) as HTMLOptionElement;
+
+        option.value = projOrArea.uuid;
+        option.textContent = projOrArea.title;
+
+        itemParent.appendChild(option);
+    });
+
+    if (item.parentUuid) {
+        itemParent.value = item.parentUuid;
+    }
+
+    itemParent.addEventListener("change", () => {
+        item.parentUuid = itemParent.value;
+    });
+
+    itemElement.appendChild(itemParent);
+}
+
 function drawExpandedTodo(item: Todo, mainArea: Element) {
     const itemElement = mainArea.querySelector(`[data-uuid="${item.uuid}"]`);
 
@@ -401,14 +441,17 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     // putParentOnMainItemEle(item, itemElement);
     // putDueOnMainItemEle(item, itemElement);
     // putNoteIndicatorOnMainItemEle(item, itemElement);
+
+    putPriorityOnExpanded(item, row1);
     putDeleteOnMainItemEle(item, row1);
 
-    putNotesOnExpanded(item, row2);
+    putNotesOnExpanded(item, row2); // TODO: make this an editable textarea
     putStartDateOnExpanded(item, row3);
     putDueDateOnExpanded(item, row4);
-    putPriorityOnExpanded(item, row4);
-    // putParentBtnOnExpanded(item, itemElement);
+    putParentOnExpanded(item, row4);
 }
+
+// TODO: Make a create button
 
 export {
     makeOrClearMainArea,
