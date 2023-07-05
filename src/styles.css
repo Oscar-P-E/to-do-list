@@ -178,7 +178,7 @@ body {
 }
 
 .item-notes {
-    /* grid-area: notes; */
+    color: var(--grey-color);
 }
 
 .item-exp-due {
@@ -189,6 +189,7 @@ body {
 .item-exp-due-date,
 .item-exp-parent {
     border: 0.1px dotted var(--grey-color);
+    outline: 0.1px dotted var(--grey-color);
     color: var(--grey-color);
 }
 
@@ -226,4 +227,15 @@ body {
 
 .date-label {
     min-width: 2.5rem;
+}
+
+.editable {
+    padding: 0.1rem;
+    box-sizing: border-box;
+}
+
+.editable:focus {
+    /* color: var(--text-color); */
+    border: 0.1px dotted var(--grey-color);
+    outline: 0.1px dotted var(--grey-color);
 }

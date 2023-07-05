@@ -264,6 +264,36 @@ function putNoteIndicatorOnMainItemEle(
 
 function putNotesOnExpanded(item: Todo, itemElement: Element) {
     const itemNotes = createElementWithClass("div", "item-notes");
+    itemNotes.contentEditable = "true";
+
+    itemNotes.addEventListener("focus", handleFocus);
+    itemNotes.addEventListener("blur", handleBlur); // click away.
+    itemNotes.addEventListener("keydown", handleKeyDown);
+
+    function handleFocus() {
+        itemNotes.classList.add("editable");
+
+        const range = document.createRange();
+        range.selectNodeContents(itemNotes);
+
+        const sel = window.getSelection();
+        if (sel) {
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    function handleBlur() {
+        item.title = itemNotes.textContent || "";
+        itemNotes.classList.remove("editable"); //
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+        if (event.key === "Enter" && !event.shiftKey) {
+            itemNotes.blur();
+            event.preventDefault(); // Prevent unwanted newlines.
+        }
+    }
 
     if (!item.notes) {
         itemNotes.textContent = "Notes";
