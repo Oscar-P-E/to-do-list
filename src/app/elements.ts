@@ -22,6 +22,50 @@ function createElementWithClass(type: string, className: string) {
 const container = createElementWithClass("div", "container");
 document.body.appendChild(container);
 
+function drawComboBtn(itemElement: HTMLElement, itemUuid: string) {
+    const comboBtn = createElementWithClass("button", "combo-btn");
+    comboBtn.textContent = "...";
+
+    const comboBtnOptions = createElementWithClass("div", "combo-btn-options");
+    comboBtnOptions.style.display = "none";
+
+    const comboRename = createElementWithClass("span", "combo-rename");
+    comboRename.textContent = "Rename";
+    comboRename.addEventListener("click", () => {
+        console.log("Rename clicked");
+        console.log(itemUuid);
+    });
+
+    const comboDelete = createElementWithClass("span", "combo-delete");
+    comboDelete.textContent = "Delete";
+    comboDelete.addEventListener("click", () => {
+        console.log("Delete clicked");
+        console.log(itemUuid);
+    });
+
+    comboBtnOptions.appendChild(comboRename);
+    comboBtnOptions.appendChild(comboDelete);
+
+    comboBtn.appendChild(comboBtnOptions);
+
+    comboBtn.addEventListener("click", (event) => {
+        if (comboBtnOptions.style.display === "none") {
+            comboBtnOptions.style.display = "block";
+        } else {
+            comboBtnOptions.style.display = "none";
+        }
+        event.stopPropagation(); // Or else click will bubble up and menu will immediately close
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!comboBtn.contains(event.target as Node)) {
+            comboBtnOptions.style.display = "none";
+        }
+    });
+
+    itemElement.appendChild(comboBtn);
+}
+
 function drawSideArea() {
     const sideArea = createElementWithClass("div", "side-area");
 
@@ -103,12 +147,17 @@ function drawSideArea() {
             "area-and-child-container"
         );
         const areaElement = createElementWithClass("div", "area");
-        const areaText = createElementWithClass("span", "area-text");
         areaElement.dataset.uuid = area.uuid;
+
+        const areaText = createElementWithClass("span", "area-text");
         areaText.textContent = area.title;
+
         areasProjectsArea.appendChild(areaAndChildContainer);
         areaAndChildContainer.appendChild(areaElement);
         areaElement.appendChild(areaText);
+
+        drawComboBtn(areaElement, area.uuid);
+
         getProjects().forEach((project) => {
             if (project.parentUuid === area.uuid) {
                 const projectElement = createElementWithClass("div", "project");

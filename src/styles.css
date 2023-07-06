@@ -72,6 +72,7 @@ body {
 .side-area .area {
     /* padding: 1rem 0; */
     /* border-bottom: 1px solid var(--grey-color); */
+    align-items: center;
     font-weight: 600;
 }
 
@@ -188,9 +189,11 @@ body {
 .item-exp-start-date,
 .item-exp-due-date,
 .item-exp-parent {
-    border: 0.1px dotted var(--grey-color);
-    outline: 0.1px dotted var(--grey-color);
+    border: 0.1px solid var(--grey-color);
+    outline: 0.1px solid var(--grey-color);
     color: var(--grey-color);
+    border-radius: 10px;
+    padding: 0.1rem 0.3rem;
 }
 
 .item-exp-parent {
@@ -250,4 +253,30 @@ body {
     /* color: var(--text-color); */
     border: 0.1px dotted var(--grey-color);
     outline: 0.1px dotted var(--grey-color);
+}
+
+.combo-btn {
+    background: none;
+    border: none;
+    /* font-weight: bold; */
+    font-size: 1.1rem;
+    position: relative;
+}
+
+.combo-btn-options {
+    position: absolute;
+    right: -100%;
+    top: 50%;
+    background: white;
+    padding: 0.2rem 1rem;
+    margin: 1rem;
+    line-height: 1.8;
+    border: 1px solid var(--grey-color);
+    box-shadow: 0 0 5px var(--grey-color);
+    border-radius: 5px;
+}
+
+.combo-btn-options > * {
+    display: flex;
+    font-size: 1.1rem;
 }
