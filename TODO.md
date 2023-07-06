@@ -2,7 +2,6 @@
 
 ## Not Done:
 
--   Clicking outside of an expanded todo should collapse it
 -   Add button for creating new todos in main area
 -   New todos should be added to the inbox,
     -   or today if in today view
@@ -98,3 +97,4 @@
         -   Delete button
         -   Projects/Areas button
     -   Clicking on an expanded todo should edit what is clicked on
+    -   Clicking outside of an expanded todo should collapse it

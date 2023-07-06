@@ -6,6 +6,7 @@ import {
     getAreasAndProjects,
     TodoOrProject,
     Todo,
+    createTodo,
 } from "../data/monolith";
 
 import { isToday, startOfDay, isPast } from "date-fns";
@@ -181,6 +182,55 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     });
 }
 
+function drawCreateTodoBtn(
+    mainArea: Element,
+    context?: "inbox" | "today" | "parent"
+) {
+    const createTodoBtn = createElementWithClass(
+        "button",
+        "create-todo-button"
+    );
+
+    createTodoBtn.textContent = "+";
+
+    // if (context) {
+    //     createTodoBtn.classList.add(context);
+    // }
+
+    mainArea.appendChild(createTodoBtn);
+
+    createTodoBtn.addEventListener("click", () => {
+        console.log(mainArea);
+        console.log(context);
+        let inInbox = undefined;
+        let startDate = undefined;
+        let parentUuid = undefined;
+
+        if (context === "inbox") {
+            inInbox = true;
+        } else if (context === "today") {
+            startDate = startOfDay(new Date());
+        } else if (context === "parent") {
+            parentUuid = (mainArea as HTMLElement).dataset.uuid;
+        } else {
+            console.error("Where's muh context?");
+        }
+
+        const newTodo = createTodo(
+            "New To-Do",
+            "",
+            false,
+            undefined,
+            startDate,
+            false,
+            parentUuid,
+            inInbox
+        );
+
+        drawMainItem(newTodo, mainArea);
+    });
+}
+
 function drawMainItem(item: TodoOrProject, mainArea: Element) {
     let itemElement = mainArea.querySelector(
         `[data-uuid="${item.uuid}"]`
@@ -191,7 +241,13 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
 
         itemElement.dataset.uuid = item.uuid;
 
-        mainArea.appendChild(itemElement);
+        const newTodoBtn = document.querySelector(".create-todo-button");
+
+        if (newTodoBtn) {
+            mainArea.insertBefore(itemElement, newTodoBtn);
+        } else {
+            mainArea.appendChild(itemElement);
+        }
     }
 
     putCheckboxOnMainItemEle(item, itemElement);
@@ -528,12 +584,11 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     putParentOnExpanded(item, row4);
 }
 
-// TODO: Make a create button
-
 export {
     makeOrClearMainArea,
     drawMainItem,
     drawExpandedTodo,
     createElementWithClass,
     drawSideArea,
+    drawCreateTodoBtn,
 };

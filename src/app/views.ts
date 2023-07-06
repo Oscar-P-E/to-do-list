@@ -2,6 +2,7 @@ import {
     createElementWithClass,
     makeOrClearMainArea,
     drawMainItem,
+    drawCreateTodoBtn,
 } from "./elements";
 
 import { getTodos, getTodosAndProjects, Area, Project } from "../data/monolith";
@@ -28,6 +29,8 @@ function drawInbox() {
     filteredItems.forEach((todo) => {
         drawMainItem(todo, mainArea);
     });
+
+    drawCreateTodoBtn(mainArea, "inbox");
 }
 
 function drawToday() {
@@ -54,6 +57,8 @@ function drawToday() {
     filteredItems.forEach((item) => {
         drawMainItem(item, mainArea);
     });
+
+    drawCreateTodoBtn(mainArea, "today");
 }
 
 function drawScheduled() {
@@ -140,6 +145,8 @@ function drawAreaAsMain(area: Area) {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
+    (mainArea as HTMLElement).dataset.uuid = area.uuid;
+
     const filteredItems = getTodosAndProjects().filter((item) => {
         return !item.isDone && item.parentUuid === area.uuid;
     });
@@ -147,6 +154,8 @@ function drawAreaAsMain(area: Area) {
     filteredItems.forEach((item) => {
         drawMainItem(item, mainArea);
     });
+
+    drawCreateTodoBtn(mainArea, "parent");
 }
 
 function drawProjectAsMain(project: Project) {
@@ -162,6 +171,8 @@ function drawProjectAsMain(project: Project) {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
+    (mainArea as HTMLElement).dataset.uuid = project.uuid;
+
     const filteredItems = getTodosAndProjects().filter((item) => {
         return !item.isDone && item.parentUuid === project.uuid;
     });
@@ -169,6 +180,8 @@ function drawProjectAsMain(project: Project) {
     filteredItems.forEach((item) => {
         drawMainItem(item, mainArea);
     });
+
+    drawCreateTodoBtn(mainArea, "parent");
 }
 
 type ViewFunction = () => void;
