@@ -34,6 +34,8 @@ function clickOutsideExpanded(
     const todo = getTodo(uuid);
     if (!todo) return;
 
+    // expanded.remove();
+
     drawMainItem(todo, mainArea);
 }
 

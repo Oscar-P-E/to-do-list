@@ -182,21 +182,25 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
 }
 
 function drawMainItem(item: TodoOrProject, mainArea: Element) {
-    const itemElement = createElementWithClass("div", item.type);
+    let itemElement = mainArea.querySelector(
+        `[data-uuid="${item.uuid}"]`
+    ) as HTMLElement;
 
-    if (itemElement) {
+    if (!itemElement) {
+        itemElement = createElementWithClass("div", item.type);
+
         itemElement.dataset.uuid = item.uuid;
 
         mainArea.appendChild(itemElement);
-
-        putCheckboxOnMainItemEle(item, itemElement);
-        putTitleOnMainItemEle(item, itemElement);
-        putPriorityOnMainItemEle(item, itemElement);
-        putParentOnMainItemEle(item, itemElement);
-        putDueOnMainItemEle(item, itemElement);
-        putNoteIndicatorOnMainItemEle(item, itemElement);
-        putDeleteOnMainItemEle(item, itemElement);
     }
+
+    putCheckboxOnMainItemEle(item, itemElement);
+    putTitleOnMainItemEle(item, itemElement);
+    putPriorityOnMainItemEle(item, itemElement);
+    putParentOnMainItemEle(item, itemElement);
+    putDueOnMainItemEle(item, itemElement);
+    putNoteIndicatorOnMainItemEle(item, itemElement);
+    putDeleteOnMainItemEle(item, itemElement);
 }
 
 function putCheckboxOnMainItemEle(item: TodoOrProject, itemElement: Element) {
