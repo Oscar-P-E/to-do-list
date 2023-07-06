@@ -22,7 +22,17 @@ function createElementWithClass(type: string, className: string) {
 const container = createElementWithClass("div", "container");
 document.body.appendChild(container);
 
-function drawComboBtn(itemElement: HTMLElement, itemUuid: string) {
+// Keep track of the currently expanded comboBtn and its options
+let currentExpandedComboBtn: HTMLElement | null = null;
+let currentExpandedComboBtnOptions: HTMLElement | null = null;
+
+function drawComboBtn(
+    itemElement: HTMLElement,
+    itemUuid: string,
+    itemText: HTMLElement
+) {
+    const item = getAreasAndProjects().find((item) => item.uuid === itemUuid);
+
     const comboBtn = createElementWithClass("button", "combo-btn");
     comboBtn.textContent = "...";
 
@@ -34,6 +44,45 @@ function drawComboBtn(itemElement: HTMLElement, itemUuid: string) {
     comboRename.addEventListener("click", () => {
         console.log("Rename clicked");
         console.log(itemUuid);
+
+        itemText.contentEditable = "true";
+
+        itemText.addEventListener("focus", handleFocus);
+        itemText.addEventListener("blur", handleBlur);
+        itemText.addEventListener("keydown", handleKeydown);
+
+        itemText.focus();
+
+        function handleFocus() {
+            itemText.classList.add("editable");
+
+            const range = document.createRange();
+            range.selectNodeContents(itemText);
+
+            const sel = window.getSelection();
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+
+        function handleBlur() {
+            if (item && itemText.textContent) {
+                item.title = itemText.textContent;
+            } else if (item && !itemText.textContent) {
+                itemText.textContent = item.title;
+            }
+
+            itemText.classList.remove("editable");
+            itemText.contentEditable = "false";
+        }
+
+        function handleKeydown(e: KeyboardEvent) {
+            if (e.key === "Enter" && !e.shiftKey) {
+                itemText.blur();
+                e.preventDefault(); // Prevent unwanted newline
+            }
+        }
     });
 
     const comboDelete = createElementWithClass("span", "combo-delete");
@@ -49,10 +98,28 @@ function drawComboBtn(itemElement: HTMLElement, itemUuid: string) {
     comboBtn.appendChild(comboBtnOptions);
 
     comboBtn.addEventListener("click", (event) => {
+        // If another comboBtn is currently expanded, close it
+        if (
+            currentExpandedComboBtn &&
+            currentExpandedComboBtnOptions &&
+            comboBtn !== currentExpandedComboBtn
+        ) {
+            currentExpandedComboBtnOptions.style.display = "none";
+        }
+
+        // Toggle the display of the current comboBtn's options
         if (comboBtnOptions.style.display === "none") {
             comboBtnOptions.style.display = "block";
+            // Update the currently expanded comboBtn and its options
+            currentExpandedComboBtn = comboBtn;
+            currentExpandedComboBtnOptions = comboBtnOptions;
         } else {
             comboBtnOptions.style.display = "none";
+            // If the current comboBtn is being closed, clear the currently expanded comboBtn and its options
+            if (comboBtn === currentExpandedComboBtn) {
+                currentExpandedComboBtn = null;
+                currentExpandedComboBtnOptions = null;
+            }
         }
         event.stopPropagation(); // Or else click will bubble up and menu will immediately close
     });
@@ -156,7 +223,7 @@ function drawSideArea() {
         areaAndChildContainer.appendChild(areaElement);
         areaElement.appendChild(areaText);
 
-        drawComboBtn(areaElement, area.uuid);
+        drawComboBtn(areaElement, area.uuid, areaText);
 
         getProjects().forEach((project) => {
             if (project.parentUuid === area.uuid) {
@@ -169,6 +236,8 @@ function drawSideArea() {
                 projectText.textContent = project.title;
                 areaAndChildContainer.appendChild(projectElement);
                 projectElement.appendChild(projectText);
+
+                // drawComboBtn(projectElement, project.uuid);
             }
         });
     });
@@ -302,9 +371,13 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
     putCheckboxOnMainItemEle(item, itemElement);
     putTitleOnMainItemEle(item, itemElement);
     putPriorityOnMainItemEle(item, itemElement);
+    putNoteIndicatorOnMainItemEle(item, itemElement);
+
+    const splitter = createElementWithClass("span", "splitter-span");
+    itemElement.appendChild(splitter);
+
     putParentOnMainItemEle(item, itemElement);
     putDueOnMainItemEle(item, itemElement);
-    putNoteIndicatorOnMainItemEle(item, itemElement);
     putDeleteOnMainItemEle(item, itemElement);
 }
 
@@ -364,7 +437,7 @@ function putNoteIndicatorOnMainItemEle(
 ) {
     if (item.notes && item.notes !== "") {
         const itemNote = createElementWithClass("span", "item-note");
-        itemNote.textContent = "⎘";
+        itemNote.textContent = "›";
         itemElement.appendChild(itemNote);
     }
 }
@@ -381,7 +454,6 @@ function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
     itemText.addEventListener("focus", handleFocus);
     itemText.addEventListener("blur", handleBlur);
     itemText.addEventListener("keydown", handleKeydown);
-    //here
 
     function handleFocus() {
         itemText.classList.add("editable");
@@ -408,7 +480,7 @@ function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
     function handleKeydown(e: KeyboardEvent) {
         if (e.key === "Enter" && !e.shiftKey) {
             itemText.blur();
-            e.preventDefault(); // Prevent unwated newline
+            e.preventDefault(); // Prevent unwanted newline
         }
     }
 }
@@ -640,4 +712,5 @@ export {
     createElementWithClass,
     drawSideArea,
     drawCreateTodoBtn,
+    drawComboBtn,
 };

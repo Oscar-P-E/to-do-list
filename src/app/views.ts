@@ -3,6 +3,7 @@ import {
     makeOrClearMainArea,
     drawMainItem,
     drawCreateTodoBtn,
+    drawComboBtn,
 } from "./elements";
 
 import { getTodos, getTodosAndProjects, Area, Project } from "../data/monolith";
@@ -147,6 +148,8 @@ function drawAreaAsMain(area: Area) {
 
     (mainArea as HTMLElement).dataset.uuid = area.uuid;
 
+    drawComboBtn(mainAreaHeading, area.uuid, mainAreaHeadingText);
+
     const filteredItems = getTodosAndProjects().filter((item) => {
         return !item.isDone && item.parentUuid === area.uuid;
     });
@@ -172,6 +175,8 @@ function drawProjectAsMain(project: Project) {
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
     (mainArea as HTMLElement).dataset.uuid = project.uuid;
+
+    drawComboBtn(mainAreaHeading, project.uuid, mainAreaHeadingText);
 
     const filteredItems = getTodosAndProjects().filter((item) => {
         return !item.isDone && item.parentUuid === project.uuid;
