@@ -2,22 +2,12 @@
 
 ## Not Done:
 
--   Make these elements and add event listeners for the following:
-    -   Clicking on a todo should expand it to show its details
-    -   Expanded todo should have:
-        -   Notes
-        -   Start date
-        -   Priority button
-        -   Delete button
-        -   Projects/Areas button
-    -   Clicking on an expanded todo should edit what is clicked on
-    -   Clicking outside of an expanded todo should collapse it
--   Clicking on a project should open it in the main area view
--   Add button for creating new todos and projects in main area
+-   Clicking outside of an expanded todo should collapse it
+-   Add button for creating new todos in main area
 -   New todos should be added to the inbox,
     -   or today if in today view
     -   or under parent project/area if in a project's/area's view (and marked as not in inbox)
--   Add button for creating new areas and projects in side area
+-   Add buttons for creating new areas and projects in side area
 -   Make a backend for saving data
 -   NOW you can work on the look of the app
 -   Look into adding animations (Theo's youtube video)
@@ -32,6 +22,7 @@
 -   Look into adding search functionality
     -   Look into adding dark mode toggle
 -   Look into alerts for a set time
+-   If notes has "Notes", and you save "Notes", it doesn't save "Notes" to the object, but rather leaves it unchanged, BUT if "Notes" was manually written in, then DO change the object.
 
 ## Done:
 
@@ -97,3 +88,13 @@
 -   Add parent display to main area items
 -   Add icon that shows item has notes
 -   Make app use default cursor to look less like a website
+-   Clicking on a project will open it in the main area view
+-   Make these elements and add event listeners for the following:
+    -   Clicking on a todo should expand it to show its details
+    -   Expanded todo should have:
+        -   Notes
+        -   Start date
+        -   Priority button
+        -   Delete button
+        -   Projects/Areas button
+    -   Clicking on an expanded todo should edit what is clicked on
