@@ -104,6 +104,14 @@ function handleMainAreaClick(mainArea: Element) {
         const target = e.target as HTMLElement | null;
 
         const expanded = mainArea.querySelector(".expanded") as HTMLElement;
+        // const comboBtnOptions = mainArea.querySelector(
+        //     ".combo-btn-options"
+        // ) as HTMLElement;
+
+        // if (comboBtnOptions) {
+        //     console.log("Clicked inside combo btn options");
+        //     return;
+        // }
 
         if (!expanded) {
             clickWhileNoExpanded(mainArea, target);

@@ -2,8 +2,8 @@ import {
     getProject,
     getAreas,
     getProjects,
-    getTodos,
-    getTodosAndProjects,
+    // getTodos,
+    // getTodosAndProjects,
     getAreasAndProjects,
     TodoOrProject,
     Todo,
@@ -13,7 +13,7 @@ import {
     deleteArea,
 } from "../data/monolith";
 
-import { isToday, startOfDay, isPast } from "date-fns";
+import { startOfDay, isPast } from "date-fns";
 
 import formatDistanceCustom from "./utils";
 import { drawInbox } from "./views";
@@ -234,7 +234,7 @@ function drawSideArea() {
     const inboxArea = createElementWithClass("div", "inbox-area");
     const inbox = createElementWithClass("div", "inbox");
     const inboxText = createElementWithClass("span", "inbox-text");
-    const inboxCount = createElementWithClass("span", "inbox-count");
+    // const inboxCount = createElementWithClass("span", "inbox-count");
 
     sideArea.appendChild(inboxArea);
 
@@ -244,16 +244,11 @@ function drawSideArea() {
 
     const today = createElementWithClass("div", "today");
     const todayText = createElementWithClass("span", "today-text");
-    const todayCount = createElementWithClass("span", "today-count");
+    // const todayCount = createElementWithClass("span", "today-count");
     const scheduled = createElementWithClass("div", "scheduled");
     const scheduledText = createElementWithClass("span", "scheduled-text");
-    const scheduledCount = createElementWithClass("span", "scheduled-count");
     const unscheduled = createElementWithClass("div", "unscheduled");
     const unscheduledText = createElementWithClass("span", "unscheduled-text");
-    const unscheduledCount = createElementWithClass(
-        "span",
-        "unscheduled-count"
-    );
 
     const logbookArea = createElementWithClass("div", "logbook-area");
     const logbook = createElementWithClass("div", "logbook");
@@ -274,29 +269,30 @@ function drawSideArea() {
         element.id = element.classList[0];
     });
 
-    [inboxCount, todayCount, scheduledCount, unscheduledCount].forEach(
-        (element) => {
-            element.classList.add("counter");
-        }
-    );
+    // [inboxCount, todayCount, scheduledCount, unscheduledCount].forEach(
+    //     (element) => {
+    //         element.classList.add("counter");
+    //     }
+    // );
 
     // Populate side area
 
     inboxText.textContent = "Inbox";
-    inboxCount.textContent = getTodos()
-        .filter((todo) => !todo.isDone && todo.inInbox)
-        .length.toString();
+    // inboxCount.textContent = getTodos()
+    //     .filter((todo) => !todo.isDone && todo.inInbox)
+    //     .length.toString();
 
     todayText.textContent = "Today";
-    todayCount.textContent = getTodosAndProjects()
-        .filter((item) => {
-            return (
-                !item.isDone &&
-                item.startDate &&
-                (isToday(startOfDay(item.startDate)) || isPast(item.startDate))
-            );
-        })
-        .length.toString();
+    // todayCount.textContent = getTodosAndProjects()
+    //     .filter((item) => {
+    //         return (
+    //             !item.isDone &&
+    //             item.startDate &&
+    //             (isToday(startOfDay(item.startDate)) || isPast(item.startDate))
+    //         );
+    //     })
+    //     .length.toString();
+
     scheduledText.textContent = "Scheduled";
     unscheduledText.textContent = "Unscheduled";
     logbookText.textContent = "Logbook";
@@ -305,16 +301,14 @@ function drawSideArea() {
 
     inboxArea.appendChild(inbox);
     inbox.appendChild(inboxText);
-    inbox.appendChild(inboxCount);
+    // inbox.appendChild(inboxCount);
     viewsArea.appendChild(today);
     today.appendChild(todayText);
-    today.appendChild(todayCount);
+    // today.appendChild(todayCount);
     viewsArea.appendChild(scheduled);
     scheduled.appendChild(scheduledText);
-    scheduled.appendChild(scheduledCount);
     viewsArea.appendChild(unscheduled);
     unscheduled.appendChild(unscheduledText);
-    unscheduled.appendChild(unscheduledCount);
     logbookArea.appendChild(logbook);
     logbook.appendChild(logbookText);
 }
@@ -339,14 +333,20 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         "delete-button"
     ) as HTMLButtonElement;
     deleteButton.textContent = "🗑️";
+
     itemElement.appendChild(deleteButton);
     deleteButton.addEventListener("click", () => {
         const confirmation = window.confirm(
             "Are you sure you want to delete this item?"
         );
         if (confirmation) {
-            itemElement.remove();
-            deleteTodo(item.uuid);
+            if (item.type === "todo") {
+                itemElement.remove();
+                deleteTodo(item.uuid);
+            } else {
+                deleteProject(item.uuid);
+                drawInbox();
+            }
         }
     });
 }
