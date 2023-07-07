@@ -153,6 +153,10 @@ function getArea(uuid: string): Area | undefined {
     return areas.find((area) => area.uuid === uuid);
 }
 
+function getItem(uuid: string): TodoOrProjectOrArea | undefined {
+    return getAllItems().find((item) => item.uuid === uuid);
+}
+
 function getTodos(): Todo[] {
     return todos;
 }
@@ -341,6 +345,7 @@ export {
     getTodo,
     getProject,
     getArea,
+    getItem,
     getTodos,
     getProjects,
     getAreas,

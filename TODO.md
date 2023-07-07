@@ -2,11 +2,6 @@
 
 ## Not Done:
 
--   Add button for creating new todos in main area
--   New todos should be added to the inbox,
-    -   or today if in today view
-    -   or under parent project/area if in a project's/area's view (and marked as not in inbox)
--   Add buttons for creating new areas and projects in side area
 -   Make a backend for saving data
 -   NOW you can work on the look of the app
 -   Look into adding animations (Theo's youtube video)
@@ -98,3 +93,9 @@
         -   Projects/Areas button
     -   Clicking on an expanded todo should edit what is clicked on
     -   Clicking outside of an expanded todo should collapse it
+-   Add button for creating new todos in main area
+-   New todos should be added to the inbox,
+    -   or today if in today view
+    -   or under parent project/area if in a project's/area's view (and marked as not in inbox)
+-   Add buttons for creating new areas and projects in side area
+-   Make a delete button for proj/areas

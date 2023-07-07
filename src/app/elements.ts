@@ -1,4 +1,5 @@
 import {
+    getProject,
     getAreas,
     getProjects,
     getTodos,
@@ -7,11 +8,15 @@ import {
     TodoOrProject,
     Todo,
     createTodo,
+    deleteTodo,
+    deleteProject,
+    deleteArea,
 } from "../data/monolith";
 
 import { isToday, startOfDay, isPast } from "date-fns";
 
 import formatDistanceCustom from "./utils";
+import { drawInbox } from "./views";
 
 function createElementWithClass(type: string, className: string) {
     const element = document.createElement(type);
@@ -32,6 +37,10 @@ function drawComboBtn(
     itemText: HTMLElement
 ) {
     const item = getAreasAndProjects().find((item) => item.uuid === itemUuid);
+
+    if (!item) return;
+
+    const type = item.type;
 
     const comboBtn = createElementWithClass("button", "combo-btn");
     comboBtn.textContent = "...";
@@ -90,6 +99,36 @@ function drawComboBtn(
     comboDelete.addEventListener("click", () => {
         console.log("Delete clicked");
         console.log(itemUuid);
+
+        const confirmation = window.confirm(
+            "Are you sure you want to delete this item? All sub-items will also be deleted. This cannot be undone"
+        );
+        if (confirmation) {
+            const areasProjectsArea = document.querySelector(
+                ".areas-projects-area"
+            ) as HTMLElement;
+
+            const mainArea = document.querySelector(
+                ".main-area"
+            ) as HTMLElement;
+
+            if (type === "area") {
+                itemElement.remove();
+                deleteArea(itemUuid);
+                populateAreasProjectsArea(areasProjectsArea);
+                // if ()
+            } else if (type === "project") {
+                itemElement.remove();
+                deleteProject(itemUuid);
+                populateAreasProjectsArea(areasProjectsArea);
+            } else {
+                console.error("Unknown type");
+            }
+
+            if (itemUuid === mainArea.dataset.uuid) {
+                drawInbox();
+            }
+        }
     });
 
     comboBtnOptions.appendChild(comboRename);
@@ -131,6 +170,60 @@ function drawComboBtn(
     });
 
     itemElement.appendChild(comboBtn);
+}
+
+function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
+    if (areasProjectsArea.children.length > 0) {
+        while (areasProjectsArea.firstChild) {
+            areasProjectsArea.removeChild(areasProjectsArea.firstChild);
+        }
+    }
+
+    getAreas().forEach((area) => {
+        const areaAndChildContainer = createElementWithClass(
+            "div",
+            "area-and-child-container"
+        );
+        const areaElement = createElementWithClass("div", "area");
+        areaElement.dataset.uuid = area.uuid;
+
+        const areaText = createElementWithClass("span", "area-text");
+        areaText.textContent = area.title;
+
+        areasProjectsArea.appendChild(areaAndChildContainer);
+        areaAndChildContainer.appendChild(areaElement);
+        areaElement.appendChild(areaText);
+
+        drawComboBtn(areaElement, area.uuid, areaText);
+
+        getProjects().forEach((project) => {
+            if (project.parentUuid === area.uuid) {
+                const projectElement = createElementWithClass("div", "project");
+                const projectText = createElementWithClass(
+                    "span",
+                    "project-text"
+                );
+                projectElement.dataset.uuid = project.uuid;
+                projectText.textContent = project.title;
+                areaAndChildContainer.appendChild(projectElement);
+                projectElement.appendChild(projectText);
+
+                drawComboBtn(projectElement, project.uuid, projectText);
+            }
+        });
+    });
+
+    getProjects().forEach((project) => {
+        if (!project.parentUuid) {
+            const projectElement = createElementWithClass("div", "project");
+            const projectText = createElementWithClass("span", "project-text");
+            projectElement.dataset.uuid = project.uuid;
+            projectText.textContent = project.title;
+            areasProjectsArea.appendChild(projectElement);
+            projectElement.appendChild(projectText);
+            drawComboBtn(projectElement, project.uuid, projectText);
+        }
+    });
 }
 
 function drawSideArea() {
@@ -208,50 +301,7 @@ function drawSideArea() {
     unscheduledText.textContent = "Unscheduled";
     logbookText.textContent = "Logbook";
 
-    getAreas().forEach((area) => {
-        const areaAndChildContainer = createElementWithClass(
-            "div",
-            "area-and-child-container"
-        );
-        const areaElement = createElementWithClass("div", "area");
-        areaElement.dataset.uuid = area.uuid;
-
-        const areaText = createElementWithClass("span", "area-text");
-        areaText.textContent = area.title;
-
-        areasProjectsArea.appendChild(areaAndChildContainer);
-        areaAndChildContainer.appendChild(areaElement);
-        areaElement.appendChild(areaText);
-
-        drawComboBtn(areaElement, area.uuid, areaText);
-
-        getProjects().forEach((project) => {
-            if (project.parentUuid === area.uuid) {
-                const projectElement = createElementWithClass("div", "project");
-                const projectText = createElementWithClass(
-                    "span",
-                    "project-text"
-                );
-                projectElement.dataset.uuid = project.uuid;
-                projectText.textContent = project.title;
-                areaAndChildContainer.appendChild(projectElement);
-                projectElement.appendChild(projectText);
-
-                // drawComboBtn(projectElement, project.uuid);
-            }
-        });
-    });
-
-    getProjects().forEach((project) => {
-        if (!project.parentUuid) {
-            const projectElement = createElementWithClass("div", "project");
-            const projectText = createElementWithClass("span", "project-text");
-            projectElement.dataset.uuid = project.uuid;
-            projectText.textContent = project.title;
-            areasProjectsArea.appendChild(projectElement);
-            projectElement.appendChild(projectText);
-        }
-    });
+    populateAreasProjectsArea(areasProjectsArea);
 
     inboxArea.appendChild(inbox);
     inbox.appendChild(inboxText);
@@ -296,6 +346,7 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
         );
         if (confirmation) {
             itemElement.remove();
+            deleteTodo(item.uuid);
         }
     });
 }
@@ -421,9 +472,7 @@ function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
 function putParentOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     if (item.parentUuid) {
         const itemParent = createElementWithClass("span", "item-parent");
-        const parent = getProjects().find(
-            (project) => project.uuid === item.parentUuid
-        );
+        const parent = getProject(item.parentUuid);
         if (parent) {
             itemParent.textContent = `⤷ ${parent.title}`;
             itemElement.appendChild(itemParent);
@@ -506,7 +555,6 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
         }
     }
 
-    //here
     function handleBlur() {
         item.title = itemNotes.textContent || "";
         itemNotes.classList.remove("editable");
@@ -713,4 +761,5 @@ export {
     drawSideArea,
     drawCreateTodoBtn,
     drawComboBtn,
+    populateAreasProjectsArea,
 };
