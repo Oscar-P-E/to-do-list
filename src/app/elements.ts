@@ -2,7 +2,7 @@ import {
     getProject,
     getAreas,
     getProjects,
-    // getTodos,
+    getTodos,
     // getTodosAndProjects,
     getAreasAndProjects,
     TodoOrProject,
@@ -78,6 +78,15 @@ function drawComboBtn(
         function handleBlur() {
             if (item && itemText.textContent) {
                 item.title = itemText.textContent;
+
+                type === "area" &&
+                    localStorage.setItem("areas", JSON.stringify(getAreas()));
+
+                type === "project" &&
+                    localStorage.setItem(
+                        "projects",
+                        JSON.stringify(getProjects())
+                    );
             } else if (item && !itemText.textContent) {
                 itemText.textContent = item.title;
             }
@@ -520,6 +529,11 @@ function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
     function handleBlur() {
         if (itemText.textContent) {
             item.title = itemText.textContent;
+
+            item.type === "todo" &&
+                localStorage.setItem("todos", JSON.stringify(getTodos()));
+            item.type === "project" &&
+                localStorage.setItem("projects", JSON.stringify(getProjects()));
         } else {
             itemText.textContent = item.title;
         }
@@ -556,8 +570,14 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
     }
 
     function handleBlur() {
-        item.title = itemNotes.textContent || "";
+        if (itemNotes.textContent === "Notes") {
+            itemNotes.textContent = "";
+        }
+
+        item.notes = itemNotes.textContent || "";
         itemNotes.classList.remove("editable");
+
+        localStorage.setItem("todos", JSON.stringify(getTodos()));
     }
 
     function handleKeydown(event: KeyboardEvent) {
@@ -571,7 +591,7 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
         itemNotes.textContent = "Notes";
         itemNotes.classList.add("empty-notes");
     } else {
-        itemNotes.textContent = item.notes;
+        itemNotes.textContent = item.notes; //here
     }
 
     itemElement.appendChild(itemNotes);
@@ -747,7 +767,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     putPriorityOnExpanded(item, row1);
     putDeleteOnMainItemEle(item, row1);
 
-    putNotesOnExpanded(item, row2); // TODO: make this an editable textarea
+    putNotesOnExpanded(item, row2);
     putStartDateOnExpanded(item, row3);
     putDueDateOnExpanded(item, row4);
     putParentOnExpanded(item, row4);
