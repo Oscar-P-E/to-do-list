@@ -3,11 +3,12 @@ import {
     getAreas,
     getProjects,
     getTodos,
-    // getTodosAndProjects,
     getAreasAndProjects,
     TodoOrProject,
     Todo,
     createTodo,
+    createArea,
+    createProject,
     deleteTodo,
     deleteProject,
     deleteArea,
@@ -235,6 +236,58 @@ function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
     });
 }
 
+function drawCreateAreaProjectBtn(
+    sideArea: HTMLElement,
+    areasProjectsArea: HTMLElement
+) {
+    const createAreaProjectBtn = createElementWithClass(
+        "button",
+        "create-area-project-btn"
+    );
+
+    createAreaProjectBtn.textContent = "+";
+
+    sideArea.appendChild(createAreaProjectBtn);
+
+    const createOptions = createElementWithClass("div", "create-options");
+    createOptions.style.display = "none";
+
+    const optionArea = createElementWithClass("button", "option-area");
+    optionArea.textContent = "Area";
+    optionArea.addEventListener("click", () => {
+        createArea("New Area");
+        populateAreasProjectsArea(areasProjectsArea);
+    });
+
+    const optionProject = createElementWithClass("button", "option-project");
+    optionProject.textContent = "Project";
+    optionProject.addEventListener("click", () => {
+        createProject("New Project");
+        populateAreasProjectsArea(areasProjectsArea);
+    });
+
+    createAreaProjectBtn.addEventListener("click", (event) => {
+        if (createOptions.style.display === "none") {
+            createOptions.style.display = "flex";
+        } else {
+            createOptions.style.display = "none";
+        }
+
+        event.stopPropagation();
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!createAreaProjectBtn.contains(event.target as Node)) {
+            createOptions.style.display = "none";
+        }
+    });
+
+    createOptions.appendChild(optionArea);
+    createOptions.appendChild(optionProject);
+
+    createAreaProjectBtn.appendChild(createOptions);
+}
+
 function drawSideArea() {
     const sideArea = createElementWithClass("div", "side-area");
 
@@ -320,6 +373,8 @@ function drawSideArea() {
     unscheduled.appendChild(unscheduledText);
     logbookArea.appendChild(logbook);
     logbook.appendChild(logbookText);
+
+    drawCreateAreaProjectBtn(sideArea, areasProjectsArea);
 }
 
 // Main Area
@@ -371,15 +426,9 @@ function drawCreateTodoBtn(
 
     createTodoBtn.textContent = "+";
 
-    // if (context) {
-    //     createTodoBtn.classList.add(context);
-    // }
-
     mainArea.appendChild(createTodoBtn);
 
     createTodoBtn.addEventListener("click", () => {
-        console.log(mainArea);
-        console.log(context);
         let inInbox = undefined;
         let startDate = undefined;
         let parentUuid = undefined;
@@ -591,7 +640,7 @@ function putNotesOnExpanded(item: Todo, itemElement: Element) {
         itemNotes.textContent = "Notes";
         itemNotes.classList.add("empty-notes");
     } else {
-        itemNotes.textContent = item.notes; //here
+        itemNotes.textContent = item.notes;
     }
 
     itemElement.appendChild(itemNotes);

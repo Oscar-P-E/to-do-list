@@ -2,7 +2,8 @@
 
 ## Not Done:
 
--   Make a backend for saving data
+-   Add create project/area button
+-   Add change parent functionality for projects
 -   NOW you can work on the look of the app
 -   Look into adding animations (Theo's youtube video)
 -   Create some kind of default sort and possibly a sort button
@@ -16,7 +17,6 @@
 -   Look into adding search functionality
     -   Look into adding dark mode toggle
 -   Look into alerts for a set time
--   If notes has "Notes", and you save "Notes", it doesn't save "Notes" to the object, but rather leaves it unchanged, BUT if "Notes" was manually written in, then DO change the object.
 
 ## Done:
 
@@ -99,3 +99,4 @@
     -   or under parent project/area if in a project's/area's view (and marked as not in inbox)
 -   Add buttons for creating new areas and projects in side area
 -   Make a delete button for proj/areas
+-   Make a backend for saving data
