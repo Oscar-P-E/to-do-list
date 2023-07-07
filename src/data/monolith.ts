@@ -399,14 +399,14 @@ export {
 
 // // Areas
 // const homeArea = createArea("Home");
-// const workArea = createArea("Work");
+// // const workArea = createArea("Work");
 
-// // Projects
-// const homeProject = createProject(
+// // // Projects
+// createProject(
 //     "Home Project",
 //     "This is a home project",
-//     todayAfternoon,
-//     todayMorning,
+//     undefined,
+//     undefined,
 //     false,
 //     homeArea.uuid
 // );
