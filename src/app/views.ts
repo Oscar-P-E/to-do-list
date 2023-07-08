@@ -48,7 +48,7 @@ function drawToday() {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return (
             !item.isDone &&
             item.startDate &&
@@ -76,7 +76,7 @@ function drawScheduled() {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return !item.isDone && item.startDate;
     });
 
@@ -98,7 +98,7 @@ function drawUnscheduled() {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return (
             !item.isDone &&
             !item.startDate &&
@@ -125,7 +125,7 @@ function drawLogbook() {
     mainArea.appendChild(mainAreaHeading);
     mainAreaHeading.appendChild(mainAreaHeadingText);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return item.isDone;
     });
 
@@ -151,7 +151,7 @@ function drawAreaAsMain(area: Area) {
 
     drawComboBtn(mainAreaHeading, area.uuid, mainAreaHeadingText);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return !item.isDone && item.parentUuid === area.uuid;
     });
 
@@ -181,7 +181,7 @@ function drawProjectAsMain(project: Project) {
 
     drawProjectParentSelector(project, mainAreaHeading);
 
-    const filteredItems = getTodosAndProjects().filter((item) => {
+    const filteredItems = getTodos().filter((item) => {
         return !item.isDone && item.parentUuid === project.uuid;
     });
 

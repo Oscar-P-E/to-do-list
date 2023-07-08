@@ -288,6 +288,7 @@ body {
 .combo-btn-options > * {
     display: flex;
     font-size: 1.1rem;
+    white-space: nowrap;
 }
 
 .side-area .project {
@@ -314,7 +315,7 @@ body {
 .create-options {
     position: absolute;
     bottom: 95%;
-    right: -33%;
+    right: -75%;
     flex-direction: column;
     background: white;
     padding: 0.2rem 1rem;
@@ -330,7 +331,8 @@ body {
     background: none;
     border: none;
     line-height: 1.8;
-    color: var(--grey-color);
+    /* color: var(--grey-color); */
+    white-space: nowrap;
 }
 
 .parent-selector {

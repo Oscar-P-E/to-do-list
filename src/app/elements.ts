@@ -4,7 +4,6 @@ import {
     getProjects,
     getTodos,
     getAreasAndProjects,
-    TodoOrProject,
     Todo,
     Project,
     createTodo,
@@ -110,12 +109,47 @@ function drawComboBtn(
     const comboBtnOptions = createElementWithClass("div", "combo-btn-options");
     comboBtnOptions.style.display = "none";
 
+    const comboComplete = createElementWithClass("span", "combo-complete");
+    comboComplete.textContent = "Mark Done";
+
+    comboComplete.addEventListener("click", () => {
+        if (type !== "project") return;
+
+        const confirm = window.confirm(
+            "Mark project and all subtasks as done?"
+        );
+        if (confirm) {
+            const project = getProject(itemUuid);
+            if (project) {
+                project.isDone = true;
+
+                const subtasks = getTodos().filter(
+                    (todo) => todo.parentUuid === project.uuid
+                );
+
+                subtasks.forEach((subtask) => {
+                    subtask.isDone = true;
+                });
+            }
+
+            localStorage.setItem("projects", JSON.stringify(getProjects()));
+            localStorage.setItem("todos", JSON.stringify(getTodos()));
+
+            drawAreasProjectsArea();
+
+            const mainArea = document.querySelector(
+                ".main-area"
+            ) as HTMLElement;
+
+            if (mainArea.dataset.uuid === item.uuid) {
+                drawInbox();
+            }
+        }
+    });
+
     const comboRename = createElementWithClass("span", "combo-rename");
     comboRename.textContent = "Rename";
     comboRename.addEventListener("click", () => {
-        console.log("Rename clicked");
-        console.log(itemUuid);
-
         itemText.contentEditable = "true";
 
         itemText.addEventListener("focus", handleFocus);
@@ -178,9 +212,6 @@ function drawComboBtn(
     const comboDelete = createElementWithClass("span", "combo-delete");
     comboDelete.textContent = "Delete";
     comboDelete.addEventListener("click", () => {
-        console.log("Delete clicked");
-        console.log(itemUuid);
-
         const confirmation = window.confirm(
             "Are you sure you want to delete this item? All sub-items will also be deleted. This cannot be undone"
         );
@@ -207,6 +238,7 @@ function drawComboBtn(
         }
     });
 
+    type === "project" && comboBtnOptions.appendChild(comboComplete);
     comboBtnOptions.appendChild(comboRename);
     comboBtnOptions.appendChild(comboDelete);
 
@@ -330,14 +362,14 @@ function drawCreateAreaProjectBtn(sideArea: HTMLElement) {
     createOptions.style.display = "none";
 
     const optionArea = createElementWithClass("button", "option-area");
-    optionArea.textContent = "Area";
+    optionArea.textContent = "New Area";
     optionArea.addEventListener("click", () => {
         createArea("New Area");
         drawAreasProjectsArea();
     });
 
     const optionProject = createElementWithClass("button", "option-project");
-    optionProject.textContent = "Project";
+    optionProject.textContent = "New Project";
     optionProject.addEventListener("click", () => {
         createProject("New Project");
         drawAreasProjectsArea();
