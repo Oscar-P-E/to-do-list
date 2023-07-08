@@ -497,6 +497,26 @@ function putCheckboxOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     ) as HTMLInputElement;
     itemCheckbox.type = "checkbox";
     itemElement.appendChild(itemCheckbox);
+
+    if (item.isDone) {
+        itemCheckbox.checked = true;
+        itemElement.classList.add("done");
+    }
+
+    itemCheckbox.addEventListener("change", () => {
+        if (itemCheckbox.checked) {
+            itemElement.classList.add("done");
+            item.isDone = true;
+            itemElement.remove();
+        } else {
+            itemElement.classList.remove("done");
+            item.isDone = false;
+        }
+        item.type === "project" &&
+            localStorage.setItem("projects", JSON.stringify(getProjects()));
+        item.type === "todo" &&
+            localStorage.setItem("todos", JSON.stringify(getTodos()));
+    });
 }
 
 function putTitleOnMainItemEle(item: TodoOrProject, itemElement: Element) {

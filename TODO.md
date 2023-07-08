@@ -2,7 +2,7 @@
 
 ## Not Done:
 
--   Add create project/area button
+-   Make checkboxes functional
 -   Add change parent functionality for projects
 -   NOW you can work on the look of the app
 -   Look into adding animations (Theo's youtube video)
@@ -100,3 +100,4 @@
 -   Add buttons for creating new areas and projects in side area
 -   Make a delete button for proj/areas
 -   Make a backend for saving data
+-   Add create project/area button

@@ -103,6 +103,10 @@ function handleMainAreaClick(mainArea: Element) {
     mainArea.addEventListener("click", (e) => {
         const target = e.target as HTMLElement | null;
 
+        if (target instanceof HTMLInputElement && target.type === "checkbox") {
+            return;
+        }
+
         const expanded = mainArea.querySelector(".expanded") as HTMLElement;
         // const comboBtnOptions = mainArea.querySelector(
         //     ".combo-btn-options"
