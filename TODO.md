@@ -2,8 +2,8 @@
 
 ## Not Done:
 
--   Make checkboxes functional
--   Add change parent functionality for projects
+-   Make it so that projects can be marked as completed
+-   Make marking project as completed also mark all children as completed
 -   NOW you can work on the look of the app
 -   Look into adding animations (Theo's youtube video)
 -   Create some kind of default sort and possibly a sort button
@@ -18,7 +18,7 @@
     -   Look into adding dark mode toggle
 -   Look into alerts for a set time
 
-## Done:
+## Done and committed:
 
 -   Setup boilerplate, github repo, webpack, eslint, prettier, .gitignore
 -   First draft of styles.css
@@ -101,3 +101,12 @@
 -   Make a delete button for proj/areas
 -   Make a backend for saving data
 -   Add create project/area button
+-   Make checkboxes functional
+
+## Done but not committed:
+
+-   Add change parent functionality for projects
+-   Fix combo btn hiding when cursor hits gap between
+-   Make rename project/area also refresh the main area
+-   Make projects only able to be children of areas
+-   Make it so only todos are shown in main area

@@ -6,6 +6,7 @@ import {
     getAreasAndProjects,
     TodoOrProject,
     Todo,
+    Project,
     createTodo,
     createArea,
     createProject,
@@ -17,7 +18,7 @@ import {
 import { startOfDay, isPast } from "date-fns";
 
 import formatDistanceCustom from "./utils";
-import { drawInbox } from "./views";
+import { drawInbox, drawProjectAsMain, drawAreaAsMain } from "./views";
 
 function createElementWithClass(type: string, className: string) {
     const element = document.createElement(type);
@@ -28,7 +29,67 @@ function createElementWithClass(type: string, className: string) {
 const container = createElementWithClass("div", "container");
 document.body.appendChild(container);
 
-// Keep track of the currently expanded comboBtn and its options
+// function drawChangeParentBtn(projectElement: HTMLElement, project: Project) {
+//     const changeParentBtn = document.createElement("button");
+//     changeParentBtn.textContent = "⤷";
+//     changeParentBtn.classList.add("change-parent-btn");
+//     projectElement.appendChild(changeParentBtn);
+
+//     const popup = document.createElement("div");
+//     popup.classList.add("parent-popup");
+//     popup.style.display = "none";
+
+//     const parentList = document.createElement("ul");
+//     parentList.classList.add("parent-list");
+
+//     popup.appendChild(parentList);
+//     projectElement.appendChild(popup);
+
+//     changeParentBtn.addEventListener("click", function () {
+//         while (parentList.firstChild) {
+//             parentList.removeChild(parentList.firstChild);
+//         }
+
+//         getAreas().forEach((area) => {
+//             const listItem = document.createElement("li");
+//             listItem.textContent = area.title;
+
+//             listItem.addEventListener("click", () => {
+//                 project.parentUuid === area.uuid;
+
+//                 localStorage.setItem("projects", JSON.stringify(getProjects()));
+
+//                 drawInbox();
+
+//                 drawAreasProjectsArea();
+
+//                 popup.style.display = "none";
+//             });
+//             parentList.appendChild(listItem);
+//         });
+
+//         getProjects().forEach((proj) => {
+//             const listItem = document.createElement("li");
+//             listItem.textContent = project.title;
+
+//             listItem.addEventListener("click", () => {
+//                 project.parentUuid === proj.uuid;
+
+//                 localStorage.setItem("projects", JSON.stringify(getProjects()));
+
+//                 drawInbox();
+
+//                 drawAreasProjectsArea();
+
+//                 popup.style.display = "none";
+//             });
+//             parentList.appendChild(listItem);
+//         });
+
+//         popup.style.display = "block";
+//     });
+// }
+
 let currentExpandedComboBtn: HTMLElement | null = null;
 let currentExpandedComboBtnOptions: HTMLElement | null = null;
 
@@ -88,6 +149,16 @@ function drawComboBtn(
                         "projects",
                         JSON.stringify(getProjects())
                     );
+
+                drawAreasProjectsArea();
+
+                const mainArea = document.querySelector(
+                    ".main-area"
+                ) as HTMLElement;
+                if (mainArea.dataset.uuid === item.uuid) {
+                    type === "area" && drawAreaAsMain(item);
+                    type === "project" && drawProjectAsMain(item);
+                }
             } else if (item && !itemText.textContent) {
                 itemText.textContent = item.title;
             }
@@ -114,10 +185,6 @@ function drawComboBtn(
             "Are you sure you want to delete this item? All sub-items will also be deleted. This cannot be undone"
         );
         if (confirmation) {
-            const areasProjectsArea = document.querySelector(
-                ".areas-projects-area"
-            ) as HTMLElement;
-
             const mainArea = document.querySelector(
                 ".main-area"
             ) as HTMLElement;
@@ -125,12 +192,11 @@ function drawComboBtn(
             if (type === "area") {
                 itemElement.remove();
                 deleteArea(itemUuid);
-                populateAreasProjectsArea(areasProjectsArea);
-                // if ()
+                drawAreasProjectsArea();
             } else if (type === "project") {
                 itemElement.remove();
                 deleteProject(itemUuid);
-                populateAreasProjectsArea(areasProjectsArea);
+                drawAreasProjectsArea();
             } else {
                 console.error("Unknown type");
             }
@@ -182,7 +248,18 @@ function drawComboBtn(
     itemElement.appendChild(comboBtn);
 }
 
-function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
+function drawAreasProjectsArea() {
+    let areasProjectsArea = document.querySelector(
+        ".areas-projects-area"
+    ) as HTMLElement | null;
+
+    if (!areasProjectsArea) {
+        areasProjectsArea = createElementWithClass(
+            "div",
+            "areas-projects-area"
+        ) as HTMLElement;
+    }
+
     if (areasProjectsArea.children.length > 0) {
         while (areasProjectsArea.firstChild) {
             areasProjectsArea.removeChild(areasProjectsArea.firstChild);
@@ -200,7 +277,7 @@ function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
         const areaText = createElementWithClass("span", "area-text");
         areaText.textContent = area.title;
 
-        areasProjectsArea.appendChild(areaAndChildContainer);
+        areasProjectsArea?.appendChild(areaAndChildContainer);
         areaAndChildContainer.appendChild(areaElement);
         areaElement.appendChild(areaText);
 
@@ -218,6 +295,7 @@ function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
                 areaAndChildContainer.appendChild(projectElement);
                 projectElement.appendChild(projectText);
 
+                // drawChangeParentBtn(projectElement, project);
                 drawComboBtn(projectElement, project.uuid, projectText);
             }
         });
@@ -229,17 +307,16 @@ function populateAreasProjectsArea(areasProjectsArea: HTMLElement) {
             const projectText = createElementWithClass("span", "project-text");
             projectElement.dataset.uuid = project.uuid;
             projectText.textContent = project.title;
-            areasProjectsArea.appendChild(projectElement);
+            areasProjectsArea?.appendChild(projectElement);
             projectElement.appendChild(projectText);
+
+            // drawChangeParentBtn(projectElement, project);
             drawComboBtn(projectElement, project.uuid, projectText);
         }
     });
 }
 
-function drawCreateAreaProjectBtn(
-    sideArea: HTMLElement,
-    areasProjectsArea: HTMLElement
-) {
+function drawCreateAreaProjectBtn(sideArea: HTMLElement) {
     const createAreaProjectBtn = createElementWithClass(
         "button",
         "create-area-project-btn"
@@ -256,14 +333,14 @@ function drawCreateAreaProjectBtn(
     optionArea.textContent = "Area";
     optionArea.addEventListener("click", () => {
         createArea("New Area");
-        populateAreasProjectsArea(areasProjectsArea);
+        drawAreasProjectsArea();
     });
 
     const optionProject = createElementWithClass("button", "option-project");
     optionProject.textContent = "Project";
     optionProject.addEventListener("click", () => {
         createProject("New Project");
-        populateAreasProjectsArea(areasProjectsArea);
+        drawAreasProjectsArea();
     });
 
     createAreaProjectBtn.addEventListener("click", (event) => {
@@ -359,7 +436,7 @@ function drawSideArea() {
     unscheduledText.textContent = "Unscheduled";
     logbookText.textContent = "Logbook";
 
-    populateAreasProjectsArea(areasProjectsArea);
+    drawAreasProjectsArea();
 
     inboxArea.appendChild(inbox);
     inbox.appendChild(inboxText);
@@ -374,7 +451,7 @@ function drawSideArea() {
     logbookArea.appendChild(logbook);
     logbook.appendChild(logbookText);
 
-    drawCreateAreaProjectBtn(sideArea, areasProjectsArea);
+    drawCreateAreaProjectBtn(sideArea);
 }
 
 // Main Area
@@ -391,7 +468,7 @@ function makeOrClearMainArea() {
     }
 }
 
-function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putDeleteOnMainItemEle(item: Todo, itemElement: Element) {
     const deleteButton = createElementWithClass(
         "button",
         "delete-button"
@@ -408,8 +485,7 @@ function putDeleteOnMainItemEle(item: TodoOrProject, itemElement: Element) {
                 itemElement.remove();
                 deleteTodo(item.uuid);
             } else {
-                deleteProject(item.uuid);
-                drawInbox();
+                console.error("Should be type todo but we ended up here...");
             }
         }
     });
@@ -458,13 +534,13 @@ function drawCreateTodoBtn(
     });
 }
 
-function drawMainItem(item: TodoOrProject, mainArea: Element) {
+function drawMainItem(item: Todo, mainArea: Element) {
     let itemElement = mainArea.querySelector(
         `[data-uuid="${item.uuid}"]`
     ) as HTMLElement;
 
     if (!itemElement) {
-        itemElement = createElementWithClass("div", item.type);
+        itemElement = createElementWithClass("div", "todo");
 
         itemElement.dataset.uuid = item.uuid;
 
@@ -490,7 +566,7 @@ function drawMainItem(item: TodoOrProject, mainArea: Element) {
     putDeleteOnMainItemEle(item, itemElement);
 }
 
-function putCheckboxOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putCheckboxOnMainItemEle(item: Todo, itemElement: Element) {
     const itemCheckbox = createElementWithClass(
         "input",
         "item-checkbox"
@@ -512,20 +588,18 @@ function putCheckboxOnMainItemEle(item: TodoOrProject, itemElement: Element) {
             itemElement.classList.remove("done");
             item.isDone = false;
         }
-        item.type === "project" &&
-            localStorage.setItem("projects", JSON.stringify(getProjects()));
-        item.type === "todo" &&
-            localStorage.setItem("todos", JSON.stringify(getTodos()));
+
+        localStorage.setItem("todos", JSON.stringify(getTodos()));
     });
 }
 
-function putTitleOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putTitleOnMainItemEle(item: Todo, itemElement: Element) {
     const itemText = createElementWithClass("span", "item-text");
     itemText.textContent = item.title;
     itemElement.appendChild(itemText);
 }
 
-function putDueOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putDueOnMainItemEle(item: Todo, itemElement: Element) {
     if (item.dueDate) {
         const itemDue = createElementWithClass("span", "item-due");
         const date = new Date(item.dueDate);
@@ -538,7 +612,7 @@ function putDueOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     }
 }
 
-function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putPriorityOnMainItemEle(item: Todo, itemElement: Element) {
     if (item.type === "todo" && item.hasPriority) {
         const itemPriority = createElementWithClass("span", "item-priority");
 
@@ -547,7 +621,7 @@ function putPriorityOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     }
 }
 
-function putParentOnMainItemEle(item: TodoOrProject, itemElement: Element) {
+function putParentOnMainItemEle(item: Todo, itemElement: Element) {
     if (item.parentUuid) {
         const itemParent = createElementWithClass("span", "item-parent");
         const parent = getProject(item.parentUuid);
@@ -558,10 +632,7 @@ function putParentOnMainItemEle(item: TodoOrProject, itemElement: Element) {
     }
 }
 
-function putNoteIndicatorOnMainItemEle(
-    item: TodoOrProject,
-    itemElement: Element
-) {
+function putNoteIndicatorOnMainItemEle(item: Todo, itemElement: Element) {
     if (item.notes && item.notes !== "") {
         const itemNote = createElementWithClass("span", "item-note");
         itemNote.textContent = "›";
@@ -571,7 +642,7 @@ function putNoteIndicatorOnMainItemEle(
 
 // Expanded todo view
 
-function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
+function putTitleOnExpanded(item: Todo, itemElement: Element) {
     const itemText = createElementWithClass("span", "item-text");
     itemText.textContent = item.title;
     itemElement.appendChild(itemText);
@@ -599,10 +670,7 @@ function putTitleOnExpanded(item: TodoOrProject, itemElement: Element) {
         if (itemText.textContent) {
             item.title = itemText.textContent;
 
-            item.type === "todo" &&
-                localStorage.setItem("todos", JSON.stringify(getTodos()));
-            item.type === "project" &&
-                localStorage.setItem("projects", JSON.stringify(getProjects()));
+            localStorage.setItem("todos", JSON.stringify(getTodos()));
         } else {
             itemText.textContent = item.title;
         }
@@ -842,6 +910,48 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     putParentOnExpanded(item, row4);
 }
 
+function drawProjectParentSelector(project: Project, container: HTMLElement) {
+    const parentSelector = createElementWithClass(
+        "select",
+        "parent-selector"
+    ) as HTMLSelectElement;
+
+    const noneOption = createElementWithClass(
+        "option",
+        "parent-option"
+    ) as HTMLOptionElement;
+
+    noneOption.value = "";
+    noneOption.textContent = "🞪 No Area";
+
+    parentSelector.appendChild(noneOption);
+
+    getAreas().forEach((area) => {
+        const option = createElementWithClass(
+            "option",
+            "parent-option"
+        ) as HTMLOptionElement;
+
+        option.value = area.uuid;
+        option.textContent = area.title;
+
+        parentSelector.appendChild(option);
+    });
+
+    if (project.parentUuid) {
+        parentSelector.value = project.parentUuid;
+    }
+
+    parentSelector.addEventListener("change", () => {
+        project.parentUuid = parentSelector.value;
+        localStorage.setItem("projects", JSON.stringify(getProjects()));
+        drawAreasProjectsArea();
+        drawInbox();
+    });
+
+    container.appendChild(parentSelector);
+}
+
 export {
     makeOrClearMainArea,
     drawMainItem,
@@ -850,5 +960,6 @@ export {
     drawSideArea,
     drawCreateTodoBtn,
     drawComboBtn,
-    populateAreasProjectsArea,
+    drawAreasProjectsArea,
+    drawProjectParentSelector,
 };

@@ -4,6 +4,7 @@ import {
     drawMainItem,
     drawCreateTodoBtn,
     drawComboBtn,
+    drawProjectParentSelector,
 } from "./elements";
 
 import { getTodos, getTodosAndProjects, Area, Project } from "../data/monolith";
@@ -177,6 +178,8 @@ function drawProjectAsMain(project: Project) {
     (mainArea as HTMLElement).dataset.uuid = project.uuid;
 
     drawComboBtn(mainAreaHeading, project.uuid, mainAreaHeadingText);
+
+    drawProjectParentSelector(project, mainAreaHeading);
 
     const filteredItems = getTodosAndProjects().filter((item) => {
         return !item.isDone && item.parentUuid === project.uuid;
