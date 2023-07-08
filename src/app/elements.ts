@@ -28,66 +28,6 @@ function createElementWithClass(type: string, className: string) {
 const container = createElementWithClass("div", "container");
 document.body.appendChild(container);
 
-// function drawChangeParentBtn(projectElement: HTMLElement, project: Project) {
-//     const changeParentBtn = document.createElement("button");
-//     changeParentBtn.textContent = "⤷";
-//     changeParentBtn.classList.add("change-parent-btn");
-//     projectElement.appendChild(changeParentBtn);
-
-//     const popup = document.createElement("div");
-//     popup.classList.add("parent-popup");
-//     popup.style.display = "none";
-
-//     const parentList = document.createElement("ul");
-//     parentList.classList.add("parent-list");
-
-//     popup.appendChild(parentList);
-//     projectElement.appendChild(popup);
-
-//     changeParentBtn.addEventListener("click", function () {
-//         while (parentList.firstChild) {
-//             parentList.removeChild(parentList.firstChild);
-//         }
-
-//         getAreas().forEach((area) => {
-//             const listItem = document.createElement("li");
-//             listItem.textContent = area.title;
-
-//             listItem.addEventListener("click", () => {
-//                 project.parentUuid === area.uuid;
-
-//                 localStorage.setItem("projects", JSON.stringify(getProjects()));
-
-//                 drawInbox();
-
-//                 drawAreasProjectsArea();
-
-//                 popup.style.display = "none";
-//             });
-//             parentList.appendChild(listItem);
-//         });
-
-//         getProjects().forEach((proj) => {
-//             const listItem = document.createElement("li");
-//             listItem.textContent = project.title;
-
-//             listItem.addEventListener("click", () => {
-//                 project.parentUuid === proj.uuid;
-
-//                 localStorage.setItem("projects", JSON.stringify(getProjects()));
-
-//                 drawInbox();
-
-//                 drawAreasProjectsArea();
-
-//                 popup.style.display = "none";
-//             });
-//             parentList.appendChild(listItem);
-//         });
-
-//         popup.style.display = "block";
-//     });
-// }
 
 let currentExpandedComboBtn: HTMLElement | null = null;
 let currentExpandedComboBtnOptions: HTMLElement | null = null;
@@ -245,7 +185,6 @@ function drawComboBtn(
     comboBtn.appendChild(comboBtnOptions);
 
     comboBtn.addEventListener("click", (event) => {
-        // If another comboBtn is currently expanded, close it
         if (
             currentExpandedComboBtn &&
             currentExpandedComboBtnOptions &&
@@ -254,15 +193,12 @@ function drawComboBtn(
             currentExpandedComboBtnOptions.style.display = "none";
         }
 
-        // Toggle the display of the current comboBtn's options
         if (comboBtnOptions.style.display === "none") {
             comboBtnOptions.style.display = "block";
-            // Update the currently expanded comboBtn and its options
             currentExpandedComboBtn = comboBtn;
             currentExpandedComboBtnOptions = comboBtnOptions;
         } else {
             comboBtnOptions.style.display = "none";
-            // If the current comboBtn is being closed, clear the currently expanded comboBtn and its options
             if (comboBtn === currentExpandedComboBtn) {
                 currentExpandedComboBtn = null;
                 currentExpandedComboBtnOptions = null;
@@ -327,7 +263,6 @@ function drawAreasProjectsArea() {
                 areaAndChildContainer.appendChild(projectElement);
                 projectElement.appendChild(projectText);
 
-                // drawChangeParentBtn(projectElement, project);
                 drawComboBtn(projectElement, project.uuid, projectText);
             }
         });
@@ -342,7 +277,6 @@ function drawAreasProjectsArea() {
             areasProjectsArea?.appendChild(projectElement);
             projectElement.appendChild(projectText);
 
-            // drawChangeParentBtn(projectElement, project);
             drawComboBtn(projectElement, project.uuid, projectText);
         }
     });
@@ -405,7 +339,6 @@ function drawSideArea() {
     const inboxArea = createElementWithClass("div", "inbox-area");
     const inbox = createElementWithClass("div", "inbox");
     const inboxText = createElementWithClass("span", "inbox-text");
-    // const inboxCount = createElementWithClass("span", "inbox-count");
 
     sideArea.appendChild(inboxArea);
 
@@ -415,7 +348,6 @@ function drawSideArea() {
 
     const today = createElementWithClass("div", "today");
     const todayText = createElementWithClass("span", "today-text");
-    // const todayCount = createElementWithClass("span", "today-count");
     const scheduled = createElementWithClass("div", "scheduled");
     const scheduledText = createElementWithClass("span", "scheduled-text");
     const unscheduled = createElementWithClass("div", "unscheduled");
@@ -440,29 +372,12 @@ function drawSideArea() {
         element.id = element.classList[0];
     });
 
-    // [inboxCount, todayCount, scheduledCount, unscheduledCount].forEach(
-    //     (element) => {
-    //         element.classList.add("counter");
-    //     }
-    // );
 
     // Populate side area
 
     inboxText.textContent = "Inbox";
-    // inboxCount.textContent = getTodos()
-    //     .filter((todo) => !todo.isDone && todo.inInbox)
-    //     .length.toString();
 
     todayText.textContent = "Today";
-    // todayCount.textContent = getTodosAndProjects()
-    //     .filter((item) => {
-    //         return (
-    //             !item.isDone &&
-    //             item.startDate &&
-    //             (isToday(startOfDay(item.startDate)) || isPast(item.startDate))
-    //         );
-    //     })
-    //     .length.toString();
 
     scheduledText.textContent = "Scheduled";
     unscheduledText.textContent = "Unscheduled";
@@ -472,10 +387,8 @@ function drawSideArea() {
 
     inboxArea.appendChild(inbox);
     inbox.appendChild(inboxText);
-    // inbox.appendChild(inboxCount);
     viewsArea.appendChild(today);
     today.appendChild(todayText);
-    // today.appendChild(todayCount);
     viewsArea.appendChild(scheduled);
     scheduled.appendChild(scheduledText);
     viewsArea.appendChild(unscheduled);
@@ -810,7 +723,6 @@ function putStartDateOnExpanded(item: Todo, itemElement: Element) {
     itemStartDate.id = "start-date";
     itemStartDate.name = "start-date";
 
-    // const today = startOfDay(new Date());
 
     if (item.startDate && isPast(startOfDay(item.startDate))) {
         itemStartDate.valueAsDate = startOfDay(new Date());
@@ -927,11 +839,7 @@ function drawExpandedTodo(item: Todo, mainArea: Element) {
     itemElement.appendChild(row4);
 
     putCheckboxOnMainItemEle(item, itemElement);
-    // putPriorityOnMainItemEle(item, itemElement);
     putTitleOnExpanded(item, row1);
-    // putParentOnMainItemEle(item, itemElement);
-    // putDueOnMainItemEle(item, itemElement);
-    // putNoteIndicatorOnMainItemEle(item, itemElement);
 
     putPriorityOnExpanded(item, row1);
     putDeleteOnMainItemEle(item, row1);

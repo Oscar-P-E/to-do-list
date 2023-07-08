@@ -2,15 +2,6 @@ import { drawExpandedTodo, drawMainItem } from "./elements";
 import { getProject, getTodo } from "../data/monolith";
 import { drawProjectAsMain } from "./views";
 
-// function collapseTodo(Todo: Element) {}
-// function clickOutsideExpanded(target: HTMLElement | null, expanded: Element) {}
-// function editTitle(target: HTMLElement | null) {}
-// function editNotes(target: HTMLElement | null) {}
-// function editDueDate(target: HTMLElement | null) {}
-// function editPriority(target: HTMLElement | null) {}
-// function editStartDate(target: HTMLElement | null) {}
-// function editParent(target: HTMLElement | null) {}
-// function clickInsideExpanded(target: HTMLElement | null, expanded: Element) {}
 
 function clickOutsideExpanded(
     target: HTMLElement | null,
@@ -34,7 +25,6 @@ function clickOutsideExpanded(
     const todo = getTodo(uuid);
     if (!todo) return;
 
-    // expanded.remove();
 
     drawMainItem(todo, mainArea);
 }
@@ -59,7 +49,6 @@ function clickWhileExpanded(
 function clickWhileNoExpanded(mainArea: Element, target: HTMLElement | null) {
     if (!mainArea) return;
 
-    // Find previously expanded element and collapse it.
     const prevExpanded = mainArea.querySelector(".expanded") as HTMLElement;
     if (prevExpanded) {
         prevExpanded.className = "todo";
@@ -73,7 +62,6 @@ function clickWhileNoExpanded(mainArea: Element, target: HTMLElement | null) {
         }
     }
 
-    // Code to expand the new item.
     while (target && !target.dataset.uuid) {
         target = target.parentElement;
     }
@@ -108,14 +96,6 @@ function handleMainAreaClick(mainArea: Element) {
         }
 
         const expanded = mainArea.querySelector(".expanded") as HTMLElement;
-        // const comboBtnOptions = mainArea.querySelector(
-        //     ".combo-btn-options"
-        // ) as HTMLElement;
-
-        // if (comboBtnOptions) {
-        //     console.log("Clicked inside combo btn options");
-        //     return;
-        // }
 
         if (!expanded) {
             clickWhileNoExpanded(mainArea, target);

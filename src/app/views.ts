@@ -7,7 +7,7 @@ import {
     drawProjectParentSelector,
 } from "./elements";
 
-import { getTodos, getTodosAndProjects, Area, Project } from "../data/monolith";
+import { getTodos, Area, Project } from "../data/monolith";
 
 import { isToday, startOfDay, isPast } from "date-fns";
 

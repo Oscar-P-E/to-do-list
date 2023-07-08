@@ -1,28 +1,3 @@
-// import {
-// Todo,
-// Project,
-// Area,
-// TodoOrProject,
-// TodoOrProjectOrArea,
-// createTodo,
-// createProject,
-// createArea,
-// getToday,
-// getTodo,
-// getProject,
-// getArea,
-// getTodos,
-// getProjects,
-// getAreas,
-// getTodosAndProjects,
-// modifyTodo,
-// modifyProject,
-// modifyArea,
-// deleteTodo,
-// deleteProject,
-// deleteArea,
-// } from "../data/monolith";
-
 import {
     drawInbox,
     drawToday,
